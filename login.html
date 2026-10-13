@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="h-full bg-slate-50">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>تسجيل الدخول | منصة حِرز</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Cairo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif'],
+          },
+          boxShadow: {
+            glow: '0 0 20px -5px rgba(37, 99, 235, 0.15)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+
+    .auth-bg {
+      background:
+        radial-gradient(1200px 500px at 100% -10%, rgba(37, 99, 235, 0.07), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, rgba(37, 99, 235, 0.06), transparent 60%);
+    }
+
+    .field-error {
+      display: none;
+    }
+
+    .field-error.show {
+      display: flex;
+    }
+
+    .spinner {
+      border: 2px solid rgba(255,255,255,0.35);
+      border-top-color: #fff;
+      border-radius: 9999px;
+      animation: spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* TOAST */
+    #toastContainer {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 80;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: calc(100% - 2rem);
+      max-width: 380px;
+    }
+
+    .toast {
+      animation: toastIn .25s ease-out;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body class="h-full antialiased text-slate-800 bg-slate-50 flex flex-col">
+
+  <!-- HEADER -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-[4.5rem] flex items-center justify-between gap-4">
+
+      <!-- BRAND / LOGO -->
+      <a href="../index.html" class="flex items-center gap-2 shrink-0 group">
+        <img
+          src="../../images/herz-logo.png"
+          alt="شعار حرز"
+          onerror="this.style.display='none'; document.getElementById('logoFallbackHeader').classList.remove('hidden');"
+          class="h-8 sm:h-9 w-auto object-contain transition group-hover:opacity-90">
+        <span id="logoFallbackHeader" class="hidden text-lg sm:text-xl font-black text-blue-600">
+          حِرز
+        </span>
+      </a>
+
+      <!-- REFINED BACK BUTTON -->
+      <div class="flex items-center gap-2 shrink-0">
+        <a
+          href="../../index.html"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100/80 border border-slate-200/60 text-xs font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition shadow-sm">
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          <span>العودة للموقع</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="auth-bg flex-1 flex items-center justify-center px-4 py-10 sm:py-16">
+
+    <div class="w-full max-w-md">
+
+      <!-- LOGIN CARD -->
+      <div class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-6 sm:p-8">
+
+        <div class="flex flex-col items-center text-center mb-6">
+
+          <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center mb-4">
+            <i data-lucide="lock-keyhole" class="w-6 h-6"></i>
+          </div>
+
+          <h1 class="text-xl sm:text-2xl font-black text-slate-900">
+            تسجيل الدخول
+          </h1>
+
+          <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-2 leading-relaxed">
+            سجّل الدخول لإدارة حسابك ومتابعة طلبات التوثيق والاشتراك في حِرز.
+          </p>
+
+        </div>
+
+        <!-- GENERAL ERROR ALERT -->
+        <div
+          id="generalError"
+          class="hidden items-start gap-2.5 mb-5 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700">
+          <i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 shrink-0"></i>
+          <p class="text-xs font-bold leading-relaxed">
+            البريد الإلكتروني أو كلمة المرور غير صحيحة.
+          </p>
+        </div>
+
+        <!-- SUCCESS ALERT -->
+        <div
+          id="successAlert"
+          class="hidden items-start gap-2.5 mb-5 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700">
+          <i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5 shrink-0"></i>
+          <p class="text-xs font-bold leading-relaxed">
+            تم تسجيل الدخول بنجاح، جارٍ تحويلك إلى لوحة التحكم...
+          </p>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="loginForm" novalidate class="space-y-4">
+
+          <!-- EMAIL -->
+          <div>
+            <label for="email" class="text-[11px] font-black text-slate-600 mb-1.5 block">
+              البريد الإلكتروني
+            </label>
+
+            <div class="relative">
+              <i data-lucide="mail" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="أدخل بريدك الإلكتروني"
+                oninput="clearFieldError('email')"
+                dir="ltr"
+                class="w-full pr-11 pl-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/5 transition text-left">
+            </div>
+
+            <p id="emailError" class="field-error items-center gap-1.5 text-[11px] font-bold text-red-600 mt-1.5">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0"></i>
+              <span id="emailErrorText">يرجى إدخال البريد الإلكتروني.</span>
+            </p>
+          </div>
+
+          <!-- PASSWORD -->
+          <div>
+            <label for="password" class="text-[11px] font-black text-slate-600 mb-1.5 block">
+              كلمة المرور
+            </label>
+
+            <div class="relative">
+              <i data-lucide="key-round" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                placeholder="أدخل كلمة المرور"
+                oninput="clearFieldError('password')"
+                dir="ltr"
+                class="w-full pr-11 pl-11 py-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/5 transition text-left">
+
+              <button
+                type="button"
+                onclick="togglePasswordVisibility()"
+                aria-label="إظهار أو إخفاء كلمة المرور"
+                class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition p-1">
+                <i id="passwordEyeIcon" data-lucide="eye" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+            <p id="passwordError" class="field-error items-center gap-1.5 text-[11px] font-bold text-red-600 mt-1.5">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0"></i>
+              <span id="passwordErrorText">يرجى إدخال كلمة المرور.</span>
+            </p>
+          </div>
+
+          <!-- REMEMBER / FORGOT -->
+          <div class="flex items-center justify-between pt-1">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input id="rememberMe" type="checkbox" class="w-4 h-4 rounded accent-blue-600">
+              <span class="text-[11px] font-bold text-slate-600">تذكرني</span>
+            </label>
+
+            <a href="forgot-password.html" class="text-[11px] font-bold text-blue-600 hover:text-blue-700 transition">
+              نسيت كلمة المرور؟
+            </a>
+          </div>
+
+          <!-- SUBMIT -->
+          <button
+            id="loginBtn"
+            type="submit"
+            class="w-full mt-2 px-4 py-3.5 rounded-xl bg-blue-600 text-white text-sm font-black hover:bg-blue-700 transition shadow-md shadow-blue-600/20 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+            <span id="loginBtnSpinner" class="hidden w-4 h-4 spinner"></span>
+            <i id="loginBtnIcon" data-lucide="log-in" class="w-4 h-4"></i>
+            <span id="loginBtnText">تسجيل الدخول</span>
+          </button>
+
+          <!-- DEMO HINT -->
+          <div class="flex items-start gap-2 p-3 rounded-xl bg-slate-50 border border-dashed border-slate-200">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0"></i>
+            <p class="text-[10px] text-slate-400 leading-relaxed font-semibold">
+              لتجربة الصفحة: <span class="font-mono text-slate-500 dir-ltr">demo@heerz.sa</span> / <span class="font-mono text-slate-500 dir-ltr">Demo@1234</span> — بيانات تجريبية وهمية فقط.
+            </p>
+          </div>
+
+        </form>
+
+        <!-- REGISTER LINK -->
+        <div class="flex items-center gap-2 justify-center mt-6 pt-6 border-t border-slate-100">
+          <span class="text-xs font-bold text-slate-500">ليس لديك حساب؟</span>
+          <a href="register.html" class="text-xs font-black text-blue-600 hover:text-blue-700 transition">
+            إنشاء حساب
+          </a>
+        </div>
+
+      </div>
+
+      <!-- HELPER NOTE -->
+      <p class="text-center text-[11px] font-bold text-slate-400 mt-5 leading-relaxed">
+        حساب واحد لإدارة طلباتك وبياناتك واشتراكك في حِرز.
+      </p>
+
+    </div>
+
+  </main>
+
+  <!-- REDESIGNED FOOTER -->
+  <footer class="bg-white border-t border-slate-200/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+
+        <!-- BRAND INFO -->
+        <div class="flex flex-col items-center md:items-start gap-2">
+          <div class="flex items-center gap-2.5">
+            <img
+              src="../../images/herz-logo.png"
+              alt="شعار حرز"
+              onerror="this.style.display='none'; document.getElementById('logoFallbackFooter').classList.remove('hidden');"
+              class="h-7 w-auto object-contain">
+            <span id="logoFallbackFooter" class="hidden text-sm font-black text-blue-600">
+              حِرز
+            </span>
+          </div>
+          <p class="text-[11px] font-semibold text-slate-400 text-center md:text-right">
+            المنصة الرائدة لتوثيق وحماية المحتوى الرقمي.
+          </p>
+        </div>
+
+        <!-- QUICK LINKS -->
+        <nav class="flex items-center justify-center gap-6">
+          <a href="../privacy.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الخصوصية</a>
+          <a href="../terms.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الشروط والأحكام</a>
+          <a href="../contact.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">تواصل معنا</a>
+        </nav>
+
+        <!-- COPYRIGHT -->
+        <div class="text-center md:text-left">
+          <p class="text-[11px] font-bold text-slate-400">
+            © 2026 منصة حِرز. جميع الحقوق محفوظة.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOASTS -->
+  <div id="toastContainer"></div>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    const DEMO_ACCOUNT = {
+      email: "demo@heerz.sa",
+      password: "Demo@1234"
+    };
+
+    const REDIRECT_AFTER_LOGIN = "../dashboard/home.html";
+
+    let passwordVisible = false;
+    let isSubmitting = false;
+
+    function mockLoginRequest(email, password) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const success =
+            email.trim().toLowerCase() === DEMO_ACCOUNT.email &&
+            password === DEMO_ACCOUNT.password;
+          resolve({ success });
+        }, 1200);
+      });
+    }
+
+    function isValidEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+    }
+
+    function showFieldError(field, message) {
+      const input = document.getElementById(field);
+      const errorEl = document.getElementById(field + 'Error');
+      const errorText = document.getElementById(field + 'ErrorText');
+
+      if (message) errorText.textContent = message;
+
+      errorEl.classList.add('show');
+      input.classList.add('border-red-300', 'focus:border-red-400', 'focus:ring-red-500/10');
+      input.classList.remove('border-slate-200', 'focus:border-blue-400', 'focus:ring-blue-500/5');
+    }
+
+    function clearFieldError(field) {
+      const input = document.getElementById(field);
+      const errorEl = document.getElementById(field + 'Error');
+
+      errorEl.classList.remove('show');
+      input.classList.remove('border-red-300', 'focus:border-red-400', 'focus:ring-red-500/10');
+      input.classList.add('border-slate-200', 'focus:border-blue-400', 'focus:ring-blue-500/5');
+
+      hideGeneralError();
+    }
+
+    function validateForm() {
+      let isValid = true;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      if (!email.trim()) {
+        showFieldError('email', 'يرجى إدخال البريد الإلكتروني.');
+        isValid = false;
+      } else if (!isValidEmail(email)) {
+        showFieldError('email', 'يرجى إدخال بريد إلكتروني صحيح.');
+        isValid = false;
+      } else {
+        clearFieldError('email');
+      }
+
+      if (!password) {
+        showFieldError('password', 'يرجى إدخال كلمة المرور.');
+        isValid = false;
+      } else {
+        clearFieldError('password');
+      }
+
+      return isValid;
+    }
+
+    function togglePasswordVisibility() {
+      const input = document.getElementById('password');
+      const icon = document.getElementById('passwordEyeIcon');
+
+      passwordVisible = !passwordVisible;
+      input.type = passwordVisible ? 'text' : 'password';
+      icon.setAttribute('data-lucide', passwordVisible ? 'eye-off' : 'eye');
+      lucide.createIcons();
+    }
+
+    function showGeneralError() {
+      document.getElementById('generalError').classList.remove('hidden');
+      document.getElementById('generalError').classList.add('flex');
+      document.getElementById('successAlert').classList.add('hidden');
+      document.getElementById('successAlert').classList.remove('flex');
+    }
+
+    function hideGeneralError() {
+      document.getElementById('generalError').classList.add('hidden');
+      document.getElementById('generalError').classList.remove('flex');
+    }
+
+    function showSuccessAlert() {
+      document.getElementById('successAlert').classList.remove('hidden');
+      document.getElementById('successAlert').classList.add('flex');
+      hideGeneralError();
+    }
+
+    function setLoadingState(loading) {
+      const btn = document.getElementById('loginBtn');
+      const spinner = document.getElementById('loginBtnSpinner');
+      const icon = document.getElementById('loginBtnIcon');
+      const text = document.getElementById('loginBtnText');
+
+      btn.disabled = loading;
+      spinner.classList.toggle('hidden', !loading);
+      icon.classList.toggle('hidden', loading);
+      text.textContent = loading ? 'جارٍ تسجيل الدخول...' : 'تسجيل الدخول';
+    }
+
+    async function handleLoginSubmit(event) {
+      event.preventDefault();
+      if (isSubmitting) return;
+
+      hideGeneralError();
+      if (!validateForm()) return;
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      isSubmitting = true;
+      setLoadingState(true);
+
+      const result = await mockLoginRequest(email, password);
+      isSubmitting = false;
+
+      if (result.success) {
+        setLoadingState(false);
+        showSuccessAlert();
+        showToast('تم تسجيل الدخول بنجاح.', 'success');
+
+        setTimeout(() => {
+          window.location.href = REDIRECT_AFTER_LOGIN;
+        }, 900);
+      } else {
+        setLoadingState(false);
+        showGeneralError();
+        showToast('فشل تسجيل الدخول، يرجى التحقق من البيانات.', 'error');
+      }
+    }
+
+    function showToast(message, type) {
+      const container = document.getElementById('toastContainer');
+      const colors = {
+        success: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+        error: 'border-red-200 bg-red-50 text-red-700',
+        info: 'border-blue-200 bg-blue-50 text-blue-700'
+      };
+      const icons = { success: 'check-circle-2', error: 'x-circle', info: 'info' };
+
+      const toast = document.createElement('div');
+      toast.className = `toast flex items-center gap-2.5 px-4 py-3 rounded-2xl border shadow-lg text-xs font-bold ${colors[type] || colors.info}`;
+      toast.innerHTML = `<i data-lucide="${icons[type] || icons.info}" class="w-4 h-4 shrink-0"></i><span>${message}</span>`;
+
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.style.transition = 'opacity .3s ease, transform .3s ease';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', handleLoginSubmit);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+    });
+  </script>
+
+</body>
+</html>

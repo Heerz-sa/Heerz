@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="bg-slate-50">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>تحقق من وسيلة التواصل | منصة حِرز</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Cairo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif'],
+          },
+          boxShadow: {
+            glow: '0 0 20px -5px rgba(37, 99, 235, 0.15)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+
+    .auth-bg {
+      background:
+        radial-gradient(1200px 500px at 100% -10%, rgba(37, 99, 235, 0.07), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, rgba(37, 99, 235, 0.06), transparent 60%);
+    }
+
+    .field-error {
+      display: none;
+    }
+
+    .field-error.show {
+      display: flex;
+    }
+
+    .spinner {
+      border: 2px solid rgba(255,255,255,0.35);
+      border-top-color: #fff;
+      border-radius: 9999px;
+      animation: spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* TOAST */
+    #toastContainer {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 80;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: calc(100% - 2rem);
+      max-width: 380px;
+    }
+
+    .toast {
+      animation: toastIn .25s ease-out;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* OTP INPUTS */
+    .otp-input {
+      width: 3rem;
+      height: 3.5rem;
+    }
+
+    @media (max-width: 360px) {
+      .otp-input {
+        width: 2.5rem;
+        height: 3.1rem;
+      }
+    }
+
+    .otp-input.shake {
+      animation: shake .35s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen antialiased text-slate-800 bg-slate-50 flex flex-col">
+
+  <!-- HEADER -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-[4.5rem] flex items-center justify-between gap-4">
+
+      <!-- BRAND / LOGO -->
+      <a href="../../index.html" class="flex items-center gap-2 shrink-0 group">
+        <img
+          src="../../images/herz-logo.png"
+          alt="شعار حرز"
+          onerror="this.style.display='none'; document.getElementById('logoFallbackHeader').classList.remove('hidden');"
+          class="h-8 sm:h-9 w-auto object-contain transition group-hover:opacity-90">
+        <span id="logoFallbackHeader" class="hidden text-lg sm:text-xl font-black text-blue-600">
+          حِرز
+        </span>
+      </a>
+
+      <!-- REFINED BACK BUTTON -->
+      <div class="flex items-center gap-2 shrink-0">
+        <a
+          href="../../index.html"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100/80 border border-slate-200/60 text-xs font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition shadow-sm">
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          <span>العودة للموقع</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="auth-bg flex-1 px-4 py-10 sm:py-14">
+
+    <div class="w-full max-w-md mx-auto relative">
+
+      <!-- STEPPER -->
+      <div class="mb-6 sm:mb-8">
+        <ol class="flex items-center justify-between gap-2">
+
+          <!-- STEP 1 - COMPLETED -->
+          <li class="flex-1 flex items-center gap-2.5">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-black shrink-0">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <div class="hidden sm:block">
+              <p class="text-[11px] font-black text-slate-900 leading-tight">إنشاء الحساب</p>
+            </div>
+          </li>
+
+          <div class="flex-1 h-0.5 bg-emerald-400 rounded-full"></div>
+
+          <!-- STEP 2 - ACTIVE -->
+          <li class="flex-1 flex items-center gap-2.5">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-black shadow-md shadow-blue-600/25 shrink-0">
+              2
+            </div>
+            <div class="hidden sm:block">
+              <p class="text-[11px] font-black text-slate-900 leading-tight">التحقق من وسيلة التواصل</p>
+            </div>
+          </li>
+
+          <div class="flex-1 h-0.5 bg-slate-200 rounded-full"></div>
+
+          <!-- STEP 3 - INACTIVE -->
+          <li class="flex-1 flex items-center gap-2.5">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 text-slate-400 border border-slate-200 flex items-center justify-center text-xs font-black shrink-0">
+              3
+            </div>
+            <div class="hidden sm:block">
+              <p class="text-[11px] font-bold text-slate-400 leading-tight">إكمال بيانات التوثيق</p>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+
+      <!-- VERIFY CARD -->
+      <div class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-6 sm:p-8">
+
+        <div class="flex flex-col items-center text-center mb-6">
+
+          <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center mb-4">
+            <i data-lucide="shield-check" class="w-6 h-6"></i>
+          </div>
+
+          <h1 class="text-xl sm:text-2xl font-black text-slate-900">
+            تحقق من رقم جوالك
+          </h1>
+
+          <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-2 leading-relaxed">
+            أدخل رمز التحقق المرسل إلى رقم الجوال المرتبط بحسابك.
+          </p>
+
+          <div class="inline-flex items-center gap-2 mt-3 px-3.5 py-1.5 rounded-full bg-slate-50 border border-slate-200">
+            <i data-lucide="smartphone" class="w-3.5 h-3.5 text-slate-400"></i>
+            <span id="maskedPhone" dir="ltr" class="text-xs font-black text-slate-600">+966 5•• ••• •••</span>
+          </div>
+
+        </div>
+
+        <!-- GENERAL ERROR ALERT -->
+        <div
+          id="generalError"
+          class="hidden items-start gap-2.5 mb-5 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700">
+          <i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 shrink-0"></i>
+          <p class="text-xs font-bold leading-relaxed">
+            رمز التحقق غير صحيح. تأكد من الرمز وحاول مرة أخرى.
+          </p>
+        </div>
+
+        <!-- SUCCESS ALERT -->
+        <div
+          id="successAlert"
+          class="hidden items-start gap-2.5 mb-5 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700">
+          <i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5 shrink-0"></i>
+          <p class="text-xs font-bold leading-relaxed">
+            تم التحقق بنجاح، جارٍ تحويلك للخطوة التالية...
+          </p>
+        </div>
+
+        <!-- OTP FORM -->
+        <form id="verifyForm" novalidate>
+
+          <!-- OTP INPUTS -->
+          <div class="mb-2">
+            <label class="text-[11px] font-black text-slate-600 mb-2.5 block text-center">
+              رمز التحقق المكوّن من 6 أرقام
+            </label>
+
+            <div id="otpGroup" dir="ltr" class="flex items-center justify-center gap-2 sm:gap-2.5">
+              <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input text-center text-lg font-black rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/5 transition" data-index="0">
+              <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input text-center text-lg font-black rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/5 transition" data-index="1">
+              <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input text-center text-lg font-black rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/5 transition" data-index="2">
+              <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input text-center text-lg font-black rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/5 transition" data-index="3">
+              <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input text-center text-lg font-black rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/5 transition" data-index="4">
+              <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input text-center text-lg font-black rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/5 transition" data-index="5">
+            </div>
+
+            <p id="otpErrorText" class="field-error items-center justify-center gap-1.5 text-[11px] font-bold text-red-600 mt-2.5 text-center">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0"></i>
+              <span id="otpErrorMessage">يرجى إدخال رمز التحقق كاملًا.</span>
+            </p>
+          </div>
+
+          <!-- RESEND -->
+          <div class="flex items-center justify-center mt-5">
+            <button
+              id="resendBtn"
+              type="button"
+              onclick="handleResend()"
+              disabled
+              class="text-xs font-black text-slate-400 cursor-not-allowed transition inline-flex items-center gap-1.5">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+              <span id="resendText">إعادة الإرسال بعد 00:30</span>
+            </button>
+          </div>
+
+          <!-- SUBMIT -->
+          <button
+            id="verifyBtn"
+            type="submit"
+            disabled
+            class="w-full mt-6 px-4 py-3.5 rounded-xl bg-blue-600 text-white text-sm font-black hover:bg-blue-700 transition shadow-md shadow-blue-600/20 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+            <span id="verifyBtnSpinner" class="hidden w-4 h-4 spinner"></span>
+            <i id="verifyBtnIcon" data-lucide="check-circle" class="w-4 h-4"></i>
+            <span id="verifyBtnText">تأكيد والمتابعة</span>
+          </button>
+
+        </form>
+<!-- صندوق الملاحظة التجريبية -->
+<div class="mt-4 w-full bg-slate-50/50 border border-dashed border-slate-200 rounded-2xl p-3.5 flex items-center justify-center gap-2 text-xs text-slate-500 dir-rtl">
+  <span>نسخة تجريبية — للإكمال يرجى إدخال الرمز: <strong class="font-bold text-slate-700">123456</strong></span>
+  <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+  </svg>
+</div>
+
+      </div>
+
+
+      <!-- HELPER NOTE -->
+      <p class="text-center text-[11px] font-bold text-slate-400 mt-5 leading-relaxed">
+        لن نطلب منك كلمة المرور أو رمز التحقق من خلال أي قناة خارج منصة حِرز.
+      </p>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+
+        <!-- BRAND INFO -->
+        <div class="flex flex-col items-center md:items-start gap-2">
+          <div class="flex items-center gap-2.5">
+            <img
+              src="../../images/herz-logo.png"
+              alt="شعار حرز"
+              onerror="this.style.display='none'; document.getElementById('logoFallbackFooter').classList.remove('hidden');"
+              class="h-7 w-auto object-contain">
+            <span id="logoFallbackFooter" class="hidden text-sm font-black text-blue-600">
+              حِرز
+            </span>
+          </div>
+          <p class="text-[11px] font-semibold text-slate-400 text-center md:text-right">
+            المنصة الرائدة لتوثيق وحماية المحتوى الرقمي.
+          </p>
+        </div>
+
+        <!-- QUICK LINKS -->
+        <nav class="flex items-center justify-center gap-6">
+          <a href="../privacy.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الخصوصية</a>
+          <a href="../terms.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الشروط والأحكام</a>
+          <a href="../faq.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الأسئلة الشائعة</a>
+        </nav>
+
+        <!-- COPYRIGHT -->
+        <div class="text-center md:text-left">
+          <p class="text-[11px] font-bold text-slate-400">
+            © 2026 منصة حِرز. جميع الحقوق محفوظة.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOASTS -->
+  <div id="toastContainer"></div>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    /* ============================================================
+       1) MASKED PHONE (read from non-sensitive session data if present)
+       ============================================================ */
+    function getMaskedPhone() {
+      let storedPhone = null;
+      try {
+        storedPhone = sessionStorage.getItem('heerzPhoneHint');
+      } catch (e) {
+        storedPhone = null;
+      }
+
+      // storedPhone, if present, is expected as the last 3 digits only (non-sensitive hint).
+      if (storedPhone && /^\d{3}$/.test(storedPhone)) {
+        return `+966 5•• ••• ${storedPhone}`;
+      }
+
+      return '+966 5•• ••• •••';
+    }
+
+    /* ============================================================
+       2) STATE / MOCK VERIFICATION
+       ============================================================ */
+    const MOCK_OTP = '123456';
+    const RESEND_SECONDS = 30;
+
+    let isVerifying = false;
+    let isResending = false;
+    let resendTimer = null;
+    let secondsLeft = RESEND_SECONDS;
+
+    function mockVerifyRequest(code) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({ success: code === MOCK_OTP });
+        }, 900);
+      });
+    }
+
+    function mockResendRequest() {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({ success: true });
+        }, 700);
+      });
+    }
+
+    /* ============================================================
+       3) OTP INPUT BEHAVIOR
+       ============================================================ */
+    function getOtpInputs() {
+      return Array.from(document.querySelectorAll('#otpGroup .otp-input'));
+    }
+
+    function getOtpValue() {
+      return getOtpInputs().map(i => i.value).join('');
+    }
+
+    function updateVerifyButtonState() {
+      const btn = document.getElementById('verifyBtn');
+      const complete = getOtpValue().length === 6;
+      btn.disabled = !complete || isVerifying;
+    }
+
+    function clearOtpError() {
+      document.getElementById('otpErrorText').classList.remove('show');
+      hideGeneralError();
+    }
+
+    function shakeOtpInputs() {
+      getOtpInputs().forEach(input => {
+        input.classList.add('shake');
+        input.classList.add('border-red-300');
+      });
+      setTimeout(() => {
+        getOtpInputs().forEach(input => input.classList.remove('shake'));
+      }, 350);
+    }
+
+    function resetOtpErrorStyles() {
+      getOtpInputs().forEach(input => {
+        input.classList.remove('border-red-300');
+        input.classList.add('border-slate-200');
+      });
+    }
+
+    function setupOtpInputs() {
+      const inputs = getOtpInputs();
+
+      inputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+          const digitsOnly = e.target.value.replace(/\D/g, '');
+          e.target.value = digitsOnly.slice(-1);
+
+          clearOtpError();
+          resetOtpErrorStyles();
+          updateVerifyButtonState();
+
+          if (digitsOnly && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          }
+        });
+
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace') {
+            if (!input.value && index > 0) {
+              inputs[index - 1].focus();
+              inputs[index - 1].value = '';
+              updateVerifyButtonState();
+            }
+          } else if (e.key === 'ArrowLeft' && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          } else if (e.key === 'ArrowRight' && index > 0) {
+            inputs[index - 1].focus();
+          }
+        });
+
+        input.addEventListener('paste', (e) => {
+          e.preventDefault();
+          const pasted = (e.clipboardData || window.clipboardData).getData('text');
+          const digits = pasted.replace(/\D/g, '').slice(0, 6).split('');
+
+          if (!digits.length) return;
+
+          digits.forEach((digit, i) => {
+            if (inputs[i]) inputs[i].value = digit;
+          });
+
+          const nextIndex = Math.min(digits.length, inputs.length - 1);
+          inputs[nextIndex].focus();
+
+          clearOtpError();
+          resetOtpErrorStyles();
+          updateVerifyButtonState();
+        });
+      });
+    }
+
+    /* ============================================================
+       4) ALERTS / TOASTS
+       ============================================================ */
+    function showGeneralError(message) {
+      const el = document.getElementById('generalError');
+      if (message) el.querySelector('p').textContent = message;
+      el.classList.remove('hidden');
+      el.classList.add('flex');
+
+      const success = document.getElementById('successAlert');
+      success.classList.add('hidden');
+      success.classList.remove('flex');
+    }
+
+    function hideGeneralError() {
+      const el = document.getElementById('generalError');
+      el.classList.add('hidden');
+      el.classList.remove('flex');
+    }
+
+    function showSuccessAlert() {
+      const el = document.getElementById('successAlert');
+      el.classList.remove('hidden');
+      el.classList.add('flex');
+      hideGeneralError();
+    }
+
+    function showToast(message, type) {
+      const container = document.getElementById('toastContainer');
+      const colors = {
+        success: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+        error: 'border-red-200 bg-red-50 text-red-700',
+        info: 'border-blue-200 bg-blue-50 text-blue-700'
+      };
+      const icons = { success: 'check-circle-2', error: 'x-circle', info: 'info' };
+
+      const toast = document.createElement('div');
+      toast.className = `toast flex items-center gap-2.5 px-4 py-3 rounded-2xl border shadow-lg text-xs font-bold ${colors[type] || colors.info}`;
+      toast.innerHTML = `<i data-lucide="${icons[type] || icons.info}" class="w-4 h-4 shrink-0"></i><span>${message}</span>`;
+
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.style.transition = 'opacity .3s ease, transform .3s ease';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    /* ============================================================
+       5) RESEND COUNTDOWN
+       ============================================================ */
+    function formatCountdown(seconds) {
+      const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const s = String(seconds % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function startResendCountdown() {
+      secondsLeft = RESEND_SECONDS;
+      const btn = document.getElementById('resendBtn');
+      const text = document.getElementById('resendText');
+
+      btn.disabled = true;
+      btn.classList.add('text-slate-400', 'cursor-not-allowed');
+      btn.classList.remove('text-blue-600', 'hover:text-blue-700', 'cursor-pointer');
+      text.textContent = `إعادة الإرسال بعد ${formatCountdown(secondsLeft)}`;
+
+      if (resendTimer) clearInterval(resendTimer);
+
+      resendTimer = setInterval(() => {
+        secondsLeft -= 1;
+
+        if (secondsLeft <= 0) {
+          clearInterval(resendTimer);
+          btn.disabled = false;
+          btn.classList.remove('text-slate-400', 'cursor-not-allowed');
+          btn.classList.add('text-blue-600', 'hover:text-blue-700', 'cursor-pointer');
+          text.textContent = 'إعادة إرسال الرمز';
+          return;
+        }
+
+        text.textContent = `إعادة الإرسال بعد ${formatCountdown(secondsLeft)}`;
+      }, 1000);
+    }
+
+    async function handleResend() {
+      const btn = document.getElementById('resendBtn');
+      if (btn.disabled || isResending) return;
+
+      isResending = true;
+      const text = document.getElementById('resendText');
+      const previousText = text.textContent;
+      text.textContent = 'جارٍ الإرسال...';
+      btn.disabled = true;
+
+      try {
+        await mockResendRequest();
+
+        // Clear the OTP fields for a fresh attempt.
+        getOtpInputs().forEach(input => (input.value = ''));
+        getOtpInputs()[0].focus();
+        updateVerifyButtonState();
+        clearOtpError();
+        resetOtpErrorStyles();
+
+        showToast('تم إرسال رمز تحقق جديد.', 'success');
+      } finally {
+        isResending = false;
+        startResendCountdown();
+      }
+    }
+
+    /* ============================================================
+       6) SUBMIT FLOW
+       ============================================================ */
+    function setVerifyingState(loading) {
+      const btn = document.getElementById('verifyBtn');
+      const spinner = document.getElementById('verifyBtnSpinner');
+      const icon = document.getElementById('verifyBtnIcon');
+      const text = document.getElementById('verifyBtnText');
+
+      spinner.classList.toggle('hidden', !loading);
+      icon.classList.toggle('hidden', loading);
+      text.textContent = loading ? 'جارٍ التحقق...' : 'تأكيد والمتابعة';
+
+      updateVerifyButtonState();
+      if (loading) btn.disabled = true;
+    }
+
+    async function handleVerifySubmit(event) {
+      event.preventDefault();
+      if (isVerifying) return;
+
+      hideGeneralError();
+
+      const code = getOtpValue();
+
+      if (code.length === 0) {
+        document.getElementById('otpErrorMessage').textContent = 'يرجى إدخال رمز التحقق.';
+        document.getElementById('otpErrorText').classList.add('show');
+        shakeOtpInputs();
+        return;
+      }
+
+      if (code.length < 6) {
+        document.getElementById('otpErrorMessage').textContent = 'يرجى إدخال رمز التحقق كاملًا (6 أرقام).';
+        document.getElementById('otpErrorText').classList.add('show');
+        shakeOtpInputs();
+        return;
+      }
+
+      clearOtpError();
+
+      isVerifying = true;
+      setVerifyingState(true);
+
+      try {
+        const result = await mockVerifyRequest(code);
+        isVerifying = false;
+        setVerifyingState(false);
+
+        if (result.success) {
+          showSuccessAlert();
+          showToast('تم التحقق من رقم جوالك بنجاح.', 'success');
+
+          // Persist only a non-sensitive verification flag — never the OTP itself.
+          try {
+            sessionStorage.setItem('heerzContactVerified', 'true');
+          } catch (e) {
+            // sessionStorage may be unavailable — proceed anyway.
+          }
+
+          setTimeout(() => {
+            window.location.href = 'registration-success.html';
+          }, 900);
+          return;
+        }
+
+        document.getElementById('otpErrorMessage').textContent = 'رمز التحقق غير صحيح. تأكد من الرمز وحاول مرة أخرى.';
+        document.getElementById('otpErrorText').classList.add('show');
+        showGeneralError('رمز التحقق غير صحيح. تأكد من الرمز وحاول مرة أخرى.');
+        showToast('رمز التحقق غير صحيح.', 'error');
+        shakeOtpInputs();
+
+      } catch (err) {
+        isVerifying = false;
+        setVerifyingState(false);
+        showGeneralError('تعذّر التحقق من الرمز، يرجى التحقق من اتصالك والمحاولة مرة أخرى.');
+        showToast('حدث خطأ في الاتصال.', 'error');
+      }
+    }
+
+    /* ============================================================
+       7) INIT
+       ============================================================ */
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+
+      document.getElementById('maskedPhone').textContent = getMaskedPhone();
+
+      setupOtpInputs();
+      getOtpInputs()[0].focus();
+      updateVerifyButtonState();
+      startResendCountdown();
+
+      const form = document.getElementById('verifyForm');
+      if (form) form.addEventListener('submit', handleVerifySubmit);
+    });
+  </script>
+
+</body>
+</html>

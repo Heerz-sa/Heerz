@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="bg-slate-50">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>تم إنشاء حسابك بنجاح | منصة حِرز</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Cairo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif'],
+          },
+          boxShadow: {
+            glow: '0 0 20px -5px rgba(37, 99, 235, 0.15)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+
+    .auth-bg {
+      background:
+        radial-gradient(1200px 500px at 100% -10%, rgba(37, 99, 235, 0.07), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, rgba(37, 99, 235, 0.06), transparent 60%);
+    }
+
+    .spinner {
+      border: 2px solid rgba(255,255,255,0.35);
+      border-top-color: #fff;
+      border-radius: 9999px;
+      animation: spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* SUCCESS ICON POP */
+    .success-icon-pop {
+      animation: successPop .45s cubic-bezier(.34,1.56,.64,1);
+    }
+
+    @keyframes successPop {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen antialiased text-slate-800 bg-slate-50 flex flex-col">
+
+  <!-- HEADER -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-[4.5rem] flex items-center justify-between gap-4">
+
+      <!-- BRAND / LOGO -->
+      <a href="../../index.html" class="flex items-center gap-2 shrink-0 group">
+        <img
+          src="../../images/herz-logo.png"
+          alt="شعار حرز"
+          onerror="this.style.display='none'; document.getElementById('logoFallbackHeader').classList.remove('hidden');"
+          class="h-8 sm:h-9 w-auto object-contain transition group-hover:opacity-90">
+        <span id="logoFallbackHeader" class="hidden text-lg sm:text-xl font-black text-blue-600">
+          حِرز
+        </span>
+      </a>
+
+      <!-- REFINED BACK BUTTON -->
+      <div class="flex items-center gap-2 shrink-0">
+        <a
+          href="../../index.html"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100/80 border border-slate-200/60 text-xs font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition shadow-sm">
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          <span>العودة للموقع</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="auth-bg flex-1 px-4 py-10 sm:py-14">
+
+    <div class="w-full max-w-xl mx-auto relative">
+
+      <!-- STEPPER -->
+      <div class="mb-6 sm:mb-8">
+        <ol class="flex items-center justify-between gap-2">
+
+          <!-- STEP 1 - COMPLETED -->
+          <li class="flex-1 flex items-center gap-2.5">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-black shrink-0">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <div class="hidden sm:block">
+              <p class="text-[11px] font-black text-slate-900 leading-tight">إنشاء الحساب</p>
+            </div>
+          </li>
+
+          <div class="flex-1 h-0.5 bg-emerald-400 rounded-full"></div>
+
+          <!-- STEP 2 - COMPLETED -->
+          <li class="flex-1 flex items-center gap-2.5">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-black shrink-0">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <div class="hidden sm:block">
+              <p class="text-[11px] font-black text-slate-900 leading-tight">التحقق من وسيلة التواصل</p>
+            </div>
+          </li>
+
+          <div class="flex-1 h-0.5 bg-slate-200 rounded-full"></div>
+
+          <!-- STEP 3 - NOT STARTED -->
+          <li class="flex-1 flex items-center gap-2.5">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-blue-50 text-blue-600 border-2 border-blue-200 flex items-center justify-center text-xs font-black shrink-0">
+              3
+            </div>
+            <div class="hidden sm:block">
+              <p class="text-[11px] font-bold text-blue-600 leading-tight">إكمال بيانات التوثيق</p>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+
+      <!-- SUCCESS CARD -->
+      <div class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-6 sm:p-8">
+
+        <div class="flex flex-col items-center text-center mb-6">
+
+          <div class="success-icon-pop w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center mb-5">
+            <i data-lucide="shield-check" class="w-8 h-8"></i>
+          </div>
+
+          <h1 class="text-xl sm:text-2xl font-black text-slate-900">
+            تم إنشاء حسابك بنجاح
+          </h1>
+
+          <p id="successMessage" class="text-xs sm:text-sm text-slate-500 font-semibold mt-3 leading-relaxed max-w-sm">
+            تم إنشاء حسابك والتحقق من رقم جوالك بنجاح. يمكنك الآن البدء في إكمال بيانات طلب توثيق حضورك الرقمي.
+          </p>
+
+        </div>
+
+        <!-- NEXT STEP -->
+        <div class="rounded-2xl bg-blue-50 border border-blue-100 p-4 sm:p-5 mb-6">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-white text-blue-600 border border-blue-100 flex items-center justify-center shrink-0">
+              <i data-lucide="file-check-2" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <p class="text-[11px] font-black text-blue-600 mb-1">الخطوة التالية</p>
+              <h2 class="text-sm font-black text-slate-900">إكمال بيانات التوثيق</h2>
+              <p class="text-[11px] sm:text-xs text-slate-500 font-semibold mt-1.5 leading-relaxed">
+                أكمل البيانات والمعلومات المطلوبة لإرسال طلبك إلى فريق حِرز للمراجعة والتحقق.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="space-y-3">
+
+          <a
+            id="primaryCta"
+            href="#"
+            class="w-full px-4 py-3.5 rounded-xl bg-blue-600 text-white text-sm font-black hover:bg-blue-700 transition shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+            <span>إكمال بيانات التوثيق</span>
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          </a>
+
+          <a
+            href="../dashboard/home.html"
+            class="w-full px-4 py-3 rounded-xl bg-transparent text-slate-500 text-xs font-bold hover:text-slate-700 transition flex items-center justify-center gap-1.5">
+            <span>الانتقال إلى لوحة التحكم</span>
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- HELPER NOTE -->
+      <p class="text-center text-[11px] font-bold text-slate-400 mt-5 leading-relaxed">
+        ننصح بإكمال بيانات التوثيق الآن لتسريع مراجعة طلبك من فريق حِرز.
+      </p>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+
+        <!-- BRAND INFO -->
+        <div class="flex flex-col items-center md:items-start gap-2">
+          <div class="flex items-center gap-2.5">
+            <img
+              src="../../images/herz-logo.png"
+              alt="شعار حرز"
+              onerror="this.style.display='none'; document.getElementById('logoFallbackFooter').classList.remove('hidden');"
+              class="h-7 w-auto object-contain">
+            <span id="logoFallbackFooter" class="hidden text-sm font-black text-blue-600">
+              حِرز
+            </span>
+          </div>
+          <p class="text-[11px] font-semibold text-slate-400 text-center md:text-right">
+            المنصة الرائدة لتوثيق وحماية المحتوى الرقمي.
+          </p>
+        </div>
+
+        <!-- QUICK LINKS -->
+        <nav class="flex items-center justify-center gap-6">
+          <a href="../privacy.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الخصوصية</a>
+          <a href="../terms.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الشروط والأحكام</a>
+          <a href="../faq.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الأسئلة الشائعة</a>
+        </nav>
+
+        <!-- COPYRIGHT -->
+        <div class="text-center md:text-left">
+          <p class="text-[11px] font-bold text-slate-400">
+            © 2026 منصة حِرز. جميع الحقوق محفوظة.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    /* ============================================================
+       1) DYNAMIC CONTENT BY ACCOUNT TYPE
+       ============================================================ */
+    const VALID_TYPES = ['individual', 'entity'];
+
+    function getSessionValue(key) {
+      try {
+        return sessionStorage.getItem(key);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    const heerzAccountType = getSessionValue('heerzAccountType');
+    const resolvedAccountType = VALID_TYPES.includes(heerzAccountType) ? heerzAccountType : 'individual';
+    const COPY = {
+      individual: {
+        message: 'تم إنشاء حسابك والتحقق من رقم جوالك بنجاح. يمكنك الآن البدء في إكمال بيانات طلب توثيق حضورك الرقمي.',
+        verificationForm: '../individual/verification-form.html'
+      },
+      entity: {
+        message: 'تم إنشاء حساب الجهة والتحقق من رقم الجوال بنجاح. يمكنك الآن البدء في إكمال بيانات طلب توثيق حضور الجهة وقنواتها الرسمية.',
+        verificationForm: '../entity/verification-form.html'
+      }
+    };
+
+    function applyAccountTypeContent(type) {
+      const copy = COPY[type];
+      if (!copy) return;
+
+      document.getElementById('successMessage').textContent = copy.message;
+      document.getElementById('primaryCta').setAttribute('href', copy.verificationForm);
+    }
+
+    /* ============================================================
+       2) INIT
+       ============================================================ */
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      applyAccountTypeContent(resolvedAccountType);
+    });
+  </script>
+
+</body>
+</html>

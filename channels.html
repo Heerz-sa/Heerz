@@ -1,0 +1,1871 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>القنوات الرسمية | حِرز</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 999px;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+
+  <!-- =========================
+       Mobile Overlay
+  ========================== -->
+  <div
+    id="mobileOverlay"
+    class="fixed inset-0 z-40 hidden bg-slate-950/40 backdrop-blur-sm lg:hidden"
+  ></div>
+
+  <!-- =========================
+       Sidebar
+  ========================== -->
+  <aside
+    id="sidebar"
+    class="fixed inset-y-0 right-0 z-50 flex w-[280px] translate-x-full flex-col border-l border-slate-200 bg-white transition-transform duration-300 lg:translate-x-0"
+  >
+
+    <!-- Logo -->
+    <div class="flex h-20 shrink-0 items-center border-b border-slate-100 px-6">
+      <a href="./home.html" class="flex items-center gap-3">
+        <img
+          src="../../images/herz-logo.png"
+          alt="حِرز"
+          class="h-11 w-11 object-contain"
+        />
+
+        <div>
+          <div class="text-lg font-extrabold text-slate-900">حِرز</div>
+          <div class="text-[11px] font-medium text-slate-400">
+            حضور رقمي موثوق
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- User Mini Profile -->
+    <div class="border-b border-slate-100 p-4">
+      <div class="flex items-center gap-3 rounded-2xl bg-slate-50 p-3">
+        <div
+          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-sm font-bold text-white"
+          id="userAvatar"
+        >
+          ن
+        </div>
+
+        <div class="min-w-0 flex-1">
+          <p
+            id="sidebarUserName"
+            class="truncate text-sm font-bold text-slate-800"
+          >
+            مستخدم حِرز
+          </p>
+
+          <p
+            id="sidebarAccountType"
+            class="mt-0.5 text-xs text-slate-400"
+          >
+            حساب فردي
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-scroll flex-1 overflow-y-auto px-4 py-5">
+
+      <p class="mb-3 px-3 text-[11px] font-bold text-slate-400">
+        القائمة الرئيسية
+      </p>
+
+      <div class="space-y-1">
+
+        <!-- Home -->
+        <a
+          href="./home.html"
+          class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
+        >
+          <i data-lucide="layout-dashboard" class="h-5 w-5"></i>
+          <span>الرئيسية</span>
+        </a>
+
+        <!-- Notifications -->
+        <a
+          href="./notifications.html"
+          class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
+        >
+          <i data-lucide="bell" class="h-5 w-5"></i>
+
+          <span class="flex-1">الإشعارات</span>
+
+          <span
+            id="sidebarNotificationBadge"
+            class="hidden min-w-5 rounded-full bg-red-500 px-1.5 py-0.5 text-center text-[10px] font-bold text-white"
+          >
+            0
+          </span>
+        </a>
+
+        <!-- Verification Requests -->
+        <a
+          id="verificationRequestsLink"
+          href="../individual/verification-form.html"
+          class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
+        >
+          <i data-lucide="badge-check" class="h-5 w-5"></i>
+          <span>طلبات التوثيق</span>
+        </a>
+
+        <!-- Active -->
+        <a
+          href="./channels.html"
+          class="flex items-center gap-3 rounded-xl bg-blue-50 px-3 py-3 text-sm font-bold text-blue-700"
+        >
+          <i data-lucide="link-2" class="h-5 w-5"></i>
+          <span>القنوات الرسمية</span>
+        </a>
+
+        <!-- Account -->
+        <a
+          href="./account.html"
+          class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
+        >
+          <i data-lucide="user-round" class="h-5 w-5"></i>
+          <span>الحساب</span>
+        </a>
+
+        <!-- Subscription -->
+        <a
+          href="./subscription.html"
+          class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
+        >
+          <i data-lucide="credit-card" class="h-5 w-5"></i>
+          <span>الاشتراك والفواتير</span>
+        </a>
+
+        <!-- Settings -->
+        <a
+          href="./settings.html"
+          class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
+        >
+          <i data-lucide="settings" class="h-5 w-5"></i>
+          <span>الإعدادات</span>
+        </a>
+
+      </div>
+
+      <!-- Help -->
+      <div class="mt-8 border-t border-slate-100 pt-6">
+        <p class="mb-3 px-3 text-[11px] font-bold text-slate-400">
+          المساعدة
+        </p>
+
+        <a
+          href="#"
+          class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
+        >
+          <i data-lucide="help-circle" class="h-5 w-5"></i>
+          <span>مركز المساعدة</span>
+        </a>
+      </div>
+
+    </nav>
+
+    <!-- Logout -->
+    <div class="shrink-0 border-t border-slate-100 p-4">
+      <button
+        id="logoutBtn"
+        type="button"
+        class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-500 transition hover:bg-red-50 hover:text-red-600"
+      >
+        <i data-lucide="log-out" class="h-5 w-5"></i>
+        <span>تسجيل الخروج</span>
+      </button>
+    </div>
+
+  </aside>
+
+
+  <!-- =========================
+       Main Content
+  ========================== -->
+  <main class="min-h-screen lg:mr-[280px]">
+
+    <!-- Topbar -->
+    <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
+      <div class="flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+
+        <div class="flex items-center gap-3">
+
+          <!-- Mobile Menu -->
+          <button
+            id="mobileMenuBtn"
+            type="button"
+            class="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 lg:hidden"
+          >
+            <i data-lucide="menu" class="h-5 w-5"></i>
+          </button>
+
+          <div>
+            <p class="text-xs font-semibold text-slate-400">
+              لوحة التحكم
+            </p>
+
+            <h1 class="text-base font-extrabold text-slate-900 sm:text-lg">
+              القنوات الرسمية
+            </h1>
+          </div>
+
+        </div>
+
+        <div class="flex items-center gap-2">
+
+          <a
+            href="./notifications.html"
+            class="relative flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+          >
+            <i data-lucide="bell" class="h-5 w-5"></i>
+
+            <span
+              id="topNotificationDot"
+              class="absolute right-2 top-2 hidden h-2 w-2 rounded-full bg-red-500"
+            ></span>
+          </a>
+
+        </div>
+
+      </div>
+    </header>
+
+
+    <!-- Page -->
+    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+
+      <!-- Page Header -->
+      <section class="mb-7">
+
+        <div class="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+
+          <div>
+            <div class="mb-3 flex items-center gap-2">
+              <span
+                class="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 text-blue-600"
+              >
+                <i data-lucide="link-2" class="h-5 w-5"></i>
+              </span>
+
+              <span
+                id="pageTypeBadge"
+                class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500"
+              >
+                للأفراد
+              </span>
+            </div>
+
+            <h2 class="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+              القنوات الرسمية
+            </h2>
+
+            <p class="mt-2 max-w-2xl text-sm leading-7 text-slate-500">
+              إدارة الحسابات والقنوات الرسمية المرتبطة بحضورك الرقمي في منصة حِرز.
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div
+                class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600"
+              >
+                <i data-lucide="layers-3" class="h-5 w-5"></i>
+              </div>
+
+              <div>
+                <p class="text-xs font-medium text-slate-400">
+                  إجمالي القنوات
+                </p>
+
+                <p
+                  id="channelCount"
+                  class="text-xl font-extrabold text-slate-900"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           Digital Presence Status
+      ========================== -->
+      <section class="mb-6">
+
+        <div
+          id="presenceStatusCard"
+          class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+        >
+
+          <div class="p-5 sm:p-6">
+
+            <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+
+              <div class="flex items-start gap-4">
+
+                <div
+                  id="presenceStatusIcon"
+                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-500"
+                >
+                  <i data-lucide="shield-question" class="h-7 w-7"></i>
+                </div>
+
+                <div>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <h3 class="text-base font-extrabold text-slate-900">
+                      حضورك الرقمي
+                    </h3>
+
+                    <span
+                      id="presenceStatusBadge"
+                      class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-500"
+                    >
+                      لم يبدأ
+                    </span>
+                  </div>
+
+                  <p
+                    id="presenceStatusText"
+                    class="mt-2 max-w-2xl text-sm leading-7 text-slate-500"
+                  >
+                    لم يتم إنشاء طلب توثيق بعد.
+                  </p>
+                </div>
+
+              </div>
+
+              <div id="presenceAction"></div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           Stats
+      ========================== -->
+      <section class="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs font-semibold text-slate-400">
+                نوع الحساب
+              </p>
+
+              <p
+                id="accountTypeStat"
+                class="mt-2 text-sm font-extrabold text-slate-900"
+              >
+                حساب فردي
+              </p>
+            </div>
+
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+              <i data-lucide="user-round" class="h-5 w-5"></i>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs font-semibold text-slate-400">
+                حالة الطلب
+              </p>
+
+              <p
+                id="requestStatusStat"
+                class="mt-2 text-sm font-extrabold text-slate-900"
+              >
+                لم يتم الإنشاء
+              </p>
+            </div>
+
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+              <i data-lucide="file-check-2" class="h-5 w-5"></i>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs font-semibold text-slate-400">
+                عدد القنوات
+              </p>
+
+              <p
+                id="channelCountStat"
+                class="mt-2 text-sm font-extrabold text-slate-900"
+              >
+                0 قناة
+              </p>
+            </div>
+
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+              <i data-lucide="radio" class="h-5 w-5"></i>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs font-semibold text-slate-400">
+                آخر تحديث
+              </p>
+
+              <p
+                id="lastUpdatedStat"
+                class="mt-2 text-sm font-extrabold text-slate-900"
+              >
+                — 
+              </p>
+            </div>
+
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+              <i data-lucide="clock-3" class="h-5 w-5"></i>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           Main Grid
+      ========================== -->
+      <div class="grid gap-6 lg:grid-cols-3">
+
+        <!-- Channels -->
+        <section class="lg:col-span-2">
+
+          <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+
+            <div class="border-b border-slate-100 p-5 sm:p-6">
+
+              <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+                <div>
+                  <h3 class="text-base font-extrabold text-slate-900">
+                    قنواتك الرسمية
+                  </h3>
+
+                  <p class="mt-1 text-xs leading-6 text-slate-400">
+                    القنوات التي أضفتها ضمن بيانات حضورك الرقمي في حِرز.
+                  </p>
+                </div>
+
+                <button
+                  id="addChannelBtn"
+                  type="button"
+                  class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-blue-700"
+                >
+                  <i data-lucide="plus" class="h-4 w-4"></i>
+                  إضافة قناة رسمية
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <!-- Channel List -->
+            <div id="channelsList" class="divide-y divide-slate-100">
+              <!-- JS -->
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- Side Information -->
+        <aside class="space-y-6">
+
+          <!-- Verification Summary -->
+          <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+
+            <div class="mb-5 flex items-center gap-3">
+              <div
+                class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600"
+              >
+                <i data-lucide="shield-check" class="h-5 w-5"></i>
+              </div>
+
+              <div>
+                <h3 class="text-sm font-extrabold text-slate-900">
+                  حالة التحقق
+                </h3>
+
+                <p class="text-xs text-slate-400">
+                  ملخص طلب التوثيق
+                </p>
+              </div>
+            </div>
+
+
+            <div class="space-y-4">
+
+              <div class="flex items-center justify-between gap-4">
+                <span class="text-xs font-medium text-slate-400">
+                  نوع الحساب
+                </span>
+
+                <span
+                  id="summaryAccountType"
+                  class="text-xs font-bold text-slate-700"
+                >
+                  فرد
+                </span>
+              </div>
+
+              <div class="flex items-center justify-between gap-4">
+                <span class="text-xs font-medium text-slate-400">
+                  حالة الطلب
+                </span>
+
+                <span
+                  id="summaryRequestStatus"
+                  class="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold text-slate-500"
+                >
+                  لم يتم الإنشاء
+                </span>
+              </div>
+
+              <div class="flex items-center justify-between gap-4">
+                <span class="text-xs font-medium text-slate-400">
+                  القنوات
+                </span>
+
+                <span
+                  id="summaryChannelsCount"
+                  class="text-xs font-bold text-slate-700"
+                >
+                  0
+                </span>
+              </div>
+
+              <div class="flex items-center justify-between gap-4">
+                <span class="text-xs font-medium text-slate-400">
+                  آخر تحديث
+                </span>
+
+                <span
+                  id="summaryLastUpdated"
+                  class="text-xs font-bold text-slate-700"
+                >
+                  —
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Information Card -->
+          <div class="rounded-3xl border border-blue-100 bg-blue-50/60 p-5 sm:p-6">
+
+            <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-white text-blue-600 shadow-sm">
+              <i data-lucide="info" class="h-5 w-5"></i>
+            </div>
+
+            <h3 class="text-sm font-extrabold text-slate-900">
+              لماذا تظهر قنواتك هنا؟
+            </h3>
+
+            <p class="mt-3 text-xs leading-7 text-slate-600">
+              تعرض هذه الصفحة القنوات والحسابات الرسمية المرتبطة بطلب التوثيق الخاص بك،
+              حتى تتمكن من مراجعة بيانات حضورك الرقمي في مكان واحد.
+            </p>
+
+            <div class="mt-4 rounded-2xl border border-blue-100 bg-white/80 p-4">
+              <div class="flex items-start gap-3">
+                <i
+                  data-lucide="triangle-alert"
+                  class="mt-0.5 h-4 w-4 shrink-0 text-amber-500"
+                ></i>
+
+                <p class="text-[11px] leading-6 text-slate-500">
+                  وجود القناة في هذه الصفحة لا يعني اعتمادها نهائيًا ما لم تظهر
+                  حالتها على أنها <strong class="text-slate-700">موثقة</strong>.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+
+          <!-- CTA -->
+          <div
+            id="sideCta"
+            class="hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
+          >
+            <div class="flex items-start gap-3">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                <i data-lucide="arrow-up-left" class="h-5 w-5"></i>
+              </div>
+
+              <div>
+                <h3 class="text-sm font-extrabold text-slate-900">
+                  ابدأ توثيق حضورك الرقمي
+                </h3>
+
+                <p class="mt-1 text-xs leading-6 text-slate-400">
+                  أضف قنواتك الرسمية من خلال طلب التوثيق.
+                </p>
+
+                <a
+                  id="sideCtaLink"
+                  href="../individual/verification-form.html"
+                  class="mt-4 inline-flex items-center gap-2 text-xs font-bold text-blue-600 hover:text-blue-700"
+                >
+                  بدء الطلب
+                  <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </aside>
+
+      </div>
+
+
+      <!-- Footer -->
+      <footer class="mt-10 border-t border-slate-200 pt-6">
+        <div class="flex flex-col gap-3 text-center text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between sm:text-right">
+          <p>
+            © 2026 حِرز — منصة توثيق وحماية الحضور الرقمي
+          </p>
+
+          <div class="flex justify-center gap-4 sm:justify-start">
+            <a href="#" class="hover:text-blue-600">الخصوصية</a>
+            <a href="#" class="hover:text-blue-600">الشروط</a>
+            <a href="#" class="hover:text-blue-600">المساعدة</a>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+
+  </main>
+
+
+  <!-- =========================
+       Add Channel Modal
+  ========================== -->
+  <div
+    id="channelModal"
+    class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm"
+  >
+
+    <div
+      id="channelModalBox"
+      class="w-full max-w-md scale-95 rounded-3xl bg-white p-6 opacity-0 shadow-2xl transition duration-200 sm:p-7"
+    >
+
+      <div class="flex items-start justify-between gap-4">
+
+        <div class="flex items-start gap-3">
+
+          <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+            <i data-lucide="link-2" class="h-5 w-5"></i>
+          </div>
+
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900">
+              إضافة قناة رسمية
+            </h3>
+
+            <p class="mt-1 text-xs text-slate-400">
+              إدارة القنوات من خلال طلب التوثيق
+            </p>
+          </div>
+
+        </div>
+
+        <button
+          id="closeChannelModal"
+          type="button"
+          class="flex h-9 w-9 items-center justify-center rounded-xl text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+        >
+          <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+
+      </div>
+
+
+      <div class="mt-6 rounded-2xl border border-blue-100 bg-blue-50/70 p-4">
+
+        <div class="flex items-start gap-3">
+
+          <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-blue-600">
+            <i data-lucide="shield-check" class="h-4 w-4"></i>
+          </div>
+
+          <p class="text-xs leading-7 text-slate-600">
+            لا تتم إضافة القنوات الرسمية بشكل مستقل من هذه الصفحة.
+            يتم إدخال القنوات ضمن طلب التوثيق حتى تمر ضمن عملية المراجعة والتحقق في منصة حِرز.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="mt-6 flex flex-col gap-2 sm:flex-row-reverse">
+
+        <a
+          id="modalVerificationLink"
+          href="../individual/verification-form.html"
+          class="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-xs font-bold text-white transition hover:bg-blue-700"
+        >
+          الانتقال إلى طلب التوثيق
+          <i data-lucide="arrow-left" class="h-4 w-4"></i>
+        </a>
+
+        <button
+          id="cancelChannelModal"
+          type="button"
+          class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-4 py-3 text-xs font-bold text-slate-600 transition hover:bg-slate-50"
+        >
+          إلغاء
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       Logout Modal
+  ========================== -->
+  <div
+    id="logoutModal"
+    class="fixed inset-0 z-[80] hidden items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm"
+  >
+
+    <div class="w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl">
+
+      <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-red-600">
+        <i data-lucide="log-out" class="h-5 w-5"></i>
+      </div>
+
+      <h3 class="mt-5 text-base font-extrabold text-slate-900">
+        تسجيل الخروج
+      </h3>
+
+      <p class="mt-2 text-sm leading-7 text-slate-500">
+        هل أنت متأكد من رغبتك في تسجيل الخروج من حسابك؟
+      </p>
+
+      <div class="mt-6 flex flex-col gap-2 sm:flex-row-reverse">
+
+        <button
+          id="confirmLogout"
+          type="button"
+          class="flex-1 rounded-xl bg-red-600 px-4 py-3 text-xs font-bold text-white transition hover:bg-red-700"
+        >
+          تسجيل الخروج
+        </button>
+
+        <button
+          id="cancelLogout"
+          type="button"
+          class="flex-1 rounded-xl border border-slate-200 px-4 py-3 text-xs font-bold text-slate-600 transition hover:bg-slate-50"
+        >
+          إلغاء
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       JavaScript
+  ========================== -->
+  <script>
+
+    /* =========================
+       Helpers
+    ========================== */
+
+    const ACCOUNT_TYPE_KEY = 'heerzAccountType';
+    const REQUEST_KEY = 'heerzIndividualVerificationRequest';
+    const DRAFT_KEY = 'heerzIndividualVerificationDraft';
+    const NOTIFICATIONS_KEY = 'heerzNotifications';
+
+
+    function safeParse(value, fallback = null) {
+      try {
+        return value ? JSON.parse(value) : fallback;
+      } catch (error) {
+        return fallback;
+      }
+    }
+
+
+    function escapeHtml(value) {
+      if (value === null || value === undefined) return '';
+
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+
+    function getAccountType() {
+      const type = sessionStorage.getItem(ACCOUNT_TYPE_KEY);
+
+      return type === 'entity' ? 'entity' : 'individual';
+    }
+
+
+    function getRequest() {
+      return safeParse(localStorage.getItem(REQUEST_KEY), null);
+    }
+
+
+    function getDraft() {
+      return safeParse(localStorage.getItem(DRAFT_KEY), null);
+    }
+
+
+    function formatDate(value) {
+
+      if (!value) return '—';
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return '—';
+      }
+
+      return new Intl.DateTimeFormat('ar-SA', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      }).format(date);
+    }
+
+
+    /* =========================
+       Platform Configuration
+    ========================== */
+
+    const platformConfig = {
+
+      x: {
+        label: 'X',
+        icon: 'twitter',
+        className: 'bg-slate-100 text-slate-800'
+      },
+
+      twitter: {
+        label: 'X',
+        icon: 'twitter',
+        className: 'bg-slate-100 text-slate-800'
+      },
+
+      linkedin: {
+        label: 'LinkedIn',
+        icon: 'linkedin',
+        className: 'bg-blue-50 text-blue-700'
+      },
+
+      instagram: {
+        label: 'Instagram',
+        icon: 'instagram',
+        className: 'bg-pink-50 text-pink-600'
+      },
+
+      tiktok: {
+        label: 'TikTok',
+        icon: 'music-2',
+        className: 'bg-slate-100 text-slate-800'
+      },
+
+      youtube: {
+        label: 'YouTube',
+        icon: 'youtube',
+        className: 'bg-red-50 text-red-600'
+      },
+
+      snapchat: {
+        label: 'Snapchat',
+        icon: 'ghost',
+        className: 'bg-yellow-50 text-yellow-600'
+      },
+
+      website: {
+        label: 'الموقع الإلكتروني',
+        icon: 'globe-2',
+        className: 'bg-emerald-50 text-emerald-600'
+      },
+
+      email: {
+        label: 'البريد الإلكتروني',
+        icon: 'mail',
+        className: 'bg-indigo-50 text-indigo-600'
+      }
+
+    };
+
+
+    function getPlatformConfig(platform) {
+
+      const normalized = String(platform || '')
+        .trim()
+        .toLowerCase();
+
+      return platformConfig[normalized] || {
+        label: platform || 'قناة رسمية',
+        icon: 'link-2',
+        className: 'bg-slate-100 text-slate-600'
+      };
+    }
+
+
+    /* =========================
+       Extract Channels
+    ========================== */
+
+    function extractChannels(source) {
+
+      if (!source || typeof source !== 'object') {
+        return [];
+      }
+
+      const possibleFields = [
+        'channels',
+        'officialChannels',
+        'accounts'
+      ];
+
+      for (const field of possibleFields) {
+
+        if (Array.isArray(source[field])) {
+          return source[field];
+        }
+
+      }
+
+      return [];
+    }
+
+
+    function normalizeChannel(channel) {
+
+      if (typeof channel === 'string') {
+
+        return {
+          platform: 'website',
+          name: channel,
+          url: channel,
+          status: null
+        };
+
+      }
+
+      if (!channel || typeof channel !== 'object') {
+        return null;
+      }
+
+      return {
+        platform:
+          channel.platform ||
+          channel.type ||
+          channel.channelType ||
+          'website',
+
+        name:
+          channel.name ||
+          channel.title ||
+          channel.label ||
+          '',
+
+        url:
+          channel.url ||
+          channel.link ||
+          channel.value ||
+          '',
+
+        status:
+          channel.status ||
+          channel.verificationStatus ||
+          null
+      };
+    }
+
+
+    function getChannels() {
+
+      const request = getRequest();
+      const draft = getDraft();
+
+      let channels = [];
+
+      /*
+       * Prefer request data when available.
+       * Otherwise use draft.
+       */
+      if (request) {
+        channels = extractChannels(request);
+      }
+
+      if (!channels.length && draft) {
+        channels = extractChannels(draft);
+      }
+
+      return channels
+        .map(normalizeChannel)
+        .filter(Boolean)
+        .filter(channel => channel.url || channel.name);
+    }
+
+
+    /* =========================
+       Status
+    ========================== */
+
+    const requestStatuses = {
+
+      submitted: {
+        label: 'تم الإرسال',
+        badge: 'bg-blue-50 text-blue-700',
+        text: 'تم إرسال طلب التوثيق وهو بانتظار المراجعة.'
+      },
+
+      under_review: {
+        label: 'قيد المراجعة',
+        badge: 'bg-amber-50 text-amber-700',
+        text: 'طلب التوثيق قيد المراجعة والتحقق من البيانات.'
+      },
+
+      approved: {
+        label: 'تم التوثيق',
+        badge: 'bg-emerald-50 text-emerald-700',
+        text: 'تم اعتماد طلب التوثيق وحضورك الرقمي موثق في حِرز.'
+      },
+
+      rejected: {
+        label: 'غير معتمد',
+        badge: 'bg-red-50 text-red-700',
+        text: 'لم تتم الموافقة على طلب التوثيق الحالي.'
+      }
+
+    };
+
+
+    function getRequestStatus(request) {
+
+      if (!request || !request.status) {
+        return {
+          key: 'none',
+          label: 'لم يتم الإنشاء',
+          badge: 'bg-slate-100 text-slate-500',
+          text: 'لم يتم إنشاء طلب توثيق بعد.'
+        };
+      }
+
+      return requestStatuses[request.status] || {
+        key: request.status,
+        label: request.status,
+        badge: 'bg-slate-100 text-slate-500',
+        text: 'حالة الطلب الحالية.'
+      };
+    }
+
+
+    function getChannelStatus(channel, request) {
+
+      const rawStatus = String(channel.status || '')
+        .trim()
+        .toLowerCase();
+
+      if (rawStatus === 'verified' || rawStatus === 'approved') {
+
+        return {
+          label: 'موثقة',
+          className: 'bg-emerald-50 text-emerald-700',
+          icon: 'badge-check'
+        };
+
+      }
+
+      if (
+        rawStatus === 'pending' ||
+        rawStatus === 'under_review'
+      ) {
+
+        return {
+          label: 'قيد المراجعة',
+          className: 'bg-amber-50 text-amber-700',
+          icon: 'clock-3'
+        };
+
+      }
+
+      if (rawStatus === 'rejected') {
+
+        return {
+          label: 'غير معتمدة',
+          className: 'bg-red-50 text-red-700',
+          icon: 'circle-x'
+        };
+
+      }
+
+      if (rawStatus === 'unverified') {
+
+        return {
+          label: 'غير موثقة',
+          className: 'bg-slate-100 text-slate-500',
+          icon: 'circle-help'
+        };
+
+      }
+
+      /*
+       * Important:
+       * Merely existing in the form does NOT mean verified.
+       */
+      if (request && request.status === 'under_review') {
+
+        return {
+          label: 'ضمن المراجعة',
+          className: 'bg-amber-50 text-amber-700',
+          icon: 'clock-3'
+        };
+
+      }
+
+      if (request && request.status === 'submitted') {
+
+        return {
+          label: 'ضمن طلب التوثيق',
+          className: 'bg-blue-50 text-blue-700',
+          icon: 'file-check-2'
+        };
+
+      }
+
+      if (request && request.status === 'approved') {
+
+        return {
+          label: 'ضمن الحضور الموثق',
+          className: 'bg-emerald-50 text-emerald-700',
+          icon: 'badge-check'
+        };
+
+      }
+
+      return {
+        label: 'ضمن بيانات الطلب',
+        className: 'bg-slate-100 text-slate-500',
+        icon: 'circle-help'
+      };
+    }
+
+
+    /* =========================
+       Render Header
+    ========================== */
+
+    function renderAccountType() {
+
+      const accountType = getAccountType();
+
+      const isEntity = accountType === 'entity';
+
+      document.getElementById('pageTypeBadge').textContent =
+        isEntity ? 'للجهات' : 'للأفراد';
+
+      document.getElementById('accountTypeStat').textContent =
+        isEntity ? 'حساب جهة' : 'حساب فردي';
+
+      document.getElementById('summaryAccountType').textContent =
+        isEntity ? 'جهة' : 'فرد';
+
+      document.getElementById('sidebarAccountType').textContent =
+        isEntity ? 'حساب جهة' : 'حساب فردي';
+
+      document.getElementById('sidebarUserName').textContent =
+        isEntity ? 'جهة مستخدمة' : 'مستخدم حِرز';
+
+      document.getElementById('userAvatar').textContent =
+        isEntity ? 'ج' : 'ن';
+
+      const requestsLink =
+        document.getElementById('verificationRequestsLink');
+
+      const sideCtaLink =
+        document.getElementById('sideCtaLink');
+
+      const modalVerificationLink =
+        document.getElementById('modalVerificationLink');
+
+      const target =
+        isEntity
+          ? '../entity/verification-form.html'
+          : '../individual/verification-form.html';
+
+      requestsLink.href = target;
+      sideCtaLink.href = target;
+      modalVerificationLink.href = target;
+    }
+
+
+    /* =========================
+       Render Presence Status
+    ========================== */
+
+    function renderPresenceStatus(request) {
+
+      const status = getRequestStatus(request);
+
+      const badge =
+        document.getElementById('presenceStatusBadge');
+
+      const text =
+        document.getElementById('presenceStatusText');
+
+      const icon =
+        document.getElementById('presenceStatusIcon');
+
+      const action =
+        document.getElementById('presenceAction');
+
+      badge.textContent = status.label;
+      badge.className =
+        `rounded-full px-3 py-1 text-[11px] font-bold ${status.badge}`;
+
+      text.textContent = status.text;
+
+      let iconName = 'shield-question';
+      let iconClass = 'bg-slate-100 text-slate-500';
+
+      if (status.key === 'submitted') {
+        iconName = 'file-clock';
+        iconClass = 'bg-blue-50 text-blue-600';
+      }
+
+      if (status.key === 'under_review') {
+        iconName = 'shield-ellipsis';
+        iconClass = 'bg-amber-50 text-amber-600';
+      }
+
+      if (status.key === 'approved') {
+        iconName = 'shield-check';
+        iconClass = 'bg-emerald-50 text-emerald-600';
+      }
+
+      if (status.key === 'rejected') {
+        iconName = 'shield-x';
+        iconClass = 'bg-red-50 text-red-600';
+      }
+
+      icon.className =
+        `flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${iconClass}`;
+
+      icon.innerHTML =
+        `<i data-lucide="${iconName}" class="h-7 w-7"></i>`;
+
+      action.innerHTML = '';
+
+      if (!request) {
+
+        action.innerHTML = `
+          <a
+            href="${getAccountType() === 'entity'
+              ? '../entity/verification-form.html'
+              : '../individual/verification-form.html'}"
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-xs font-bold text-white transition hover:bg-blue-700"
+          >
+            ابدأ طلب التوثيق
+            <i data-lucide="arrow-left" class="h-4 w-4"></i>
+          </a>
+        `;
+
+      } else if (request.status === 'approved') {
+
+        action.innerHTML = `
+          <div class="inline-flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-xs font-bold text-emerald-700">
+            <i data-lucide="badge-check" class="h-4 w-4"></i>
+            حضور رقمي موثق
+          </div>
+        `;
+
+      } else {
+
+        action.innerHTML = `
+          <a
+            href="${getAccountType() === 'entity'
+              ? '../entity/verification-form.html'
+              : '../individual/verification-form.html'}"
+            class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-xs font-bold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+          >
+            عرض طلب التوثيق
+            <i data-lucide="arrow-left" class="h-4 w-4"></i>
+          </a>
+        `;
+      }
+    }
+
+
+    /* =========================
+       Render Stats
+    ========================== */
+
+    function renderStats(request, channels) {
+
+      const status = getRequestStatus(request);
+
+      document.getElementById('requestStatusStat').textContent =
+        status.label;
+
+      document.getElementById('channelCountStat').textContent =
+        `${channels.length} ${channels.length === 1 ? 'قناة' : 'قنوات'}`;
+
+      document.getElementById('channelCount').textContent =
+        channels.length;
+
+      document.getElementById('summaryRequestStatus').textContent =
+        status.label;
+
+      document.getElementById('summaryRequestStatus').className =
+        `rounded-full px-2.5 py-1 text-[10px] font-bold ${status.badge}`;
+
+      document.getElementById('summaryChannelsCount').textContent =
+        channels.length;
+
+      const lastUpdated =
+        request?.updatedAt ||
+        request?.submittedAt ||
+        request?.createdAt ||
+        null;
+
+      document.getElementById('lastUpdatedStat').textContent =
+        formatDate(lastUpdated);
+
+      document.getElementById('summaryLastUpdated').textContent =
+        formatDate(lastUpdated);
+    }
+
+
+    /* =========================
+       Render Channels
+    ========================== */
+
+    function renderChannels(channels, request) {
+
+      const container =
+        document.getElementById('channelsList');
+
+      if (!channels.length) {
+
+        container.innerHTML = `
+          <div class="px-5 py-14 text-center sm:px-6">
+
+            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+              <i data-lucide="link-2-off" class="h-7 w-7"></i>
+            </div>
+
+            <h4 class="mt-5 text-sm font-extrabold text-slate-900">
+              لا توجد قنوات رسمية مضافة
+            </h4>
+
+            <p class="mx-auto mt-2 max-w-md text-xs leading-7 text-slate-400">
+              لم يتم العثور على قنوات رسمية في بيانات طلب التوثيق الحالي.
+              يمكنك إضافة القنوات من خلال نموذج طلب التوثيق.
+            </p>
+
+            <a
+              href="${getAccountType() === 'entity'
+                ? '../entity/verification-form.html'
+                : '../individual/verification-form.html'}"
+              class="mt-5 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-xs font-bold text-white transition hover:bg-blue-700"
+            >
+              بدء طلب التوثيق
+              <i data-lucide="arrow-left" class="h-4 w-4"></i>
+            </a>
+
+          </div>
+        `;
+
+        return;
+      }
+
+
+      container.innerHTML = channels.map((channel, index) => {
+
+        const platform =
+          getPlatformConfig(channel.platform);
+
+        const status =
+          getChannelStatus(channel, request);
+
+        const safeName =
+          escapeHtml(
+            channel.name ||
+            platform.label
+          );
+
+        const safeUrl =
+          escapeHtml(channel.url || '');
+
+        const displayUrl =
+          escapeHtml(
+            String(channel.url || '')
+              .replace(/^https?:\/\//, '')
+              .replace(/\/$/, '')
+          );
+
+        const externalLink =
+          channel.url
+            ? `
+              <a
+                href="${safeUrl}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[11px] font-bold text-blue-600 transition hover:bg-blue-50"
+              >
+                فتح القناة
+                <i data-lucide="external-link" class="h-3.5 w-3.5"></i>
+              </a>
+            `
+            : '';
+
+        return `
+          <div class="fade-in p-5 sm:p-6">
+
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+
+              <div class="flex min-w-0 flex-1 items-start gap-4">
+
+                <div
+                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${platform.className}"
+                >
+                  <i data-lucide="${platform.icon}" class="h-5 w-5"></i>
+                </div>
+
+                <div class="min-w-0">
+
+                  <div class="flex flex-wrap items-center gap-2">
+
+                    <h4 class="truncate text-sm font-extrabold text-slate-900">
+                      ${safeName}
+                    </h4>
+
+                    <span class="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-semibold text-slate-500">
+                      ${escapeHtml(platform.label)}
+                    </span>
+
+                  </div>
+
+                  ${
+                    displayUrl
+                      ? `
+                        <p
+                          dir="ltr"
+                          class="mt-1 truncate text-left text-xs text-slate-400"
+                        >
+                          ${displayUrl}
+                        </p>
+                      `
+                      : `
+                        <p class="mt-1 text-xs text-slate-400">
+                          لم يتم إدخال رابط القناة
+                        </p>
+                      `
+                  }
+
+                </div>
+
+              </div>
+
+
+              <div class="flex flex-wrap items-center gap-2 sm:justify-end">
+
+                <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10px] font-bold ${status.className}">
+                  <i data-lucide="${status.icon}" class="h-3.5 w-3.5"></i>
+                  ${status.label}
+                </span>
+
+                ${externalLink}
+
+              </div>
+
+            </div>
+
+          </div>
+        `;
+
+      }).join('');
+    }
+
+
+    /* =========================
+       CTA
+    ========================== */
+
+    function renderSideCTA(request) {
+
+      const sideCta =
+        document.getElementById('sideCta');
+
+      if (!request) {
+        sideCta.classList.remove('hidden');
+      } else {
+        sideCta.classList.add('hidden');
+      }
+    }
+
+
+    /* =========================
+       Notifications
+    ========================== */
+
+    function renderNotificationBadge() {
+
+      const notifications =
+        safeParse(
+          localStorage.getItem(NOTIFICATIONS_KEY),
+          []
+        );
+
+      if (!Array.isArray(notifications)) {
+        return;
+      }
+
+      const unreadCount =
+        notifications.filter(item => !item.read).length;
+
+      const sidebarBadge =
+        document.getElementById('sidebarNotificationBadge');
+
+      const topDot =
+        document.getElementById('topNotificationDot');
+
+      if (unreadCount > 0) {
+
+        sidebarBadge.textContent =
+          unreadCount > 99 ? '99+' : unreadCount;
+
+        sidebarBadge.classList.remove('hidden');
+        topDot.classList.remove('hidden');
+
+      } else {
+
+        sidebarBadge.classList.add('hidden');
+        topDot.classList.add('hidden');
+
+      }
+    }
+
+
+    /* =========================
+       Mobile Sidebar
+    ========================== */
+
+    const sidebar =
+      document.getElementById('sidebar');
+
+    const mobileOverlay =
+      document.getElementById('mobileOverlay');
+
+    const mobileMenuBtn =
+      document.getElementById('mobileMenuBtn');
+
+
+    function openSidebar() {
+
+      sidebar.classList.remove('translate-x-full');
+      mobileOverlay.classList.remove('hidden');
+
+      document.body.classList.add('overflow-hidden');
+    }
+
+
+    function closeSidebar() {
+
+      sidebar.classList.add('translate-x-full');
+      mobileOverlay.classList.add('hidden');
+
+      document.body.classList.remove('overflow-hidden');
+    }
+
+
+    mobileMenuBtn.addEventListener(
+      'click',
+      openSidebar
+    );
+
+    mobileOverlay.addEventListener(
+      'click',
+      closeSidebar
+    );
+
+
+    /* =========================
+       Channel Modal
+    ========================== */
+
+    const channelModal =
+      document.getElementById('channelModal');
+
+    const channelModalBox =
+      document.getElementById('channelModalBox');
+
+
+    function openChannelModal() {
+
+      channelModal.classList.remove('hidden');
+      channelModal.classList.add('flex');
+
+      requestAnimationFrame(() => {
+
+        channelModalBox.classList.remove('scale-95');
+        channelModalBox.classList.remove('opacity-0');
+        channelModalBox.classList.add('scale-100');
+        channelModalBox.classList.add('opacity-100');
+
+      });
+
+      document.body.classList.add('overflow-hidden');
+    }
+
+
+    function closeChannelModal() {
+
+      channelModalBox.classList.remove('scale-100');
+      channelModalBox.classList.remove('opacity-100');
+      channelModalBox.classList.add('scale-95');
+      channelModalBox.classList.add('opacity-0');
+
+      setTimeout(() => {
+
+        channelModal.classList.add('hidden');
+        channelModal.classList.remove('flex');
+
+        document.body.classList.remove('overflow-hidden');
+
+      }, 180);
+    }
+
+
+    document
+      .getElementById('addChannelBtn')
+      .addEventListener(
+        'click',
+        openChannelModal
+      );
+
+
+    document
+      .getElementById('closeChannelModal')
+      .addEventListener(
+        'click',
+        closeChannelModal
+      );
+
+
+    document
+      .getElementById('cancelChannelModal')
+      .addEventListener(
+        'click',
+        closeChannelModal
+      );
+
+
+    channelModal.addEventListener(
+      'click',
+      function (event) {
+
+        if (event.target === channelModal) {
+          closeChannelModal();
+        }
+
+      }
+    );
+
+
+    /* =========================
+       Logout
+    ========================== */
+
+    const logoutModal =
+      document.getElementById('logoutModal');
+
+
+    function openLogoutModal() {
+
+      logoutModal.classList.remove('hidden');
+      logoutModal.classList.add('flex');
+
+      document.body.classList.add('overflow-hidden');
+    }
+
+
+    function closeLogoutModal() {
+
+      logoutModal.classList.add('hidden');
+      logoutModal.classList.remove('flex');
+
+      document.body.classList.remove('overflow-hidden');
+    }
+
+
+    document
+      .getElementById('logoutBtn')
+      .addEventListener(
+        'click',
+        openLogoutModal
+      );
+
+
+    document
+      .getElementById('cancelLogout')
+      .addEventListener(
+        'click',
+        closeLogoutModal
+      );
+
+
+    document
+      .getElementById('confirmLogout')
+      .addEventListener(
+        'click',
+        function () {
+
+          sessionStorage.removeItem('heerzAccountType');
+          sessionStorage.removeItem('heerzContactVerified');
+
+          window.location.href =
+            '../auth/login.html';
+
+        }
+      );
+
+
+    /* =========================
+       Init
+    ========================== */
+
+    function init() {
+
+      renderAccountType();
+
+      const request =
+        getRequest();
+
+      const channels =
+        getChannels();
+
+      renderPresenceStatus(request);
+
+      renderStats(
+        request,
+        channels
+      );
+
+      renderChannels(
+        channels,
+        request
+      );
+
+      renderSideCTA(request);
+
+      renderNotificationBadge();
+
+      lucide.createIcons();
+    }
+
+
+    init();
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="bg-slate-50">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مراجعة بيانات التوثيق | منصة حِرز</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif']
+          },
+          boxShadow: {
+            glow: '0 0 20px -5px rgba(37, 99, 235, 0.15)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+
+    .auth-bg {
+      background:
+        radial-gradient(1200px 500px at 100% -10%, rgba(37, 99, 235, 0.06), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, rgba(37, 99, 235, 0.05), transparent 60%);
+    }
+
+    #toastContainer {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 80;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: calc(100% - 2rem);
+      max-width: 400px;
+    }
+
+    .toast {
+      animation: toastIn .25s ease-out;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stepper-scroll {
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .stepper-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .break-anywhere {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    :focus-visible {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen antialiased text-slate-800 bg-slate-50 flex flex-col">
+
+  <!-- ============================================================
+       HEADER
+       ============================================================ -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-[4.5rem] flex items-center justify-between gap-4">
+
+      <a href="../dashboard/home.html" class="flex items-center gap-2 shrink-0 group">
+        <img
+          src="../../images/herz-logo.png"
+          alt="شعار حرز"
+          onerror="this.style.display='none'; document.getElementById('logoFallbackHeader').classList.remove('hidden');"
+          class="h-8 sm:h-9 w-auto object-contain transition group-hover:opacity-90">
+        <span id="logoFallbackHeader" class="hidden text-lg sm:text-xl font-black text-blue-600">حِرز</span>
+        <span class="hidden md:inline text-[11px] font-bold text-slate-400 border-r border-slate-200 pr-3 mr-1">
+          توثيق وحماية الحضور الرقمي
+        </span>
+      </a>
+
+      <a
+        href="../dashboard/home.html"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100/80 border border-slate-200/60 text-xs font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition shadow-sm">
+        <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+        <span>لوحة التحكم</span>
+      </a>
+
+    </div>
+  </header>
+
+  <!-- ============================================================
+       ACCESS GUARD VIEWS
+       ============================================================ -->
+  <main class="auth-bg flex-1 px-4 py-10 sm:py-14">
+
+    <!-- BLOCKED: entity account -->
+    <div id="blockedEntityView" class="hidden w-full max-w-md mx-auto">
+      <div class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-6 sm:p-8 text-center">
+        <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center mx-auto mb-5">
+          <i data-lucide="shield-alert" class="w-6 h-6"></i>
+        </div>
+        <h1 class="text-lg sm:text-xl font-black text-slate-900">هذه الصفحة مخصصة لطلبات توثيق الأفراد</h1>
+        <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-3 leading-relaxed">
+          حسابك مسجل كحساب جهة. يمكنك متابعة طلب توثيق الجهة من لوحة التحكم.
+        </p>
+        <a href="../dashboard/home.html"
+           class="inline-flex items-center gap-2 mt-6 px-5 py-3 rounded-xl bg-blue-600 text-white text-sm font-black hover:bg-blue-700 transition shadow-md shadow-blue-600/20">
+          <span>العودة إلى لوحة التحكم</span>
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- EMPTY STATE: no saved data -->
+    <div id="emptyStateView" class="hidden w-full max-w-md mx-auto">
+      <div class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-6 sm:p-8 text-center">
+        <div class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-500 border border-slate-200 flex items-center justify-center mx-auto mb-5">
+          <i data-lucide="file-search" class="w-6 h-6"></i>
+        </div>
+        <h1 class="text-lg sm:text-xl font-black text-slate-900">لا توجد بيانات للمراجعة</h1>
+        <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-3 leading-relaxed">
+          لم نعثر على بيانات توثيق محفوظة. يرجى العودة إلى نموذج التوثيق وإكمال البيانات أولًا.
+        </p>
+        <a href="verification-form.html"
+           class="inline-flex items-center gap-2 mt-6 px-5 py-3 rounded-xl bg-blue-600 text-white text-sm font-black hover:bg-blue-700 transition shadow-md shadow-blue-600/20">
+          <span>العودة إلى بيانات التوثيق</span>
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         REVIEW VIEW
+         ============================================================ -->
+    <div id="reviewView" class="hidden w-full max-w-5xl mx-auto">
+
+      <!-- PREVIEW MODE NOTICE (only when account type is missing) -->
+      <div id="previewModeNotice" class="hidden flex items-start gap-2.5 mb-5 p-3.5 rounded-xl bg-slate-100 border border-slate-200">
+        <i data-lucide="eye" class="w-4 h-4 text-slate-500 mt-0.5 shrink-0"></i>
+        <p class="text-[11px] sm:text-xs font-bold text-slate-500 leading-relaxed">
+          وضع المعاينة: لم يتم تحديد نوع الحساب من جلسة المستخدم.
+        </p>
+      </div>
+
+      <!-- STEPPER -->
+      <div class="stepper-scroll mb-6 sm:mb-8 -mx-1 px-1">
+        <ol class="flex items-center gap-2 min-w-[640px] sm:min-w-0">
+
+          <li class="flex-1 flex items-center gap-2">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-black shrink-0">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <p class="hidden sm:block text-[11px] font-black text-slate-900 leading-tight">إنشاء الحساب</p>
+          </li>
+
+          <div class="flex-1 h-0.5 bg-emerald-400 rounded-full"></div>
+
+          <li class="flex-1 flex items-center gap-2">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-black shrink-0">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <p class="hidden sm:block text-[11px] font-black text-slate-900 leading-tight">التحقق من وسيلة التواصل</p>
+          </li>
+
+          <div class="flex-1 h-0.5 bg-emerald-400 rounded-full"></div>
+
+          <li class="flex-1 flex items-center gap-2">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-black shrink-0">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <p class="hidden sm:block text-[11px] font-black text-slate-900 leading-tight">بيانات التوثيق</p>
+          </li>
+
+          <div class="flex-1 h-0.5 bg-emerald-400 rounded-full"></div>
+
+          <li class="flex-1 flex items-center gap-2">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-black shadow-md shadow-blue-600/25 shrink-0">
+              4
+            </div>
+            <p class="hidden sm:block text-[11px] font-black text-slate-900 leading-tight">مراجعة الطلب</p>
+          </li>
+
+          <div class="flex-1 h-0.5 bg-slate-200 rounded-full"></div>
+
+          <li class="flex-1 flex items-center gap-2 opacity-60">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 text-slate-400 border border-slate-200 flex items-center justify-center text-xs font-black shrink-0">
+              5
+            </div>
+            <p class="hidden sm:block text-[11px] font-bold text-slate-400 leading-tight">الاعتماد</p>
+          </li>
+
+        </ol>
+      </div>
+
+      <!-- PAGE TITLE -->
+      <div class="mb-6">
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900">مراجعة بيانات التوثيق</h1>
+        <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-2 leading-relaxed max-w-3xl">
+          راجع البيانات التي أدخلتها قبل الانتقال إلى الخطوة التالية. يمكنك العودة لتعديل أي معلومة قبل إرسال طلبك.
+        </p>
+
+        <div class="flex items-start gap-2.5 mt-4 p-3.5 rounded-xl bg-blue-50 border border-blue-100">
+          <i data-lucide="info" class="w-4 h-4 text-blue-600 mt-0.5 shrink-0"></i>
+          <p class="text-[11px] sm:text-xs font-bold text-blue-700 leading-relaxed">
+            لم يتم إرسال طلبك النهائي بعد.
+          </p>
+        </div>
+      </div>
+
+      <!-- SUMMARY CARD -->
+      <div class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-5 sm:p-7 mb-6">
+        <div class="flex items-center gap-2.5 mb-5">
+          <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shrink-0">
+            <i data-lucide="clipboard-list" class="w-4.5 h-4.5"></i>
+          </div>
+          <h2 class="text-sm sm:text-base font-black text-slate-900">ملخص الطلب</h2>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
+
+          <div>
+            <p class="text-[10px] font-black text-slate-400 mb-1">نوع الطلب</p>
+            <p class="text-xs font-black text-slate-800">توثيق فرد</p>
+          </div>
+
+          <div>
+            <p class="text-[10px] font-black text-slate-400 mb-1">حالة الطلب</p>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[10px] font-black">
+              <i data-lucide="circle" class="w-2.5 h-2.5"></i>
+              مسودة
+            </span>
+          </div>
+
+          <div>
+            <p class="text-[10px] font-black text-slate-400 mb-1">عدد القنوات</p>
+            <p id="summaryChannelsCount" class="text-xs font-black text-slate-800">0</p>
+          </div>
+
+          <div>
+            <p class="text-[10px] font-black text-slate-400 mb-1">وسيلة التواصل</p>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-black">
+              <i data-lucide="check" class="w-2.5 h-2.5"></i>
+              تم التحقق
+            </span>
+          </div>
+
+          <div>
+            <p class="text-[10px] font-black text-slate-400 mb-1">آخر تحديث</p>
+            <p id="summaryUpdatedAt" class="text-xs font-black text-slate-800">—</p>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- ============================================================
+           SECTION — BASIC INFO
+           ============================================================ -->
+      <section class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-5 sm:p-7 mb-5">
+
+        <div class="flex flex-wrap items-start justify-between gap-3 mb-5">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shrink-0">
+              <i data-lucide="user" class="w-5 h-5"></i>
+            </div>
+            <h2 class="text-sm sm:text-base font-black text-slate-900 pt-2">البيانات الأساسية</h2>
+          </div>
+
+          <a href="verification-form.html"
+             class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-[11px] font-black text-slate-600 hover:text-blue-600 hover:border-blue-200 transition">
+            <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+            <span>تعديل البيانات</span>
+          </a>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-start gap-5">
+
+          <div id="photoPreviewWrap" class="w-16 h-16 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden shrink-0">
+            <i id="photoPlaceholderIcon" data-lucide="image" class="w-6 h-6 text-slate-300"></i>
+            <img id="photoPreviewImg" class="hidden w-full h-full object-cover" alt="الصورة الشخصية">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1 min-w-0 w-full">
+
+            <div>
+              <p class="text-[10px] font-black text-slate-400 mb-1">الاسم الكامل</p>
+              <p id="reviewFullName" class="text-xs sm:text-sm font-black text-slate-800 break-anywhere">—</p>
+            </div>
+
+            <div>
+              <p class="text-[10px] font-black text-slate-400 mb-1">الاسم الظاهر في حِرز</p>
+              <p id="reviewDisplayName" class="text-xs sm:text-sm font-black text-slate-800 break-anywhere">—</p>
+            </div>
+
+            <div class="sm:col-span-2">
+              <p class="text-[10px] font-black text-slate-400 mb-1">النبذة التعريفية</p>
+              <p id="reviewBio" class="text-xs sm:text-sm font-semibold text-slate-600 leading-relaxed break-anywhere">—</p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- ============================================================
+           SECTION — CHANNELS
+           ============================================================ -->
+      <section class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-5 sm:p-7 mb-5">
+
+        <div class="flex flex-wrap items-start justify-between gap-3 mb-5">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shrink-0">
+              <i data-lucide="radio-tower" class="w-5 h-5"></i>
+            </div>
+            <h2 class="text-sm sm:text-base font-black text-slate-900 pt-2">القنوات والحسابات الرسمية</h2>
+          </div>
+
+          <a href="verification-form.html"
+             class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-[11px] font-black text-slate-600 hover:text-blue-600 hover:border-blue-200 transition">
+            <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+            <span>تعديل القنوات</span>
+          </a>
+        </div>
+
+        <div id="reviewChannelsList" class="space-y-2.5"></div>
+
+        <div id="reviewChannelsEmpty" class="hidden text-center py-8 border border-dashed border-slate-200 rounded-2xl">
+          <p class="text-xs font-bold text-slate-500">لم تُضف أي قناة رسمية.</p>
+        </div>
+
+      </section>
+
+
+      <!-- ============================================================
+           SECTION — VERIFICATION DATA
+           ============================================================ -->
+      <section class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-5 sm:p-7 mb-5">
+
+        <div class="flex flex-wrap items-start justify-between gap-3 mb-5">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shrink-0">
+              <i data-lucide="shield-check" class="w-5 h-5"></i>
+            </div>
+            <h2 class="text-sm sm:text-base font-black text-slate-900 pt-2">بيانات التحقق</h2>
+          </div>
+
+          <a href="verification-form.html"
+             class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-[11px] font-black text-slate-600 hover:text-blue-600 hover:border-blue-200 transition">
+            <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+            <span>تعديل بيانات التحقق</span>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+
+          <div>
+            <p class="text-[10px] font-black text-slate-400 mb-1">الجنسية</p>
+            <p id="reviewNationality" class="text-xs font-black text-slate-800 break-anywhere">—</p>
+          </div>
+
+          <div>
+            <p class="text-[10px] font-black text-slate-400 mb-1">نوع الوثيقة</p>
+            <p id="reviewDocumentType" class="text-xs font-black text-slate-800">—</p>
+          </div>
+
+          <div>
+            <p class="text-[10px] font-black text-slate-400 mb-1">رقم الوثيقة</p>
+            <p id="reviewDocumentNumber" class="text-xs font-black text-slate-800" dir="ltr">—</p>
+          </div>
+
+          <div>
+            <p class="text-[10px] font-black text-slate-400 mb-1">تاريخ الانتهاء</p>
+            <p id="reviewDocumentExpiry" class="text-xs font-black text-slate-800" dir="ltr">—</p>
+          </div>
+
+        </div>
+
+        <div class="mt-5 pt-5 border-t border-slate-100">
+          <div id="reviewDocumentFileRow" class="hidden flex items-center gap-2.5 text-emerald-700">
+            <i data-lucide="file-check-2" class="w-4 h-4 shrink-0"></i>
+            <span class="text-xs font-black">تم إرفاق مستند التحقق</span>
+          </div>
+          <div id="reviewDocumentFileEmpty" class="hidden flex items-center gap-2.5 text-slate-400">
+            <i data-lucide="file-x" class="w-4 h-4 shrink-0"></i>
+            <span class="text-xs font-bold">لم يتم إرفاق مستند التحقق.</span>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- ============================================================
+           SECTION — ADDITIONAL INFO
+           ============================================================ -->
+      <section class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-5 sm:p-7 mb-5">
+
+        <div class="flex items-start gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
+            <i data-lucide="message-square-text" class="w-5 h-5"></i>
+          </div>
+          <h2 class="text-sm sm:text-base font-black text-slate-900 pt-2">معلومات إضافية</h2>
+        </div>
+
+        <p id="reviewAdditionalInfo" class="text-xs sm:text-sm font-semibold text-slate-600 leading-relaxed break-anywhere">
+          لم تتم إضافة معلومات إضافية.
+        </p>
+
+      </section>
+
+
+      <!-- ============================================================
+           SECTION — APPROVALS
+           ============================================================ -->
+      <section class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-5 sm:p-7 mb-6">
+
+        <h2 class="text-sm sm:text-base font-black text-slate-900 mb-4">الموافقات</h2>
+
+        <div class="space-y-2.5">
+
+          <div id="approvalAccuracyRow" class="flex items-start gap-2.5">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0"></i>
+            <p class="text-[11px] sm:text-xs font-bold text-slate-600 leading-relaxed">
+              أقر بصحة المعلومات المقدمة واستخدامها لأغراض التحقق من طلب التوثيق.
+            </p>
+          </div>
+
+          <div id="approvalTermsRow" class="flex items-start gap-2.5">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0"></i>
+            <p class="text-[11px] sm:text-xs font-bold text-slate-600 leading-relaxed">
+              أوافق على شروط استخدام خدمة التوثيق في منصة حِرز.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- ============================================================
+           FINAL NOTICE + ACTIONS
+           ============================================================ -->
+      <section class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-5 sm:p-7">
+
+        <div class="flex items-start gap-2.5 p-3.5 rounded-xl bg-amber-50 border border-amber-100 mb-5">
+          <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 mt-0.5 shrink-0"></i>
+          <p class="text-[11px] sm:text-xs font-bold text-amber-700 leading-relaxed">
+            تأكد من صحة جميع البيانات قبل المتابعة. سيتم استخدام المعلومات المقدمة لمراجعة طلب التوثيق والتحقق من القنوات التي أضفتها.
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+
+          <a href="verification-form.html"
+             class="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-black hover:bg-slate-50 transition">
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            <span>العودة لتعديل البيانات</span>
+          </a>
+
+          <a href="../individual/complete-request.html"
+             class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-blue-600 text-white text-sm font-black hover:bg-blue-700 transition shadow-md shadow-blue-600/20">
+            <span>متابعة</span>
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          </a>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="bg-white border-t border-slate-200/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+
+        <div class="flex flex-col items-center md:items-start gap-2">
+          <div class="flex items-center gap-2.5">
+            <img
+              src="../../images/herz-logo.png"
+              alt="شعار حرز"
+              onerror="this.style.display='none'; document.getElementById('logoFallbackFooter').classList.remove('hidden');"
+              class="h-7 w-auto object-contain">
+            <span id="logoFallbackFooter" class="hidden text-sm font-black text-blue-600">حِرز</span>
+          </div>
+          <p class="text-[11px] font-semibold text-slate-400 text-center md:text-right">
+            المنصة الرائدة لتوثيق وحماية المحتوى الرقمي.
+          </p>
+        </div>
+
+        <nav class="flex items-center justify-center gap-6">
+          <a href="../privacy.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الخصوصية</a>
+          <a href="../terms.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الشروط والأحكام</a>
+          <a href="../faq.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الأسئلة الشائعة</a>
+        </nav>
+
+        <div class="text-center md:text-left">
+          <p class="text-[11px] font-bold text-slate-400">© 2026 منصة حِرز. جميع الحقوق محفوظة.</p>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOASTS -->
+  <div id="toastContainer"></div>
+
+  <!-- ============================================================
+       JAVASCRIPT
+       ============================================================ -->
+  <script>
+
+    /* ============================================================
+       1) ACCESS GUARD
+       ============================================================ */
+
+    const VALID_TYPES = ['individual', 'entity'];
+
+    function getSessionValue(key) {
+      try { return sessionStorage.getItem(key); } catch (e) { return null; }
+    }
+
+    const heerzAccountType = getSessionValue('heerzAccountType');
+
+
+    /* ============================================================
+       2) STORAGE KEYS — same keys used by verification-form.html
+       ============================================================ */
+
+    const DRAFT_KEY = 'heerzIndividualVerificationDraft';
+    const REQUEST_KEY = 'heerzIndividualVerificationRequest';
+
+
+    /* ============================================================
+       3) CHANNEL TYPE CONFIG — must mirror verification-form.html
+       ============================================================ */
+
+    const CHANNEL_TYPES = {
+      x: { label: 'X (تويتر)', icon: 'at-sign' },
+      linkedin: { label: 'LinkedIn', icon: 'linkedin' },
+      instagram: { label: 'Instagram', icon: 'instagram' },
+      tiktok: { label: 'TikTok', icon: 'music-2' },
+      youtube: { label: 'YouTube', icon: 'youtube' },
+      snapchat: { label: 'Snapchat', icon: 'ghost' },
+      website: { label: 'موقع إلكتروني', icon: 'globe' },
+      email: { label: 'بريد إلكتروني', icon: 'mail' }
+    };
+
+    const DOCUMENT_TYPE_LABELS = {
+      national_id: 'الهوية الوطنية',
+      iqama: 'الإقامة',
+      passport: 'جواز السفر'
+    };
+
+
+    /* ============================================================
+       4) UTILITIES
+       ============================================================ */
+
+    function escapeHtml(value) {
+      const div = document.createElement('div');
+      div.textContent = value == null ? '' : String(value);
+      return div.innerHTML;
+    }
+
+    function setText(id, value, fallback) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const text = (value === null || value === undefined || value === '') ? (fallback || '—') : String(value);
+      el.textContent = text;
+    }
+
+    function maskDocumentNumber(value) {
+      if (!value) return '—';
+      const str = String(value).trim();
+      if (str.length <= 4) return str;
+      const visible = str.slice(-4);
+      const maskedLength = Math.min(str.length - 4, 6);
+      return '•'.repeat(maskedLength) + visible;
+    }
+
+    function formatDate(isoDateString) {
+      if (!isoDateString) return '—';
+      const parts = String(isoDateString).split('-');
+      if (parts.length !== 3) return isoDateString;
+      const [year, month, day] = parts;
+      return `${day} / ${month} / ${year}`;
+    }
+
+    function formatDateTime(isoString) {
+      if (!isoString) return '—';
+      try {
+        const date = new Date(isoString);
+        if (isNaN(date.getTime())) return '—';
+        return date.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' });
+      } catch (e) {
+        return '—';
+      }
+    }
+
+    function showToast(message, type) {
+      const container = document.getElementById('toastContainer');
+      const colors = {
+        success: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+        error: 'border-red-200 bg-red-50 text-red-700',
+        info: 'border-blue-200 bg-blue-50 text-blue-700'
+      };
+      const icons = { success: 'check-circle-2', error: 'x-circle', info: 'info' };
+
+      const toast = document.createElement('div');
+      toast.className = `toast flex items-center gap-2.5 px-4 py-3 rounded-2xl border shadow-lg text-xs font-bold ${colors[type] || colors.info}`;
+
+      const icon = document.createElement('i');
+      icon.setAttribute('data-lucide', icons[type] || icons.info);
+      icon.className = 'w-4 h-4 shrink-0';
+
+      const text = document.createElement('span');
+      text.textContent = message;
+
+      toast.appendChild(icon);
+      toast.appendChild(text);
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.style.transition = 'opacity .3s ease, transform .3s ease';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+
+    /* ============================================================
+       5) LOAD SAVED DATA (no new mock data is created here)
+       ============================================================ */
+
+    function loadSavedVerificationData() {
+
+      // Prefer the submitted request object if it exists, otherwise
+      // fall back to the draft — both are written by verification-form.html.
+      let raw = null;
+
+      try {
+        raw = localStorage.getItem(REQUEST_KEY);
+      } catch (e) {
+        raw = null;
+      }
+
+      if (!raw) {
+        try {
+          raw = localStorage.getItem(DRAFT_KEY);
+        } catch (e) {
+          raw = null;
+        }
+      }
+
+      if (!raw) return null;
+
+      try {
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return null;
+        return parsed;
+      } catch (e) {
+        return null;
+      }
+    }
+
+
+    /* ============================================================
+       6) RENDER: BASIC INFO
+       ============================================================ */
+
+    function renderBasicInfo(data) {
+      setText('reviewFullName', data.fullName || data.name);
+      setText('reviewDisplayName', data.displayName);
+      setText('reviewBio', data.bio, 'لم تتم إضافة نبذة تعريفية.');
+
+      if (data.profilePhoto) {
+        const img = document.getElementById('photoPreviewImg');
+        const placeholder = document.getElementById('photoPlaceholderIcon');
+        img.src = data.profilePhoto;
+        img.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      }
+    }
+
+
+    /* ============================================================
+       7) RENDER: CHANNELS
+       ============================================================ */
+
+    function renderChannels(data) {
+      const channels = Array.isArray(data.channels) ? data.channels : [];
+      const list = document.getElementById('reviewChannelsList');
+      const emptyState = document.getElementById('reviewChannelsEmpty');
+
+      list.innerHTML = '';
+
+      setText('summaryChannelsCount', channels.length);
+
+      if (!channels.length) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      channels.forEach(channel => {
+        const config = CHANNEL_TYPES[channel.type] || CHANNEL_TYPES.website;
+
+        const row = document.createElement('div');
+        row.className = 'flex items-center gap-3 p-3.5 rounded-2xl border border-slate-200 bg-slate-50';
+
+        row.innerHTML = `
+          <div class="w-10 h-10 rounded-xl bg-white border border-slate-200 text-blue-600 flex items-center justify-center shrink-0">
+            <i data-lucide="${config.icon}" class="w-5 h-5"></i>
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <p class="text-xs font-black text-slate-800">${escapeHtml(config.label)}</p>
+              ${channel.handle ? `<span class="text-[10px] font-bold text-slate-400" dir="ltr">${escapeHtml(channel.handle)}</span>` : ''}
+            </div>
+            <p class="text-[11px] font-semibold text-blue-600 break-anywhere mt-0.5" dir="ltr">${escapeHtml(channel.url)}</p>
+            ${channel.notes ? `<p class="text-[10px] font-semibold text-slate-400 mt-1 break-anywhere">${escapeHtml(channel.notes)}</p>` : ''}
+          </div>
+          <span class="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-amber-50 text-amber-700 text-[10px] font-black whitespace-nowrap">
+            <i data-lucide="clock" class="w-3 h-3"></i>
+            بانتظار التحقق
+          </span>
+        `;
+
+        list.appendChild(row);
+      });
+
+      lucide.createIcons();
+    }
+
+
+    /* ============================================================
+       8) RENDER: VERIFICATION DATA
+       ============================================================ */
+
+    function renderVerificationData(data) {
+      setText('reviewNationality', data.nationality);
+      setText('reviewDocumentType', DOCUMENT_TYPE_LABELS[data.documentType] || data.documentType);
+      setText('reviewDocumentNumber', maskDocumentNumber(data.documentNumber));
+      setText('reviewDocumentExpiry', data.documentExpiry ? formatDate(data.documentExpiry) : '—');
+
+      const fileRow = document.getElementById('reviewDocumentFileRow');
+      const fileEmpty = document.getElementById('reviewDocumentFileEmpty');
+
+      if (data.documentFileName) {
+        fileRow.classList.remove('hidden');
+        fileRow.classList.add('flex');
+        fileEmpty.classList.add('hidden');
+        fileEmpty.classList.remove('flex');
+      } else {
+        fileEmpty.classList.remove('hidden');
+        fileEmpty.classList.add('flex');
+        fileRow.classList.add('hidden');
+        fileRow.classList.remove('flex');
+      }
+    }
+
+
+    /* ============================================================
+       9) RENDER: ADDITIONAL INFO
+       ============================================================ */
+
+    function renderAdditionalInfo(data) {
+      if (data.additionalInfo) {
+        setText('reviewAdditionalInfo', data.additionalInfo);
+      } else {
+        document.getElementById('reviewAdditionalInfo').textContent = 'لم تتم إضافة معلومات إضافية.';
+      }
+    }
+
+
+    /* ============================================================
+       10) RENDER: SUMMARY
+       ============================================================ */
+
+    function renderSummary(data) {
+      const updatedAt = data.updatedAt || data.createdAt;
+      setText('summaryUpdatedAt', updatedAt ? formatDateTime(updatedAt) : 'اليوم');
+    }
+
+
+    /* ============================================================
+       11) ACCESS GUARD RENDER
+       ============================================================ */
+
+    function renderAccessGuardAndData() {
+      const reviewView = document.getElementById('reviewView');
+      const blockedEntity = document.getElementById('blockedEntityView');
+      const emptyState = document.getElementById('emptyStateView');
+      const previewNotice = document.getElementById('previewModeNotice');
+
+      if (heerzAccountType === 'entity') {
+        blockedEntity.classList.remove('hidden');
+        return;
+      }
+
+      const data = loadSavedVerificationData();
+
+      if (!data) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      if (!VALID_TYPES.includes(heerzAccountType)) {
+        previewNotice.classList.remove('hidden');
+        previewNotice.classList.add('flex');
+      }
+
+      reviewView.classList.remove('hidden');
+
+      renderBasicInfo(data);
+      renderChannels(data);
+      renderVerificationData(data);
+      renderAdditionalInfo(data);
+      renderSummary(data);
+
+      lucide.createIcons();
+    }
+
+
+    /* ============================================================
+       12) INIT
+       ============================================================ */
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderAccessGuardAndData();
+      lucide.createIcons();
+    });
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,2099 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="bg-slate-50">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الإشعارات | منصة حِرز</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif']
+          },
+          boxShadow: {
+            soft: '0 8px 30px rgba(15, 23, 42, .05)',
+            card: '0 4px 18px rgba(15, 23, 42, .045)',
+            blue: '0 10px 24px rgba(37, 99, 235, .18)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #f7f9fc;
+      color: #172033;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      background:
+        radial-gradient(900px 350px at 15% -10%, rgba(37,99,235,.055), transparent 65%),
+        #f7f9fc;
+    }
+
+    .topbar {
+      height: 74px;
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid #e6ebf2;
+      backdrop-filter: blur(14px);
+    }
+
+    .sidebar {
+      width: 360px;
+      background: #fff;
+      border-left: 1px solid #e5eaf1;
+      box-shadow: -8px 0 30px rgba(15,23,42,.025);
+    }
+
+    .sidebar-scroll {
+      height: calc(100vh - 74px);
+      overflow-y: auto;
+    }
+
+    .main-area {
+      min-width: 0;
+      min-height: calc(100vh - 74px);
+    }
+
+    .search-box {
+      width: min(380px, 42vw);
+      height: 44px;
+      background: #f5f7fa;
+      border: 1px solid #e5eaf1;
+    }
+
+    .sidebar-link {
+      position: relative;
+      min-height: 50px;
+      color: #536078;
+      transition: .2s ease;
+    }
+
+    .sidebar-link:hover {
+      background: #f6f8fc;
+      color: #2563eb;
+    }
+
+    .sidebar-link.active {
+      background: #2563eb;
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(37,99,235,.18);
+    }
+
+    .sidebar-link.active .side-icon {
+      color: #fff !important;
+    }
+
+    .sidebar-link.active .count-badge {
+      background: rgba(255,255,255,.22) !important;
+      color: #fff !important;
+    }
+
+    .count-badge {
+      min-width: 28px;
+      height: 28px;
+      padding: 0 8px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .section-label {
+      color: #9aa7ba;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .dashboard-card {
+      background: #fff;
+      border: 1px solid #e5eaf1;
+      border-radius: 22px;
+      box-shadow: 0 4px 16px rgba(15,23,42,.035);
+    }
+
+    /* ===== NOTIFICATIONS ===== */
+    .notif-row {
+      transition: .2s ease;
+      cursor: pointer;
+    }
+
+    .notif-row:hover {
+      background: #fafcff;
+    }
+
+    .notif-row.unread {
+      background: rgba(239, 246, 255, .55);
+    }
+
+    .notif-row.unread:hover {
+      background: rgba(219, 234, 254, .55);
+    }
+
+    .filter-chip {
+      transition: .18s ease;
+      white-space: nowrap;
+    }
+
+    .filter-chip.active {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+      box-shadow: 0 6px 16px rgba(37,99,235,.2);
+    }
+
+    .filter-scroll {
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .filter-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    #sidebarDrawer {
+      transform: translateX(100%);
+      transition: transform .25s ease;
+    }
+
+    #sidebarDrawer.open {
+      transform: translateX(0);
+    }
+
+    #sidebarOverlay {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease;
+    }
+
+    #sidebarOverlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #accountMenu {
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+      transition: opacity .15s ease, transform .15s ease;
+    }
+
+    #accountMenu.open {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    :focus-visible {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 1023px) {
+      .sidebar {
+        display: none;
+      }
+
+      .topbar {
+        height: 68px;
+      }
+
+      .main-area {
+        min-height: calc(100vh - 68px);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .search-box {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen antialiased">
+
+<div class="app-shell">
+
+  <!-- ============================================================
+       TOP BAR
+       ============================================================ -->
+  <header class="topbar sticky top-0 z-40">
+    <div class="h-full flex items-center">
+
+      <!-- Sidebar header (RIGHT) -->
+      <div class="sidebar hidden lg:flex h-full items-center px-7 shrink-0">
+
+        <a href="home.html" class="flex items-center gap-3 group">
+
+          <img
+            src="../../images/herz-logo.png"
+            alt="شعار حِرز"
+            onerror="this.style.display='none'; document.getElementById('logoFallbackSidebar').classList.remove('hidden');"
+            class="h-10 w-auto object-contain transition group-hover:opacity-90">
+
+          <div id="logoFallbackSidebar" class="hidden w-11 h-11 rounded-2xl bg-blue-50 border border-blue-100 items-center justify-center flex">
+            <i data-lucide="shield" class="w-6 h-6 text-blue-600"></i>
+          </div>
+
+          <div>
+            <p class="text-sm font-black text-slate-900">حِرز</p>
+            <p class="text-[10px] font-bold text-slate-400">لوحة التحكم</p>
+          </div>
+
+        </a>
+
+      </div>
+
+      <!-- Main topbar (LEFT) -->
+      <div class="flex-1 min-w-0 h-full flex items-center justify-between gap-4 px-5 lg:px-10">
+
+        <div class="flex items-center gap-3">
+
+          <button
+            id="openSidebarBtn"
+            type="button"
+            aria-label="فتح القائمة"
+            class="lg:hidden w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+
+          <a href="home.html"
+             class="lg:hidden flex items-center gap-2 text-sm font-black text-slate-800">
+
+            <img
+              src="../../images/herz-logo.png"
+              alt="شعار حِرز"
+              onerror="this.style.display='none'; document.getElementById('logoFallbackMobileTop').classList.remove('hidden');"
+              class="h-8 w-auto object-contain">
+
+            <span id="logoFallbackMobileTop" class="hidden text-base font-black text-blue-600">حِرز</span>
+
+          </a>
+
+          <div class="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-[11px] font-black">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            منظومة حِرز تعمل بكفاءة 100%
+          </div>
+
+        </div>
+
+        <div class="flex items-center gap-3">
+
+          <div class="search-box rounded-2xl flex items-center gap-3 px-3.5">
+            <i data-lucide="search" class="w-4.5 h-4.5 text-slate-400"></i>
+
+            <span class="flex-1 text-xs font-bold text-slate-400">
+              ابحث عن طلب، جهة، أو قناة...
+            </span>
+
+            <span class="hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white border border-slate-200 text-[10px] font-black text-slate-400">
+              Ctrl K
+            </span>
+          </div>
+
+          <a href="notifications.html"
+             aria-label="الإشعارات"
+             class="relative w-11 h-11 rounded-xl flex items-center justify-center bg-blue-50 text-blue-600 transition">
+
+            <i data-lucide="bell" class="w-5 h-5"></i>
+
+            <span id="notifBadge"
+                  class="hidden absolute top-1 left-1 min-w-[18px] h-[18px] px-1 rounded-full bg-blue-600 text-white text-[9px] font-black items-center justify-center border-2 border-white">
+              0
+            </span>
+
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- ============================================================
+       APP BODY — sidebar RIGHT, content LEFT
+       ============================================================ -->
+  <div class="flex">
+
+    <!-- ==========================================================
+         DESKTOP SIDEBAR
+         ========================================================== -->
+    <aside class="sidebar hidden lg:block shrink-0">
+
+      <div class="sidebar-scroll p-5">
+
+        <div class="px-3 mb-3">
+          <p class="section-label">الرئيسية</p>
+        </div>
+
+        <nav class="flex flex-col gap-1" aria-label="قائمة لوحة التحكم">
+
+          <a href="home.html"
+             class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-black">
+
+            <i data-lucide="layout-dashboard"
+               class="side-icon w-5 h-5 text-slate-400"></i>
+
+            <span class="flex-1">الرئيسية</span>
+
+          </a>
+
+          <a href="notifications.html"
+             aria-current="page"
+             class="sidebar-link active flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-black">
+
+            <i data-lucide="bell"
+               class="side-icon w-5 h-5 text-slate-400"></i>
+
+            <span class="flex-1">الإشعارات</span>
+
+            <span id="sidebarNotificationCount"
+                  class="count-badge bg-blue-50 text-blue-700">
+              0
+            </span>
+
+          </a>
+
+          <a id="sidebarVerificationLink"
+             href="#"
+             class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-black">
+
+            <i data-lucide="file-check-2"
+               class="side-icon w-5 h-5 text-slate-400"></i>
+
+            <span class="flex-1">طلبات التوثيق</span>
+
+          </a>
+
+          <a href="channels.html"
+             class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-black">
+
+            <i data-lucide="radio-tower"
+               class="side-icon w-5 h-5 text-slate-400"></i>
+
+            <span class="flex-1">القنوات الرسمية</span>
+
+          </a>
+
+          <a href="account.html"
+             class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-black">
+
+            <i data-lucide="user"
+               class="side-icon w-5 h-5 text-slate-400"></i>
+
+            <span class="flex-1">الحساب</span>
+
+          </a>
+
+        </nav>
+
+
+        <div class="h-px bg-slate-100 my-6"></div>
+
+
+        <div class="px-3 mb-3">
+          <p class="section-label">المالية والاشتراكات</p>
+        </div>
+
+        <nav class="flex flex-col gap-1">
+
+          <a href="subscription.html"
+             class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-black">
+
+            <i data-lucide="credit-card"
+               class="side-icon w-5 h-5 text-slate-400"></i>
+
+            <span class="flex-1">الاشتراك والفواتير</span>
+
+          </a>
+
+        </nav>
+
+
+        <div class="h-px bg-slate-100 my-6"></div>
+
+
+        <div class="px-3 mb-3">
+          <p class="section-label">الإعدادات</p>
+        </div>
+
+        <nav class="flex flex-col gap-1">
+
+          <a href="settings.html"
+             class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-black">
+
+            <i data-lucide="settings"
+               class="side-icon w-5 h-5 text-slate-400"></i>
+
+            <span class="flex-1">الإعدادات</span>
+
+          </a>
+
+        </nav>
+
+
+        <!-- User account -->
+        <div class="mt-8 p-3 rounded-2xl border border-slate-200 bg-slate-50">
+
+          <div class="flex items-center gap-3">
+
+            <div id="userAvatar"
+                 class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm font-black shrink-0">
+              ن
+            </div>
+
+            <div class="min-w-0 flex-1">
+
+              <p id="userNameHeader"
+                 class="text-xs font-black text-slate-800 truncate">
+                المستخدم
+              </p>
+
+              <p id="sidebarAccountType"
+                 class="text-[10px] font-bold text-slate-400 mt-0.5">
+                حساب فردي
+              </p>
+
+            </div>
+
+            <div class="relative">
+
+              <button id="accountMenuBtn"
+                      type="button"
+                      onclick="toggleAccountMenu()"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      aria-label="قائمة الحساب"
+                      class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-blue-600">
+
+                <i data-lucide="more-horizontal"
+                   class="w-4 h-4"></i>
+
+              </button>
+
+              <div id="accountMenu"
+                   role="menu"
+                   class="absolute left-0 bottom-10 w-52 bg-white border border-slate-200 rounded-2xl shadow-lg p-2 z-50">
+
+                <a href="account.html"
+                   role="menuitem"
+                   class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition">
+
+                  <i data-lucide="user" class="w-4 h-4"></i>
+
+                  <span>حسابي</span>
+
+                </a>
+
+                <a href="settings.html"
+                   role="menuitem"
+                   class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition">
+
+                  <i data-lucide="settings" class="w-4 h-4"></i>
+
+                  <span>الإعدادات</span>
+
+                </a>
+
+                <div class="h-px bg-slate-100 my-1.5"></div>
+
+                <button type="button"
+                        onclick="handleLogout()"
+                        role="menuitem"
+                        class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 transition text-right">
+
+                  <i data-lucide="log-out" class="w-4 h-4"></i>
+
+                  <span>تسجيل الخروج</span>
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+
+    <!-- ==========================================================
+         MAIN CONTENT
+         ========================================================== -->
+    <main class="main-area flex-1 min-w-0">
+
+      <div class="px-4 sm:px-6 lg:px-10 py-7 lg:py-10 max-w-[1500px] mx-auto">
+
+        <!-- BACK LINK -->
+        <a href="home.html"
+           class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-[11px] font-black text-slate-600 hover:text-blue-600 hover:border-blue-200 transition mb-5">
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          <span>العودة إلى لوحة التحكم</span>
+        </a>
+
+        <!-- PAGE HEADER -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
+
+          <div>
+
+            <p class="text-[10px] font-black text-blue-600 mb-1">مركز التنبيهات</p>
+
+            <h1 class="text-2xl sm:text-[28px] font-black text-slate-900 leading-tight">
+              الإشعارات
+            </h1>
+
+            <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-2 leading-7">
+              تابع آخر المستجدات المتعلقة بحسابك وطلبات التوثيق والاشتراك.
+            </p>
+
+          </div>
+
+          <div id="unreadSummary"
+               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-blue-50 border border-blue-100 text-blue-700 text-xs font-black self-start lg:self-auto">
+            <i data-lucide="bell-dot" class="w-4 h-4"></i>
+            <span id="unreadSummaryText">لا توجد إشعارات غير مقروءة</span>
+          </div>
+
+        </div>
+
+
+        <!-- TOOLBAR -->
+        <div class="dashboard-card p-4 sm:p-5 mb-5">
+
+          <div class="flex flex-col lg:flex-row lg:items-center gap-4">
+
+            <!-- SEARCH -->
+            <div class="relative flex-1 min-w-0">
+
+              <i data-lucide="search"
+                 class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+
+              <input
+                id="notifSearchInput"
+                type="text"
+                autocomplete="off"
+                aria-label="البحث في الإشعارات"
+                placeholder="البحث في الإشعارات..."
+                class="w-full pr-11 pl-10 py-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/5 transition">
+
+              <button
+                id="clearSearchBtn"
+                type="button"
+                aria-label="مسح البحث"
+                class="hidden absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-lg text-slate-400 hover:text-slate-600 items-center justify-center transition">
+                <i data-lucide="x" class="w-3.5 h-3.5"></i>
+              </button>
+
+            </div>
+
+            <!-- MARK ALL -->
+            <button
+              id="markAllBtn"
+              type="button"
+              class="hidden shrink-0 items-center justify-center gap-2 px-4 py-3 rounded-xl bg-blue-600 text-white text-xs font-black hover:bg-blue-700 transition shadow-blue">
+              <i data-lucide="check-check" class="w-4 h-4"></i>
+              <span>تحديد الكل كمقروء</span>
+            </button>
+
+          </div>
+
+          <!-- FILTERS -->
+          <div class="filter-scroll flex items-center gap-2 mt-4 pt-4 border-t border-slate-100 -mx-1 px-1">
+
+            <button type="button" data-filter="all"
+                    class="filter-chip active px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-[11px] font-black text-slate-600">
+              الكل
+            </button>
+
+            <button type="button" data-filter="unread"
+                    class="filter-chip px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-[11px] font-black text-slate-600">
+              غير المقروءة
+            </button>
+
+            <button type="button" data-filter="verification"
+                    class="filter-chip px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-[11px] font-black text-slate-600">
+              التوثيق
+            </button>
+
+            <button type="button" data-filter="subscription"
+                    class="filter-chip px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-[11px] font-black text-slate-600">
+              الاشتراك
+            </button>
+
+            <button type="button" data-filter="payment"
+                    class="filter-chip px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-[11px] font-black text-slate-600">
+              المدفوعات
+            </button>
+
+            <button type="button" data-filter="security"
+                    class="filter-chip px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-[11px] font-black text-slate-600">
+              الأمان
+            </button>
+
+            <button type="button" data-filter="account"
+                    class="filter-chip px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-[11px] font-black text-slate-600">
+              الحساب
+            </button>
+
+            <button type="button" data-filter="system"
+                    class="filter-chip px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-[11px] font-black text-slate-600">
+              النظام
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- RESULTS COUNT -->
+        <div class="flex items-center justify-between gap-3 mb-3 px-1">
+          <p id="resultsCount" class="text-[11px] font-bold text-slate-400"></p>
+        </div>
+
+
+        <!-- NOTIFICATIONS LIST -->
+        <div id="notificationsCard" class="dashboard-card overflow-hidden">
+          <div id="notificationsList" class="divide-y divide-slate-100"></div>
+        </div>
+
+
+        <!-- LOAD MORE -->
+        <div id="loadMoreWrap" class="hidden justify-center mt-5">
+          <button
+            id="loadMoreBtn"
+            type="button"
+            class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white border border-slate-200 text-xs font-black text-slate-600 hover:text-blue-600 hover:border-blue-200 transition">
+            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            <span id="loadMoreText">عرض المزيد</span>
+          </button>
+        </div>
+
+
+        <!-- EMPTY STATE: no notifications at all -->
+        <div id="emptyStateAll" class="hidden dashboard-card p-10 sm:p-14 text-center">
+
+          <div class="w-16 h-16 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-5">
+            <i data-lucide="bell-off" class="w-8 h-8"></i>
+          </div>
+
+          <h2 class="text-lg font-black text-slate-900">لا توجد إشعارات</h2>
+
+          <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-2 leading-7 max-w-md mx-auto">
+            سنخبرك هنا بأي مستجدات مهمة تتعلق بحسابك وطلبات التوثيق والاشتراك.
+          </p>
+
+        </div>
+
+
+        <!-- EMPTY STATE: no search/filter results -->
+        <div id="emptyStateFiltered" class="hidden dashboard-card p-10 sm:p-14 text-center">
+
+          <div class="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center mx-auto mb-5">
+            <i data-lucide="search-x" class="w-8 h-8"></i>
+          </div>
+
+          <h2 class="text-lg font-black text-slate-900">لم نعثر على إشعارات مطابقة</h2>
+
+          <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-2 leading-7 max-w-md mx-auto">
+            جرّب البحث بكلمات مختلفة أو غيّر الفلتر المحدد.
+          </p>
+
+          <button
+            type="button"
+            onclick="resetSearchAndFilter()"
+            class="inline-flex items-center gap-2 mt-6 px-5 py-3 rounded-xl bg-blue-600 text-white text-xs font-black hover:bg-blue-700 transition shadow-blue">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            <span>مسح البحث والفلتر</span>
+          </button>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+</div>
+
+
+<!-- ============================================================
+     MOBILE SIDEBAR
+     ============================================================ -->
+<div id="sidebarOverlay"
+     onclick="closeSidebar()"
+     class="lg:hidden fixed inset-0 bg-slate-900/40 z-40"></div>
+
+
+<aside id="sidebarDrawer"
+       class="lg:hidden fixed top-0 bottom-0 right-0 w-80 max-w-[88%] bg-white z-50 shadow-2xl flex flex-col">
+
+  <div class="flex items-center justify-between px-5 h-16 border-b border-slate-200 shrink-0">
+
+    <a href="home.html" class="flex items-center gap-2">
+
+      <img
+        src="../../images/herz-logo.png"
+        alt="شعار حِرز"
+        onerror="this.style.display='none'; document.getElementById('logoFallbackDrawer').classList.remove('hidden');"
+        class="h-8 w-auto object-contain">
+
+      <div id="logoFallbackDrawer" class="hidden w-9 h-9 rounded-xl bg-blue-50 text-blue-600 items-center justify-center flex">
+        <i data-lucide="shield" class="w-5 h-5"></i>
+      </div>
+
+      <span class="text-sm font-black text-slate-900">لوحة حِرز</span>
+
+    </a>
+
+    <button onclick="closeSidebar()"
+            aria-label="إغلاق القائمة"
+            class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-slate-500">
+      <i data-lucide="x" class="w-4 h-4"></i>
+    </button>
+
+  </div>
+
+
+  <nav class="flex-1 overflow-y-auto p-4 flex flex-col gap-1">
+
+    <a href="home.html"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 text-xs font-black">
+      <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+      <span>الرئيسية</span>
+    </a>
+
+    <a href="notifications.html"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-600 text-white text-xs font-black">
+      <i data-lucide="bell" class="w-5 h-5"></i>
+      <span class="flex-1">الإشعارات</span>
+      <span id="mobileNotificationCount"
+            class="count-badge bg-white/20 text-white">0</span>
+    </a>
+
+    <a id="sidebarVerificationLinkMobile"
+       href="#"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 text-xs font-black">
+      <i data-lucide="file-check-2" class="w-5 h-5"></i>
+      <span>طلبات التوثيق</span>
+    </a>
+
+    <a href="channels.html"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 text-xs font-black">
+      <i data-lucide="radio-tower" class="w-5 h-5"></i>
+      <span>القنوات الرسمية</span>
+    </a>
+
+    <a href="subscription.html"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 text-xs font-black">
+      <i data-lucide="credit-card" class="w-5 h-5"></i>
+      <span>الاشتراك والفواتير</span>
+    </a>
+
+    <a href="account.html"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 text-xs font-black">
+      <i data-lucide="user" class="w-5 h-5"></i>
+      <span>الحساب</span>
+    </a>
+
+    <a href="settings.html"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 text-xs font-black">
+      <i data-lucide="settings" class="w-5 h-5"></i>
+      <span>الإعدادات</span>
+    </a>
+
+    <div class="h-px bg-slate-100 my-3"></div>
+
+    <button type="button"
+            onclick="handleLogout()"
+            class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-black text-red-600 hover:bg-red-50 text-right">
+      <i data-lucide="log-out" class="w-5 h-5"></i>
+      <span>تسجيل الخروج</span>
+    </button>
+
+  </nav>
+
+</aside>
+
+
+<!-- ============================================================
+     LOGOUT MODAL
+     ============================================================ -->
+<div id="logoutModalOverlay"
+     class="hidden fixed inset-0 bg-slate-900/50 z-[60] items-center justify-center px-4">
+
+  <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 sm:p-7 text-center">
+
+    <div class="w-12 h-12 rounded-2xl bg-red-50 text-red-600 border border-red-100 flex items-center justify-center mx-auto mb-4">
+      <i data-lucide="log-out" class="w-5 h-5"></i>
+    </div>
+
+    <h3 class="text-base font-black text-slate-900">تسجيل الخروج</h3>
+
+    <p class="text-xs font-semibold text-slate-500 mt-2 leading-relaxed">
+      هل أنت متأكد أنك تريد تسجيل الخروج من حسابك في حِرز؟
+    </p>
+
+    <div class="flex items-center gap-3 mt-6">
+
+      <button type="button"
+              onclick="closeLogoutModal()"
+              class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-black hover:bg-slate-50 transition">
+        إلغاء
+      </button>
+
+      <button type="button"
+              onclick="confirmLogout()"
+              class="flex-1 px-4 py-2.5 rounded-xl bg-red-600 text-white text-xs font-black hover:bg-red-700 transition">
+        تسجيل الخروج
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- TOASTS -->
+<div id="toastContainer"
+     class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[70] flex flex-col gap-2 w-[calc(100%-2rem)] max-w-sm">
+</div>
+
+
+<script>
+
+/* ============================================================
+   1) ACCOUNT TYPE + SHARED CONSTANTS
+   ============================================================ */
+
+const VALID_TYPES = ['individual', 'entity'];
+
+const NOTIFICATIONS_KEY = 'heerzNotifications';
+
+const PAGE_SIZE = 8;
+
+
+function getSessionValue(key) {
+  try {
+    return sessionStorage.getItem(key);
+  } catch (e) {
+    return null;
+  }
+}
+
+
+const storedAccountType = getSessionValue('heerzAccountType');
+
+const resolvedAccountType =
+  VALID_TYPES.includes(storedAccountType)
+    ? storedAccountType
+    : 'individual';
+
+
+const TERMS = {
+
+  individual: {
+    accountLabel: 'حساب فردي',
+    presenceLabel: 'حضورك الرقمي',
+    verificationForm: '../individual/verification-form.html'
+  },
+
+  entity: {
+    accountLabel: 'حساب جهة',
+    presenceLabel: 'الحضور الرقمي للجهة',
+    verificationForm: '../entity/verification-form.html'
+  }
+
+};
+
+
+const currentTerms = TERMS[resolvedAccountType];
+
+
+// Mirrors the user profile used by home.html
+const userProfile = {
+  name: 'نورة حمود',
+  accountType: resolvedAccountType
+};
+
+
+/* ============================================================
+   2) NOTIFICATION TYPE CONFIG
+   ============================================================ */
+
+const TYPE_CONFIG = {
+
+  verification: {
+    label: 'التوثيق',
+    icon: 'shield-check',
+    color: 'bg-blue-50 text-blue-600'
+  },
+
+  subscription: {
+    label: 'الاشتراك',
+    icon: 'credit-card',
+    color: 'bg-violet-50 text-violet-600'
+  },
+
+  payment: {
+    label: 'المدفوعات',
+    icon: 'receipt',
+    color: 'bg-emerald-50 text-emerald-600'
+  },
+
+  security: {
+    label: 'الأمان',
+    icon: 'lock-keyhole',
+    color: 'bg-amber-50 text-amber-600'
+  },
+
+  account: {
+    label: 'الحساب',
+    icon: 'user-check',
+    color: 'bg-slate-100 text-slate-600'
+  },
+
+  system: {
+    label: 'النظام',
+    icon: 'info',
+    color: 'bg-blue-50 text-blue-600'
+  }
+
+};
+
+
+function getTypeConfig(type) {
+  return TYPE_CONFIG[type] || TYPE_CONFIG.system;
+}
+
+
+/* ============================================================
+   3) DEFAULT MOCK NOTIFICATIONS
+   Links stay null in storage; verification links resolve at
+   render time so the same data works for individual + entity.
+   ============================================================ */
+
+function buildDefaultNotifications() {
+
+  return [
+
+    {
+      id: 'notif-001',
+      type: 'account',
+      title: 'تم إنشاء حسابك بنجاح',
+      description: 'تم إنشاء حسابك في منصة حِرز بنجاح.',
+      date: '15 سبتمبر 2026',
+      timestamp: '08:30 م',
+      read: true,
+      linkType: null,
+      link: null
+    },
+
+    {
+      id: 'notif-002',
+      type: 'security',
+      title: 'تم التحقق من رقم جوالك',
+      description: 'تم تأكيد ملكيتك لوسيلة التواصل المرتبطة بحسابك.',
+      date: '15 سبتمبر 2026',
+      timestamp: '08:45 م',
+      read: true,
+      linkType: null,
+      link: null
+    },
+
+    {
+      id: 'notif-003',
+      type: 'verification',
+      title: 'يمكنك الآن إكمال بيانات التوثيق',
+      description: 'أكمل البيانات المطلوبة لإرسال طلبك إلى فريق حِرز للمراجعة والتحقق.',
+      date: '15 سبتمبر 2026',
+      timestamp: '09:10 م',
+      read: false,
+      linkType: 'verification',
+      link: null
+    },
+
+    {
+      id: 'notif-004',
+      type: 'verification',
+      title: 'تذكير بإكمال طلب التوثيق',
+      description: 'لا يزال طلب التوثيق بحاجة إلى استكمال البيانات المطلوبة.',
+      date: '14 سبتمبر 2026',
+      timestamp: '06:20 م',
+      read: false,
+      linkType: 'verification',
+      link: null
+    },
+
+    {
+      id: 'notif-005',
+      type: 'verification',
+      title: 'تم استلام طلب التوثيق',
+      description: 'استلمنا طلبك بنجاح وسيتم البدء في مراجعته قريبًا.',
+      date: '13 سبتمبر 2026',
+      timestamp: '11:05 ص',
+      read: false,
+      linkType: 'verification',
+      link: null
+    },
+
+    {
+      id: 'notif-006',
+      type: 'verification',
+      title: 'طلبك قيد المراجعة',
+      description: 'يقوم فريق حِرز بمراجعة البيانات والمعلومات المرسلة.',
+      date: '13 سبتمبر 2026',
+      timestamp: '02:40 م',
+      read: true,
+      linkType: 'verification',
+      link: null
+    },
+
+    {
+      id: 'notif-007',
+      type: 'verification',
+      title: 'تحتاج إلى تحديث بعض البيانات',
+      description: 'يرجى مراجعة الملاحظات المرسلة وتحديث البيانات الناقصة لاستكمال المراجعة.',
+      date: '12 سبتمبر 2026',
+      timestamp: '10:15 ص',
+      read: true,
+      linkType: 'verification',
+      link: null
+    },
+
+    {
+      id: 'notif-008',
+      type: 'verification',
+      title: 'تمت الموافقة الأولية على طلبك',
+      description: 'اجتاز طلبك مرحلة التحقق الأولي من فريق حِرز.',
+      date: '11 سبتمبر 2026',
+      timestamp: '04:55 م',
+      read: true,
+      linkType: 'verification',
+      link: null
+    },
+
+    {
+      id: 'notif-009',
+      type: 'payment',
+      title: 'طلبك مؤهل للانتقال إلى مرحلة الدفع',
+      description: 'أكمل عملية الدفع لاستكمال إجراءات التوثيق.',
+      date: '11 سبتمبر 2026',
+      timestamp: '05:00 م',
+      read: true,
+      linkType: null,
+      link: 'subscription.html'
+    },
+
+    {
+      id: 'notif-010',
+      type: 'payment',
+      title: 'تم استلام الدفعة',
+      description: 'تم استلام دفعتك بنجاح وإصدار الفاتورة الخاصة بها.',
+      date: '10 سبتمبر 2026',
+      timestamp: '09:30 ص',
+      read: true,
+      linkType: null,
+      link: 'subscription.html'
+    },
+
+    {
+      id: 'notif-011',
+      type: 'verification',
+      title: 'طلبك قيد الاعتماد النهائي',
+      description: 'وصل طلبك إلى المرحلة الأخيرة من المراجعة والاعتماد.',
+      date: '09 سبتمبر 2026',
+      timestamp: '01:25 م',
+      read: true,
+      linkType: 'verification',
+      link: null
+    },
+
+    {
+      id: 'notif-012',
+      type: 'verification',
+      title: 'تم توثيق حضورك الرقمي بنجاح',
+      description: 'اكتملت إجراءات التوثيق ويمكنك الآن عرض ملفك الموثق.',
+      date: '08 سبتمبر 2026',
+      timestamp: '12:00 م',
+      read: true,
+      linkType: 'verification',
+      link: null
+    },
+
+    {
+      id: 'notif-013',
+      type: 'subscription',
+      title: 'اشتراكك قريب من الانتهاء',
+      description: 'تبقّى وقت قصير على انتهاء اشتراكك، جدّده لتفادي انقطاع الخدمة.',
+      date: '07 سبتمبر 2026',
+      timestamp: '08:10 ص',
+      read: true,
+      linkType: null,
+      link: 'subscription.html'
+    },
+
+    {
+      id: 'notif-014',
+      type: 'subscription',
+      title: 'انتهى اشتراكك',
+      description: 'انتهى اشتراكك في منصة حِرز. جدّده لاستمرار الوصول إلى الخدمات.',
+      date: '06 سبتمبر 2026',
+      timestamp: '07:45 ص',
+      read: true,
+      linkType: null,
+      link: 'subscription.html'
+    },
+
+    {
+      id: 'notif-015',
+      type: 'security',
+      title: 'تم تسجيل دخول جديد إلى حسابك',
+      description: 'تم تسجيل دخول جديد إلى حسابك. إذا لم تكن أنت، يرجى تغيير كلمة المرور.',
+      date: '05 سبتمبر 2026',
+      timestamp: '11:50 م',
+      read: true,
+      linkType: null,
+      link: 'settings.html'
+    }
+
+  ];
+
+}
+
+
+/* ============================================================
+   4) STORAGE LAYER
+   Swap these two functions for real API calls later.
+   ============================================================ */
+
+let notifications = [];
+
+
+function loadNotifications() {
+
+  let raw = null;
+
+  try {
+    raw = localStorage.getItem(NOTIFICATIONS_KEY);
+  } catch (e) {
+    raw = null;
+  }
+
+
+  if (!raw) {
+
+    notifications = buildDefaultNotifications();
+
+    saveNotifications();
+
+    return;
+  }
+
+
+  try {
+
+    const parsed = JSON.parse(raw);
+
+
+    if (Array.isArray(parsed) && parsed.length) {
+
+      notifications = parsed;
+
+    } else {
+
+      notifications = buildDefaultNotifications();
+
+      saveNotifications();
+
+    }
+
+  } catch (e) {
+
+    notifications = buildDefaultNotifications();
+
+    saveNotifications();
+
+  }
+
+}
+
+
+function saveNotifications() {
+
+  try {
+
+    localStorage.setItem(
+      NOTIFICATIONS_KEY,
+      JSON.stringify(notifications)
+    );
+
+  } catch (e) {
+    // Storage may be unavailable (private mode) — keep working in memory.
+  }
+
+}
+
+
+function getUnreadCount() {
+
+  return notifications.filter(n => !n.read).length;
+
+}
+
+
+/* ============================================================
+   5) LINK RESOLUTION (per account type)
+   ============================================================ */
+
+function resolveNotificationLink(notification) {
+
+  if (notification.linkType === 'verification') {
+    return currentTerms.verificationForm;
+  }
+
+  return notification.link || null;
+
+}
+
+
+/* ============================================================
+   6) SAFE RENDERING HELPERS
+   ============================================================ */
+
+function escapeHtml(value) {
+
+  const div = document.createElement('div');
+
+  div.textContent = value == null ? '' : String(value);
+
+  return div.innerHTML;
+
+}
+
+
+/* ============================================================
+   7) VIEW STATE
+   ============================================================ */
+
+let activeFilter = 'all';
+
+let searchQuery = '';
+
+let visibleCount = PAGE_SIZE;
+
+
+function getFilteredNotifications() {
+
+  const query = searchQuery.trim().toLowerCase();
+
+
+  return notifications.filter(item => {
+
+    // Filter
+    if (activeFilter === 'unread') {
+
+      if (item.read) return false;
+
+    } else if (activeFilter !== 'all') {
+
+      if (item.type !== activeFilter) return false;
+
+    }
+
+
+    // Search
+    if (query) {
+
+      const inTitle =
+        (item.title || '').toLowerCase().includes(query);
+
+      const inDescription =
+        (item.description || '').toLowerCase().includes(query);
+
+
+      if (!inTitle && !inDescription) return false;
+
+    }
+
+
+    return true;
+
+  });
+
+}
+
+
+/* ============================================================
+   8) RENDER: BADGES + SUMMARY
+   ============================================================ */
+
+function renderCounters() {
+
+  const unread = getUnreadCount();
+
+
+  // Header badge
+  const badge = document.getElementById('notifBadge');
+
+  if (unread > 0) {
+
+    badge.textContent = unread > 9 ? '9+' : String(unread);
+
+    badge.classList.remove('hidden');
+    badge.classList.add('flex');
+
+  } else {
+
+    badge.classList.add('hidden');
+    badge.classList.remove('flex');
+
+  }
+
+
+  // Sidebar badges
+  const sideBadge =
+    document.getElementById('sidebarNotificationCount');
+
+  const mobileBadge =
+    document.getElementById('mobileNotificationCount');
+
+
+  const badgeText = unread > 9 ? '9+' : String(unread);
+
+
+  if (sideBadge) sideBadge.textContent = badgeText;
+
+  if (mobileBadge) mobileBadge.textContent = badgeText;
+
+
+  // Summary pill
+  const summary = document.getElementById('unreadSummary');
+
+  const summaryText = document.getElementById('unreadSummaryText');
+
+
+  if (unread > 0) {
+
+    summaryText.textContent = `لديك ${unread} إشعارات غير مقروءة`;
+
+    summary.className =
+      'inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-blue-50 border border-blue-100 text-blue-700 text-xs font-black self-start lg:self-auto';
+
+  } else {
+
+    summaryText.textContent = 'لا توجد إشعارات غير مقروءة';
+
+    summary.className =
+      'inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-500 text-xs font-black self-start lg:self-auto';
+
+  }
+
+
+  // Mark all button
+  const markAllBtn = document.getElementById('markAllBtn');
+
+  if (unread > 0) {
+
+    markAllBtn.classList.remove('hidden');
+    markAllBtn.classList.add('flex');
+
+  } else {
+
+    markAllBtn.classList.add('hidden');
+    markAllBtn.classList.remove('flex');
+
+  }
+
+}
+
+
+/* ============================================================
+   9) RENDER: NOTIFICATIONS LIST
+   ============================================================ */
+
+function renderNotifications() {
+
+  const listEl = document.getElementById('notificationsList');
+
+  const cardEl = document.getElementById('notificationsCard');
+
+  const emptyAll = document.getElementById('emptyStateAll');
+
+  const emptyFiltered = document.getElementById('emptyStateFiltered');
+
+  const loadMoreWrap = document.getElementById('loadMoreWrap');
+
+  const resultsCount = document.getElementById('resultsCount');
+
+
+  listEl.innerHTML = '';
+
+
+  // Case A: no notifications at all
+  if (!notifications.length) {
+
+    cardEl.classList.add('hidden');
+    emptyFiltered.classList.add('hidden');
+    loadMoreWrap.classList.add('hidden');
+    loadMoreWrap.classList.remove('flex');
+    resultsCount.textContent = '';
+
+    emptyAll.classList.remove('hidden');
+
+    return;
+  }
+
+
+  emptyAll.classList.add('hidden');
+
+
+  const filtered = getFilteredNotifications();
+
+
+  // Case B: notifications exist but none match
+  if (!filtered.length) {
+
+    cardEl.classList.add('hidden');
+    loadMoreWrap.classList.add('hidden');
+    loadMoreWrap.classList.remove('flex');
+    resultsCount.textContent = '';
+
+    emptyFiltered.classList.remove('hidden');
+
+    return;
+  }
+
+
+  emptyFiltered.classList.add('hidden');
+  cardEl.classList.remove('hidden');
+
+
+  const visible = filtered.slice(0, visibleCount);
+
+
+  resultsCount.textContent =
+    `عرض ${visible.length} من ${filtered.length} إشعار`;
+
+
+  visible.forEach(item => {
+
+    const config = getTypeConfig(item.type);
+
+    const link = resolveNotificationLink(item);
+
+
+    const row = document.createElement('div');
+
+    row.className =
+      'notif-row flex items-start gap-3 sm:gap-4 p-4 sm:p-5' +
+      (item.read ? '' : ' unread');
+
+    row.setAttribute('role', 'button');
+    row.setAttribute('tabindex', '0');
+    row.setAttribute('data-id', item.id);
+
+
+    row.innerHTML = `
+
+      <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 ${config.color}">
+        <i data-lucide="${config.icon}" class="w-5 h-5"></i>
+      </div>
+
+      <div class="min-w-0 flex-1">
+
+        <div class="flex items-start justify-between gap-3">
+
+          <div class="flex items-center gap-2 min-w-0">
+
+            ${item.read ? '' : '<span class="w-2 h-2 rounded-full bg-blue-600 shrink-0"></span>'}
+
+            <p class="text-xs sm:text-sm font-black text-slate-800 truncate">
+              ${escapeHtml(item.title)}
+            </p>
+
+          </div>
+
+          ${link ? '<i data-lucide="chevron-left" class="w-4 h-4 text-slate-300 shrink-0 mt-0.5"></i>' : ''}
+
+        </div>
+
+        <p class="text-[11px] sm:text-xs font-semibold text-slate-500 mt-1.5 leading-6">
+          ${escapeHtml(item.description)}
+        </p>
+
+        <div class="flex flex-wrap items-center gap-2 mt-2.5">
+
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg ${config.color} text-[10px] font-black">
+            ${escapeHtml(config.label)}
+          </span>
+
+          <span class="text-[10px] font-bold text-slate-400">
+            ${escapeHtml(item.date)} · ${escapeHtml(item.timestamp)}
+          </span>
+
+          ${item.read
+            ? '<span class="text-[10px] font-bold text-slate-300">مقروء</span>'
+            : '<span class="text-[10px] font-black text-blue-600">غير مقروء</span>'}
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    row.addEventListener('click', () => handleNotificationClick(item.id));
+
+    row.addEventListener('keydown', (e) => {
+
+      if (e.key === 'Enter' || e.key === ' ') {
+
+        e.preventDefault();
+
+        handleNotificationClick(item.id);
+
+      }
+
+    });
+
+
+    listEl.appendChild(row);
+
+  });
+
+
+  // Load more
+  if (filtered.length > visibleCount) {
+
+    loadMoreWrap.classList.remove('hidden');
+    loadMoreWrap.classList.add('flex');
+
+    const remaining = filtered.length - visibleCount;
+
+    document.getElementById('loadMoreText').textContent =
+      `عرض المزيد (${remaining})`;
+
+  } else {
+
+    loadMoreWrap.classList.add('hidden');
+    loadMoreWrap.classList.remove('flex');
+
+  }
+
+
+  lucide.createIcons();
+
+}
+
+
+/* ============================================================
+   10) ACTIONS
+   ============================================================ */
+
+function handleNotificationClick(id) {
+
+  const item = notifications.find(n => n.id === id);
+
+  if (!item) return;
+
+
+  const wasUnread = !item.read;
+
+
+  if (wasUnread) {
+
+    item.read = true;
+
+    saveNotifications();
+
+    renderCounters();
+
+    renderNotifications();
+
+  }
+
+
+  const link = resolveNotificationLink(item);
+
+
+  if (link) {
+
+    window.location.href = link;
+
+  }
+
+}
+
+
+function markAllAsRead() {
+
+  if (!getUnreadCount()) return;
+
+
+  notifications.forEach(item => {
+    item.read = true;
+  });
+
+
+  saveNotifications();
+
+  renderCounters();
+
+  renderNotifications();
+
+
+  showToast('تم تحديد جميع الإشعارات كمقروءة', 'success');
+
+}
+
+
+function setFilter(filter) {
+
+  activeFilter = filter;
+
+  visibleCount = PAGE_SIZE;
+
+
+  document
+    .querySelectorAll('.filter-chip')
+    .forEach(chip => {
+
+      if (chip.getAttribute('data-filter') === filter) {
+        chip.classList.add('active');
+      } else {
+        chip.classList.remove('active');
+      }
+
+    });
+
+
+  renderNotifications();
+
+}
+
+
+function handleSearchInput(value) {
+
+  searchQuery = value;
+
+  visibleCount = PAGE_SIZE;
+
+
+  const clearBtn = document.getElementById('clearSearchBtn');
+
+
+  if (value.trim()) {
+
+    clearBtn.classList.remove('hidden');
+    clearBtn.classList.add('flex');
+
+  } else {
+
+    clearBtn.classList.add('hidden');
+    clearBtn.classList.remove('flex');
+
+  }
+
+
+  renderNotifications();
+
+}
+
+
+function resetSearchAndFilter() {
+
+  document.getElementById('notifSearchInput').value = '';
+
+  handleSearchInput('');
+
+  setFilter('all');
+
+}
+
+
+function loadMore() {
+
+  visibleCount += PAGE_SIZE;
+
+  renderNotifications();
+
+}
+
+
+/* ============================================================
+   11) HEADER / SIDEBAR RENDER
+   ============================================================ */
+
+function renderHeaderAndSidebar() {
+
+  const firstName =
+    (userProfile.name || '').trim().split(' ')[0] || '';
+
+
+  const nameEl = document.getElementById('userNameHeader');
+
+  const avatarEl = document.getElementById('userAvatar');
+
+  const typeEl = document.getElementById('sidebarAccountType');
+
+
+  if (nameEl) {
+    nameEl.textContent = userProfile.name || 'المستخدم';
+  }
+
+  if (avatarEl) {
+    avatarEl.textContent = firstName ? firstName.charAt(0) : 'ح';
+  }
+
+  if (typeEl) {
+    typeEl.textContent = currentTerms.accountLabel;
+  }
+
+
+  const verificationLink =
+    document.getElementById('sidebarVerificationLink');
+
+  const verificationLinkMobile =
+    document.getElementById('sidebarVerificationLinkMobile');
+
+
+  if (verificationLink) {
+    verificationLink.setAttribute('href', currentTerms.verificationForm);
+  }
+
+  if (verificationLinkMobile) {
+    verificationLinkMobile.setAttribute('href', currentTerms.verificationForm);
+  }
+
+}
+
+
+/* ============================================================
+   12) MOBILE SIDEBAR
+   ============================================================ */
+
+function openSidebar() {
+
+  document.getElementById('sidebarDrawer').classList.add('open');
+
+  document.getElementById('sidebarOverlay').classList.add('open');
+
+  document.body.style.overflow = 'hidden';
+
+}
+
+
+function closeSidebar() {
+
+  document.getElementById('sidebarDrawer').classList.remove('open');
+
+  document.getElementById('sidebarOverlay').classList.remove('open');
+
+  document.body.style.overflow = '';
+
+}
+
+
+/* ============================================================
+   13) ACCOUNT MENU
+   ============================================================ */
+
+function toggleAccountMenu() {
+
+  const menu = document.getElementById('accountMenu');
+
+  const btn = document.getElementById('accountMenuBtn');
+
+
+  if (!menu || !btn) return;
+
+
+  const isOpen = menu.classList.toggle('open');
+
+
+  btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+}
+
+
+document.addEventListener('click', (e) => {
+
+  const menu = document.getElementById('accountMenu');
+
+  const btn = document.getElementById('accountMenuBtn');
+
+
+  if (!menu || !btn) return;
+
+
+  if (!menu.contains(e.target) && !btn.contains(e.target)) {
+
+    menu.classList.remove('open');
+
+    btn.setAttribute('aria-expanded', 'false');
+
+  }
+
+});
+
+
+document.addEventListener('keydown', (e) => {
+
+  if (e.key === 'Escape') {
+
+    const menu = document.getElementById('accountMenu');
+
+    if (menu) menu.classList.remove('open');
+
+    closeSidebar();
+
+    closeLogoutModal();
+
+  }
+
+});
+
+
+/* ============================================================
+   14) LOGOUT
+   ============================================================ */
+
+function handleLogout() {
+
+  const menu = document.getElementById('accountMenu');
+
+  if (menu) menu.classList.remove('open');
+
+
+  closeSidebar();
+
+  openLogoutModal();
+
+}
+
+
+function openLogoutModal() {
+
+  const modal = document.getElementById('logoutModalOverlay');
+
+  modal.classList.remove('hidden');
+
+  modal.classList.add('flex');
+
+}
+
+
+function closeLogoutModal() {
+
+  const modal = document.getElementById('logoutModalOverlay');
+
+  modal.classList.add('hidden');
+
+  modal.classList.remove('flex');
+
+}
+
+
+function confirmLogout() {
+
+  // Session keys only — notification data in localStorage is preserved.
+  try {
+
+    sessionStorage.removeItem('heerzAccountType');
+
+    sessionStorage.removeItem('heerzContactVerified');
+
+  } catch (e) {}
+
+
+  window.location.href = '../auth/login.html';
+
+}
+
+
+/* ============================================================
+   15) TOASTS
+   ============================================================ */
+
+function showToast(message, type) {
+
+  const container = document.getElementById('toastContainer');
+
+
+  const colors = {
+    success: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+    error: 'border-red-200 bg-red-50 text-red-700',
+    info: 'border-blue-200 bg-blue-50 text-blue-700'
+  };
+
+
+  const icons = {
+    success: 'check-circle-2',
+    error: 'x-circle',
+    info: 'info'
+  };
+
+
+  const toast = document.createElement('div');
+
+
+  toast.className =
+    `flex items-center gap-2.5 px-4 py-3 rounded-2xl border shadow-lg text-xs font-bold ${colors[type] || colors.info}`;
+
+
+  const icon = document.createElement('i');
+
+  icon.setAttribute('data-lucide', icons[type] || icons.info);
+
+  icon.className = 'w-4 h-4 shrink-0';
+
+
+  const text = document.createElement('span');
+
+  text.textContent = message;
+
+
+  toast.appendChild(icon);
+
+  toast.appendChild(text);
+
+
+  container.appendChild(toast);
+
+
+  lucide.createIcons();
+
+
+  setTimeout(() => {
+
+    toast.style.transition = 'opacity .3s ease, transform .3s ease';
+
+    toast.style.opacity = '0';
+
+    toast.style.transform = 'translateY(10px)';
+
+
+    setTimeout(() => toast.remove(), 300);
+
+  }, 3000);
+
+}
+
+
+/* ============================================================
+   16) INIT
+   ============================================================ */
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  lucide.createIcons();
+
+
+  loadNotifications();
+
+  renderHeaderAndSidebar();
+
+  renderCounters();
+
+  renderNotifications();
+
+
+  // Sidebar
+  document
+    .getElementById('openSidebarBtn')
+    .addEventListener('click', openSidebar);
+
+
+  // Search
+  document
+    .getElementById('notifSearchInput')
+    .addEventListener('input', (e) => handleSearchInput(e.target.value));
+
+
+  document
+    .getElementById('clearSearchBtn')
+    .addEventListener('click', () => {
+
+      document.getElementById('notifSearchInput').value = '';
+
+      handleSearchInput('');
+
+    });
+
+
+  // Filters
+  document
+    .querySelectorAll('.filter-chip')
+    .forEach(chip => {
+
+      chip.addEventListener('click', () => {
+
+        setFilter(chip.getAttribute('data-filter'));
+
+      });
+
+    });
+
+
+  // Mark all
+  document
+    .getElementById('markAllBtn')
+    .addEventListener('click', markAllAsRead);
+
+
+  // Load more
+  document
+    .getElementById('loadMoreBtn')
+    .addEventListener('click', loadMore);
+
+
+  lucide.createIcons();
+
+});
+
+</script>
+
+</body>
+</html>

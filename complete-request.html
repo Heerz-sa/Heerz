@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="bg-slate-50">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اعتماد طلب التوثيق | منصة حِرز</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif']
+          },
+          boxShadow: {
+            glow: '0 0 20px -5px rgba(37, 99, 235, 0.15)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+
+    .auth-bg {
+      background:
+        radial-gradient(1200px 500px at 100% -10%, rgba(37, 99, 235, 0.06), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, rgba(37, 99, 235, 0.05), transparent 60%);
+    }
+
+    .field-error {
+      display: none;
+    }
+
+    .field-error.show {
+      display: flex;
+    }
+
+    .spinner {
+      border: 2px solid rgba(255,255,255,0.35);
+      border-top-color: #fff;
+      border-radius: 9999px;
+      animation: spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #toastContainer {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 80;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: calc(100% - 2rem);
+      max-width: 400px;
+    }
+
+    .toast {
+      animation: toastIn .25s ease-out;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stepper-scroll {
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .stepper-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .break-anywhere {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .success-pop {
+      animation: successPop .45s cubic-bezier(.34,1.56,.64,1);
+    }
+
+    @keyframes successPop {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    :focus-visible {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen antialiased text-slate-800 bg-slate-50 flex flex-col">
+
+  <!-- ============================================================
+       HEADER
+       ============================================================ -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-[4.5rem] flex items-center justify-between gap-4">
+
+      <a href="../dashboard/home.html" class="flex items-center gap-2 shrink-0 group">
+        <img
+          src="../../images/herz-logo.png"
+          alt="شعار حرز"
+          onerror="this.style.display='none'; document.getElementById('logoFallbackHeader').classList.remove('hidden');"
+          class="h-8 sm:h-9 w-auto object-contain transition group-hover:opacity-90">
+        <span id="logoFallbackHeader" class="hidden text-lg sm:text-xl font-black text-blue-600">حِرز</span>
+        <span class="hidden md:inline text-[11px] font-bold text-slate-400 border-r border-slate-200 pr-3 mr-1">
+          توثيق وحماية الحضور الرقمي
+        </span>
+      </a>
+
+      <a
+        href="../dashboard/home.html"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100/80 border border-slate-200/60 text-xs font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition shadow-sm">
+        <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+        <span>لوحة التحكم</span>
+      </a>
+
+    </div>
+  </header>
+
+  <!-- ============================================================
+       ACCESS GUARD / EMPTY STATE VIEWS
+       ============================================================ -->
+  <main class="auth-bg flex-1 px-4 py-10 sm:py-14">
+
+    <!-- BLOCKED: entity account -->
+    <div id="blockedEntityView" class="hidden w-full max-w-md mx-auto">
+      <div class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-6 sm:p-8 text-center">
+        <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center mx-auto mb-5">
+          <i data-lucide="shield-alert" class="w-6 h-6"></i>
+        </div>
+        <h1 class="text-lg sm:text-xl font-black text-slate-900">هذه الصفحة مخصصة لطلبات توثيق الأفراد</h1>
+        <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-3 leading-relaxed">
+          حسابك مسجل كحساب جهة. يمكنك متابعة طلب توثيق الجهة من لوحة التحكم.
+        </p>
+        <a href="../dashboard/home.html"
+           class="inline-flex items-center gap-2 mt-6 px-5 py-3 rounded-xl bg-blue-600 text-white text-sm font-black hover:bg-blue-700 transition shadow-md shadow-blue-600/20">
+          <span>العودة إلى لوحة التحكم</span>
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- EMPTY STATE: no request/review data -->
+    <div id="emptyStateView" class="hidden w-full max-w-md mx-auto">
+      <div class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-6 sm:p-8 text-center">
+        <div class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-500 border border-slate-200 flex items-center justify-center mx-auto mb-5">
+          <i data-lucide="file-search" class="w-6 h-6"></i>
+        </div>
+        <h1 class="text-lg sm:text-xl font-black text-slate-900">لا توجد بيانات اعتماد متاحة</h1>
+        <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-3 leading-relaxed">
+          لم يتم العثور على طلب توثيق جاهز للاعتماد. يرجى العودة إلى نموذج التوثيق وإكمال البيانات أولًا.
+        </p>
+        <a href="verification-form.html"
+           class="inline-flex items-center gap-2 mt-6 px-5 py-3 rounded-xl bg-blue-600 text-white text-sm font-black hover:bg-blue-700 transition shadow-md shadow-blue-600/20">
+          <span>العودة إلى نموذج التوثيق</span>
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+
+
+    <!-- ============================================================
+         MAIN VIEW
+         ============================================================ -->
+    <div id="mainView" class="hidden w-full max-w-4xl mx-auto">
+
+      <!-- PREVIEW MODE NOTICE -->
+      <div id="previewModeNotice" class="hidden items-start gap-2.5 mb-5 p-3.5 rounded-xl bg-slate-100 border border-slate-200">
+        <i data-lucide="eye" class="w-4 h-4 text-slate-500 mt-0.5 shrink-0"></i>
+        <p class="text-[11px] sm:text-xs font-bold text-slate-500 leading-relaxed">
+          وضع المعاينة: لم يتم تحديد نوع الحساب.
+        </p>
+      </div>
+
+      <!-- STEPPER -->
+      <div class="stepper-scroll mb-6 sm:mb-8 -mx-1 px-1">
+        <ol class="flex items-center gap-2 min-w-[640px] sm:min-w-0">
+
+          <li class="flex-1 flex items-center gap-2">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-black shrink-0">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <p class="hidden sm:block text-[11px] font-black text-slate-900 leading-tight">إنشاء الحساب</p>
+          </li>
+
+          <div class="flex-1 h-0.5 bg-emerald-400 rounded-full"></div>
+
+          <li class="flex-1 flex items-center gap-2">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-black shrink-0">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <p class="hidden sm:block text-[11px] font-black text-slate-900 leading-tight">التحقق من وسيلة التواصل</p>
+          </li>
+
+          <div class="flex-1 h-0.5 bg-emerald-400 rounded-full"></div>
+
+          <li class="flex-1 flex items-center gap-2">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-black shrink-0">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <p class="hidden sm:block text-[11px] font-black text-slate-900 leading-tight">بيانات التوثيق</p>
+          </li>
+
+          <div class="flex-1 h-0.5 bg-emerald-400 rounded-full"></div>
+
+          <li class="flex-1 flex items-center gap-2">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-black shrink-0">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <p class="hidden sm:block text-[11px] font-black text-slate-900 leading-tight">المراجعة</p>
+          </li>
+
+          <div class="flex-1 h-0.5 bg-slate-200 rounded-full"></div>
+
+          <li class="flex-1 flex items-center gap-2">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-black shadow-md shadow-blue-600/25 shrink-0">
+              5
+            </div>
+            <p class="hidden sm:block text-[11px] font-black text-slate-900 leading-tight">الاعتماد</p>
+          </li>
+
+        </ol>
+      </div>
+
+      <!-- PAGE TITLE -->
+      <div class="mb-6">
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900">اعتماد طلب التوثيق</h1>
+        <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-2 leading-relaxed max-w-2xl">
+          راجعنا بياناتك في الخطوة السابقة. قبل إرسال الطلب، تأكد من موافقتك على تقديم هذه البيانات لمراجعتها واعتمادها من فريق حِرز.
+        </p>
+      </div>
+
+
+      <!-- ============================================================
+           SUBMITTED VIEW (existing request already under review / decided)
+           ============================================================ -->
+      <div id="alreadySubmittedView" class="hidden bg-white border border-slate-200/80 rounded-3xl shadow-sm p-6 sm:p-8 text-center mb-6">
+
+        <div id="alreadySubmittedIconWrap" class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5">
+          <i id="alreadySubmittedIcon" data-lucide="clock" class="w-6 h-6"></i>
+        </div>
+
+        <h2 id="alreadySubmittedTitle" class="text-lg sm:text-xl font-black text-slate-900">طلبك قيد المراجعة</h2>
+
+        <p id="alreadySubmittedText" class="text-xs sm:text-sm text-slate-500 font-semibold mt-3 leading-relaxed max-w-lg mx-auto">
+          تم إرسال طلبك بالفعل ويقوم فريق حِرز بمراجعته حاليًا.
+        </p>
+
+        <p id="alreadySubmittedRequestId" class="text-[11px] font-black text-slate-400 mt-4"></p>
+
+        <a href="../dashboard/home.html"
+           class="inline-flex items-center gap-2 mt-6 px-5 py-3 rounded-xl bg-blue-600 text-white text-sm font-black hover:bg-blue-700 transition shadow-md shadow-blue-600/20">
+          <span>الانتقال إلى لوحة التحكم</span>
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+
+      <!-- ============================================================
+           SUCCESS VIEW (just submitted)
+           ============================================================ -->
+      <div id="successView" class="hidden bg-white border border-slate-200/80 rounded-3xl shadow-sm p-6 sm:p-10 text-center mb-6">
+
+        <div class="success-pop w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center mx-auto mb-5">
+          <i data-lucide="check-circle-2" class="w-8 h-8"></i>
+        </div>
+
+        <h2 class="text-lg sm:text-xl font-black text-slate-900">تم إرسال طلب التوثيق بنجاح</h2>
+
+        <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-3 leading-relaxed max-w-lg mx-auto">
+          تم استلام طلبك وسيتم مراجعته من فريق حِرز. يمكنك متابعة حالة الطلب من لوحة التحكم.
+        </p>
+
+        <div class="inline-flex items-center gap-2 mt-5 px-4 py-2 rounded-xl bg-slate-50 border border-slate-200">
+          <i data-lucide="hash" class="w-3.5 h-3.5 text-slate-400"></i>
+          <span class="text-xs font-black text-slate-700">رقم الطلب: <span id="successRequestId" dir="ltr">—</span></span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-7">
+          <a href="../dashboard/home.html"
+             class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 text-white text-sm font-black hover:bg-blue-700 transition shadow-md shadow-blue-600/20 w-full sm:w-auto">
+            <span>الانتقال إلى لوحة التحكم</span>
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          </a>
+          <a href="../dashboard/home.html"
+             class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-black hover:bg-slate-50 transition w-full sm:w-auto">
+            <span>متابعة الطلب</span>
+          </a>
+        </div>
+      </div>
+
+
+      <!-- ============================================================
+           APPROVAL FORM VIEW
+           ============================================================ -->
+      <div id="approvalFormView" class="hidden">
+
+        <!-- STATUS CARD -->
+        <div class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-5 sm:p-7 mb-5">
+          <div class="flex flex-wrap items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shrink-0">
+                <i data-lucide="badge-check" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h2 class="text-sm sm:text-base font-black text-slate-900">جاهز للاعتماد</h2>
+                <p class="text-[11px] sm:text-xs text-slate-500 font-semibold mt-1.5 leading-relaxed max-w-lg">
+                  طلبك جاهز للإرسال إلى فريق حِرز للمراجعة. بعد الاعتماد لن تتمكن من تعديل البيانات الأساسية للطلب أثناء المراجعة إلا وفق الإجراءات المتاحة في المنصة.
+                </p>
+              </div>
+            </div>
+            <span class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 text-amber-700 text-[11px] font-black">
+              <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+              بانتظار الاعتماد
+            </span>
+          </div>
+        </div>
+
+
+        <!-- REQUEST SUMMARY -->
+        <div class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-5 sm:p-7 mb-5">
+
+          <div class="flex items-center gap-2.5 mb-5">
+            <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shrink-0">
+              <i data-lucide="clipboard-list" class="w-4.5 h-4.5"></i>
+            </div>
+            <h2 class="text-sm sm:text-base font-black text-slate-900">ملخص طلب التوثيق</h2>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-5">
+
+            <div>
+              <p class="text-[10px] font-black text-slate-400 mb-1">الاسم</p>
+              <p id="summaryName" class="text-xs font-black text-slate-800 break-anywhere">غير مضاف</p>
+            </div>
+
+            <div>
+              <p class="text-[10px] font-black text-slate-400 mb-1">الاسم الظاهر</p>
+              <p id="summaryDisplayName" class="text-xs font-black text-slate-800 break-anywhere">غير مضاف</p>
+            </div>
+
+            <div>
+              <p class="text-[10px] font-black text-slate-400 mb-1">نوع وثيقة التحقق</p>
+              <p id="summaryDocumentType" class="text-xs font-black text-slate-800">غير متوفر</p>
+            </div>
+
+            <div>
+              <p class="text-[10px] font-black text-slate-400 mb-1">القنوات الرسمية</p>
+              <p id="summaryChannelsCount" class="text-xs font-black text-slate-800">0 قناة</p>
+            </div>
+
+            <div>
+              <p class="text-[10px] font-black text-slate-400 mb-1">وسيلة التواصل</p>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-black">
+                <i data-lucide="check" class="w-2.5 h-2.5"></i>
+                تم التحقق
+              </span>
+            </div>
+
+            <div>
+              <p class="text-[10px] font-black text-slate-400 mb-1">حالة الطلب</p>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[10px] font-black">
+                جاهز للاعتماد
+              </span>
+            </div>
+
+          </div>
+
+          <div id="summaryBioRow" class="hidden pt-4 border-t border-slate-100">
+            <p class="text-[10px] font-black text-slate-400 mb-1">نبذة مختصرة</p>
+            <p id="summaryBio" class="text-xs font-semibold text-slate-600 leading-relaxed break-anywhere">—</p>
+          </div>
+
+          <div class="pt-4 mt-4 border-t border-slate-100">
+            <p class="text-[10px] font-black text-slate-400 mb-1">رقم الوثيقة</p>
+            <p id="summaryDocumentNumber" class="text-xs font-black text-slate-800" dir="ltr">غير متوفر</p>
+            <p class="text-[10px] font-semibold text-slate-400 mt-1.5">يتم حماية البيانات الحساسة وعدم عرضها بشكل كامل.</p>
+          </div>
+
+        </div>
+
+
+        <!-- CHANNELS -->
+        <div class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-5 sm:p-7 mb-5">
+
+          <div class="flex items-center gap-2.5 mb-4">
+            <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shrink-0">
+              <i data-lucide="radio-tower" class="w-4.5 h-4.5"></i>
+            </div>
+            <h2 class="text-sm sm:text-base font-black text-slate-900">القنوات والحسابات الرسمية</h2>
+          </div>
+
+          <div id="channelsList" class="space-y-2"></div>
+
+          <div id="channelsEmpty" class="hidden text-center py-6 border border-dashed border-slate-200 rounded-2xl">
+            <p class="text-xs font-bold text-slate-500">غير مضاف — لم تُضف أي قناة رسمية.</p>
+          </div>
+
+        </div>
+
+
+        <!-- APPROVALS -->
+        <div class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-5 sm:p-7 mb-5">
+
+          <h2 class="text-sm sm:text-base font-black text-slate-900 mb-4">الموافقة على الاعتماد</h2>
+
+          <div class="space-y-3">
+
+            <div>
+              <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                <input id="approveOwnership" type="checkbox" onchange="updateApproveButtonState()"
+                       class="w-4 h-4 mt-0.5 rounded accent-blue-600 shrink-0">
+                <span class="text-[11px] sm:text-xs font-bold text-slate-600 leading-relaxed">
+                  أقر بأن البيانات والمعلومات التي قدمتها صحيحة وأملك الحق في توثيق القنوات والحسابات المدرجة في الطلب.
+                </span>
+              </label>
+            </div>
+
+            <div>
+              <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                <input id="approveReview" type="checkbox" onchange="updateApproveButtonState()"
+                       class="w-4 h-4 mt-0.5 rounded accent-blue-600 shrink-0">
+                <span class="text-[11px] sm:text-xs font-bold text-slate-600 leading-relaxed">
+                  أوافق على مراجعة البيانات والمستندات المقدمة لغرض التحقق من طلب التوثيق.
+                </span>
+              </label>
+            </div>
+
+            <div>
+              <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                <input id="approveUnderstanding" type="checkbox" onchange="updateApproveButtonState()"
+                       class="w-4 h-4 mt-0.5 rounded accent-blue-600 shrink-0">
+                <span class="text-[11px] sm:text-xs font-bold text-slate-600 leading-relaxed">
+                  أفهم أن إرسال الطلب لا يعني اعتماده مباشرة، وأن الطلب سيخضع للمراجعة قبل إصدار حالة التوثيق.
+                </span>
+              </label>
+            </div>
+
+          </div>
+        </div>
+
+
+        <!-- IMPORTANT NOTICE -->
+        <div class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-5 sm:p-7">
+
+          <div class="flex items-start gap-2.5 p-3.5 rounded-xl bg-amber-50 border border-amber-100 mb-5">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 mt-0.5 shrink-0"></i>
+            <div>
+              <p class="text-[11px] sm:text-xs font-black text-amber-700 mb-1">مهم قبل الاعتماد</p>
+              <p class="text-[11px] sm:text-xs font-bold text-amber-700 leading-relaxed">
+                بعد إرسال الطلب، ستنتقل حالته إلى "قيد المراجعة". قد يتطلب فريق حِرز معلومات أو إجراءات إضافية للتحقق من ملكية القنوات والحسابات قبل اعتماد الطلب.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+
+            <a href="verification-review.html"
+               class="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-black hover:bg-slate-50 transition">
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              <span>العودة للمراجعة</span>
+            </a>
+
+            <button
+              type="button"
+              id="approveBtn"
+              disabled
+              onclick="handleApproveSubmit()"
+              class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-blue-600 text-white text-sm font-black hover:bg-blue-700 transition shadow-md shadow-blue-600/20 disabled:opacity-50 disabled:cursor-not-allowed">
+              <span id="approveBtnSpinner" class="hidden w-4 h-4 spinner"></span>
+              <i id="approveBtnIcon" data-lucide="check-circle-2" class="w-4 h-4"></i>
+              <span id="approveBtnText">اعتماد وإرسال الطلب</span>
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="bg-white border-t border-slate-200/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+
+        <div class="flex flex-col items-center md:items-start gap-2">
+          <div class="flex items-center gap-2.5">
+            <img
+              src="../../images/herz-logo.png"
+              alt="شعار حرز"
+              onerror="this.style.display='none'; document.getElementById('logoFallbackFooter').classList.remove('hidden');"
+              class="h-7 w-auto object-contain">
+            <span id="logoFallbackFooter" class="hidden text-sm font-black text-blue-600">حِرز</span>
+          </div>
+          <p class="text-[11px] font-semibold text-slate-400 text-center md:text-right">
+            المنصة الرائدة لتوثيق وحماية المحتوى الرقمي.
+          </p>
+        </div>
+
+        <nav class="flex items-center justify-center gap-6">
+          <a href="../privacy.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الخصوصية</a>
+          <a href="../terms.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الشروط والأحكام</a>
+          <a href="../faq.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الأسئلة الشائعة</a>
+        </nav>
+
+        <div class="text-center md:text-left">
+          <p class="text-[11px] font-bold text-slate-400">© 2026 منصة حِرز. جميع الحقوق محفوظة.</p>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOASTS -->
+  <div id="toastContainer"></div>
+
+  <!-- ============================================================
+       JAVASCRIPT
+       ============================================================ -->
+  <script>
+
+    /* ============================================================
+       1) ACCESS GUARD
+       ============================================================ */
+
+    const VALID_TYPES = ['individual', 'entity'];
+
+    function getSessionValue(key) {
+      try { return sessionStorage.getItem(key); } catch (e) { return null; }
+    }
+
+    const heerzAccountType = getSessionValue('heerzAccountType');
+
+
+    /* ============================================================
+       2) STORAGE KEYS — identical to verification-form.html / review
+       ============================================================ */
+
+    const DRAFT_KEY = 'heerzIndividualVerificationDraft';
+    const REQUEST_KEY = 'heerzIndividualVerificationRequest';
+    const NOTIFICATIONS_KEY = 'heerzNotifications';
+
+
+    /* ============================================================
+       3) CONFIG — mirrors verification-form.html / review
+       ============================================================ */
+
+    const CHANNEL_TYPES = {
+      x: { label: 'X (تويتر)', icon: 'at-sign' },
+      linkedin: { label: 'LinkedIn', icon: 'linkedin' },
+      instagram: { label: 'Instagram', icon: 'instagram' },
+      tiktok: { label: 'TikTok', icon: 'music-2' },
+      youtube: { label: 'YouTube', icon: 'youtube' },
+      snapchat: { label: 'Snapchat', icon: 'ghost' },
+      website: { label: 'موقع إلكتروني', icon: 'globe' },
+      email: { label: 'بريد إلكتروني', icon: 'mail' }
+    };
+
+    const DOCUMENT_TYPE_LABELS = {
+      national_id: 'الهوية الوطنية',
+      iqama: 'الإقامة',
+      passport: 'جواز السفر'
+    };
+
+    const LOCKED_STATUSES = ['under_review', 'approved', 'rejected'];
+
+    const STATUS_VIEW_CONFIG = {
+      under_review: {
+        title: 'طلبك قيد المراجعة',
+        text: 'تم إرسال طلبك بالفعل ويقوم فريق حِرز بمراجعته حاليًا.',
+        icon: 'clock',
+        iconWrap: 'bg-blue-50 text-blue-600'
+      },
+      approved: {
+        title: 'تم اعتماد طلبك',
+        text: 'اجتاز طلبك مرحلة المراجعة. يمكنك متابعة التفاصيل من لوحة التحكم.',
+        icon: 'badge-check',
+        iconWrap: 'bg-emerald-50 text-emerald-600'
+      },
+      rejected: {
+        title: 'طلبك بحاجة إلى مراجعة',
+        text: 'لم تتم الموافقة على الطلب الحالي. يمكنك مراجعة التفاصيل من لوحة التحكم.',
+        icon: 'x-circle',
+        iconWrap: 'bg-red-50 text-red-600'
+      }
+    };
+
+
+    /* ============================================================
+       4) UTILITIES
+       ============================================================ */
+
+    function escapeHtml(value) {
+      const div = document.createElement('div');
+      div.textContent = value == null ? '' : String(value);
+      return div.innerHTML;
+    }
+
+    function setText(id, value, fallback) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const text = (value === null || value === undefined || value === '') ? (fallback || '—') : String(value);
+      el.textContent = text;
+    }
+
+    function maskDocumentNumber(value) {
+      if (!value) return null;
+      const str = String(value).trim();
+      if (str.length <= 2) return str;
+      const visible = str.slice(-2);
+      const maskedLength = Math.min(str.length - 2, 8);
+      return '•'.repeat(maskedLength) + visible;
+    }
+
+    function showToast(message, type) {
+      const container = document.getElementById('toastContainer');
+      const colors = {
+        success: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+        error: 'border-red-200 bg-red-50 text-red-700',
+        info: 'border-blue-200 bg-blue-50 text-blue-700'
+      };
+      const icons = { success: 'check-circle-2', error: 'x-circle', info: 'info' };
+
+      const toast = document.createElement('div');
+      toast.className = `toast flex items-center gap-2.5 px-4 py-3 rounded-2xl border shadow-lg text-xs font-bold ${colors[type] || colors.info}`;
+
+      const icon = document.createElement('i');
+      icon.setAttribute('data-lucide', icons[type] || icons.info);
+      icon.className = 'w-4 h-4 shrink-0';
+
+      const text = document.createElement('span');
+      text.textContent = message;
+
+      toast.appendChild(icon);
+      toast.appendChild(text);
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.style.transition = 'opacity .3s ease, transform .3s ease';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+
+    /* ============================================================
+       5) STORAGE READ / WRITE
+       ============================================================ */
+
+    function loadRequest() {
+      let raw = null;
+      try { raw = localStorage.getItem(REQUEST_KEY); } catch (e) { raw = null; }
+      if (!raw) return null;
+      try {
+        const parsed = JSON.parse(raw);
+        return (parsed && typeof parsed === 'object') ? parsed : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function loadDraft() {
+      let raw = null;
+      try { raw = localStorage.getItem(DRAFT_KEY); } catch (e) { raw = null; }
+      if (!raw) return null;
+      try {
+        const parsed = JSON.parse(raw);
+        return (parsed && typeof parsed === 'object') ? parsed : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function saveRequest(requestObject) {
+      try {
+        localStorage.setItem(REQUEST_KEY, JSON.stringify(requestObject));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function generateRequestId() {
+      const random = Math.floor(100000 + Math.random() * 900000);
+      return `HRZ-${random}`;
+    }
+
+    function pushNotification(title, description, type) {
+      let notifications = [];
+
+      try {
+        const raw = localStorage.getItem(NOTIFICATIONS_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) notifications = parsed;
+        }
+      } catch (e) {
+        notifications = [];
+      }
+
+      const now = new Date();
+      const dateLabel = now.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' });
+      const timeLabel = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+
+      notifications.unshift({
+        id: `notif-${Date.now()}`,
+        type: type || 'verification',
+        title: title,
+        description: description,
+        date: dateLabel,
+        timestamp: timeLabel,
+        read: false,
+        linkType: null,
+        link: null
+      });
+
+      try {
+        localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notifications));
+      } catch (e) {
+        // Non-critical — continue even if this fails.
+      }
+    }
+
+
+    /* ============================================================
+       6) RENDER: SUMMARY
+       ============================================================ */
+
+    let activeData = null;
+
+    function renderSummary(data) {
+
+      setText('summaryName', data.fullName || data.name, 'غير مضاف');
+      setText('summaryDisplayName', data.displayName, 'غير مضاف');
+      setText('summaryDocumentType', DOCUMENT_TYPE_LABELS[data.documentType] || data.documentType, 'غير متوفر');
+
+      const channels = Array.isArray(data.channels) ? data.channels : [];
+      setText('summaryChannelsCount', channels.length > 0 ? `${channels.length} قناة` : '0 قناة');
+
+      if (data.bio) {
+        document.getElementById('summaryBioRow').classList.remove('hidden');
+        setText('summaryBio', data.bio);
+      }
+
+      const maskedDoc = maskDocumentNumber(data.documentNumber);
+      setText('summaryDocumentNumber', maskedDoc, 'غير متوفر');
+
+      renderChannelsList(channels);
+    }
+
+    function renderChannelsList(channels) {
+      const list = document.getElementById('channelsList');
+      const emptyState = document.getElementById('channelsEmpty');
+
+      list.innerHTML = '';
+
+      if (!channels.length) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      channels.forEach(channel => {
+        const config = CHANNEL_TYPES[channel.type] || CHANNEL_TYPES.website;
+
+        const row = document.createElement('div');
+        row.className = 'flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50';
+
+        row.innerHTML = `
+          <div class="w-9 h-9 rounded-lg bg-white border border-slate-200 text-blue-600 flex items-center justify-center shrink-0">
+            <i data-lucide="${config.icon}" class="w-4.5 h-4.5"></i>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-xs font-black text-slate-800">${escapeHtml(config.label)}</p>
+            <p class="text-[11px] font-semibold text-blue-600 break-anywhere" dir="ltr">${escapeHtml(channel.url)}</p>
+          </div>
+          <span class="shrink-0 inline-flex items-center gap-1.5 text-[10px] font-black text-emerald-700">
+            <i data-lucide="check" class="w-3 h-3"></i>
+            مضافة للتحقق
+          </span>
+        `;
+
+        list.appendChild(row);
+      });
+
+      lucide.createIcons();
+    }
+
+
+    /* ============================================================
+       7) APPROVAL BUTTON STATE
+       ============================================================ */
+
+    function updateApproveButtonState() {
+      const a = document.getElementById('approveOwnership').checked;
+      const b = document.getElementById('approveReview').checked;
+      const c = document.getElementById('approveUnderstanding').checked;
+      document.getElementById('approveBtn').disabled = !(a && b && c);
+    }
+
+
+    /* ============================================================
+       8) SUBMIT / APPROVE
+       ============================================================ */
+
+    function handleApproveSubmit() {
+      const btn = document.getElementById('approveBtn');
+      const spinner = document.getElementById('approveBtnSpinner');
+      const icon = document.getElementById('approveBtnIcon');
+      const text = document.getElementById('approveBtnText');
+
+      if (btn.disabled) return;
+
+      btn.disabled = true;
+      spinner.classList.remove('hidden');
+      icon.classList.add('hidden');
+      text.textContent = 'جارٍ إرسال طلبك...';
+
+      setTimeout(() => {
+
+        let requestObject = loadRequest();
+
+        if (!requestObject) {
+          // Build the request from the draft only if no request object exists yet —
+          // this reuses the same data collected in verification-form.html.
+          const draft = loadDraft() || activeData || {};
+          const now = new Date().toISOString();
+
+          requestObject = {
+            id: generateRequestId(),
+            accountType: 'individual',
+            name: draft.fullName || draft.name || '',
+            displayName: draft.displayName || '',
+            bio: draft.bio || '',
+            profilePhoto: draft.profilePhoto || null,
+            channels: Array.isArray(draft.channels) ? draft.channels : [],
+            nationality: draft.nationality || '',
+            documentType: draft.documentType || '',
+            documentNumber: draft.documentNumber || '',
+            documentExpiry: draft.documentExpiry || '',
+            documentFileName: draft.documentFileName || null,
+            additionalInfo: draft.additionalInfo || '',
+            createdAt: now,
+            updatedAt: now
+          };
+        }
+
+        if (!requestObject.id) {
+          requestObject.id = generateRequestId();
+        }
+
+        requestObject.status = 'under_review';
+        requestObject.submittedAt = new Date().toISOString();
+        requestObject.updatedAt = new Date().toISOString();
+
+        const saved = saveRequest(requestObject);
+
+        if (!saved) {
+          showToast('تعذر إرسال الطلب، يرجى المحاولة مرة أخرى.', 'error');
+          btn.disabled = false;
+          spinner.classList.add('hidden');
+          icon.classList.remove('hidden');
+          text.textContent = 'اعتماد وإرسال الطلب';
+          return;
+        }
+
+        pushNotification(
+          'تم استلام طلب التوثيق',
+          'تم إرسال طلب توثيق حضورك الرقمي بنجاح، والطلب الآن قيد المراجعة.',
+          'verification'
+        );
+
+        document.getElementById('approvalFormView').classList.add('hidden');
+
+        const successView = document.getElementById('successView');
+        successView.classList.remove('hidden');
+        document.getElementById('successRequestId').textContent = requestObject.id;
+
+        lucide.createIcons();
+
+      }, 900);
+    }
+
+
+    /* ============================================================
+       9) VIEW RESOLUTION
+       ============================================================ */
+
+    function renderAlreadySubmittedView(requestObject) {
+      const config = STATUS_VIEW_CONFIG[requestObject.status] || STATUS_VIEW_CONFIG.under_review;
+
+      document.getElementById('alreadySubmittedTitle').textContent = config.title;
+      document.getElementById('alreadySubmittedText').textContent = config.text;
+      document.getElementById('alreadySubmittedIcon').setAttribute('data-lucide', config.icon);
+
+      const iconWrap = document.getElementById('alreadySubmittedIconWrap');
+      iconWrap.className = `w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5 ${config.iconWrap}`;
+
+      if (requestObject.id) {
+        document.getElementById('alreadySubmittedRequestId').textContent = `رقم الطلب: ${requestObject.id}`;
+      }
+
+      document.getElementById('alreadySubmittedView').classList.remove('hidden');
+    }
+
+    function renderAccessAndData() {
+      const mainView = document.getElementById('mainView');
+      const blockedEntity = document.getElementById('blockedEntityView');
+      const emptyState = document.getElementById('emptyStateView');
+      const previewNotice = document.getElementById('previewModeNotice');
+
+      if (heerzAccountType === 'entity') {
+        blockedEntity.classList.remove('hidden');
+        return;
+      }
+
+      const requestObject = loadRequest();
+      const draft = loadDraft();
+      const data = requestObject || draft;
+
+      if (!data) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      if (!VALID_TYPES.includes(heerzAccountType)) {
+        previewNotice.classList.remove('hidden');
+        previewNotice.classList.add('flex');
+      }
+
+      mainView.classList.remove('hidden');
+      activeData = data;
+
+      if (requestObject && LOCKED_STATUSES.includes(requestObject.status)) {
+        renderSummary(requestObject);
+        renderAlreadySubmittedView(requestObject);
+        lucide.createIcons();
+        return;
+      }
+
+      renderSummary(data);
+      document.getElementById('approvalFormView').classList.remove('hidden');
+      updateApproveButtonState();
+
+      lucide.createIcons();
+    }
+
+
+    /* ============================================================
+       10) INIT
+       ============================================================ */
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderAccessAndData();
+      lucide.createIcons();
+    });
+
+  </script>
+
+</body>
+</html>

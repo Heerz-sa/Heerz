@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>حِرز |لا تغرك الهوية...
+عندنا الأصلية</title>
+
+  <!-- Tailwind CSS -->
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- الخط -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+    }
+  </style>
+
+</head>
+
+<body class="bg-white text-slate-900">
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+
+  <header class="sticky top-0 z-50 h-[82px] bg-white/95 backdrop-blur border-b border-slate-100">
+
+<div class="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
+
+  <!-- =========================
+       LOGO
+  ========================== -->
+
+  <a
+    href="#"
+    class="flex items-center shrink-0"
+    aria-label="حِرز - الصفحة الرئيسية"
+  >
+
+    <img
+      src="images/herz-logo.png"
+      alt="شعار حِرز"
+      class="w-[105px] h-auto object-contain"
+    >
+
+  </a>
+
+
+  <!-- =========================
+       DESKTOP NAVIGATION
+  ========================== -->
+
+  <nav class="hidden lg:flex items-center">
+
+    <ul class="flex items-center gap-9">
+
+      <!-- الرئيسية -->
+      <li>
+        <a
+          href="#home"
+          class="text-[15px] font-medium text-slate-700 hover:text-blue-700 transition"
+        >
+          الرئيسية
+        </a>
+      </li>
+
+
+      <!-- عن حِرز -->
+      <li>
+        <a
+          href="#about"
+          class="text-[15px] font-medium text-slate-700 hover:text-blue-700 transition"
+        >
+          عن حِرز
+        </a>
+      </li>
+
+
+      <!--تحقق الأن
+
+-->
+<li>
+<a
+           href="#verify"
+           class="text-[15px] font-medium text-slate-700 hover:text-blue-700 transition"
+         >
+تحقق الأن
+</a>
+</li>
+
+      <!-- =========================
+           وثّق حضورك الرقمي
+           DROPDOWN
+      ========================== -->
+
+      <li class="relative">
+
+        <button
+          id="digitalPresenceButton"
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+          class="flex items-center gap-2 text-[15px] font-medium text-slate-700 hover:text-blue-700 transition"
+        >
+
+          <span>وثّق حضورك الرقمي</span>
+
+          <!-- السهم -->
+          <svg
+            id="digitalPresenceArrow"
+            class="w-4 h-4 transition-transform duration-200"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m6 9 6 6 6-6"
+            />
+          </svg>
+
+        </button>
+
+
+        <!-- Dropdown -->
+
+        <!-- Dropdown للشاشات الكبيرة -->
+
+<div id="digitalPresenceDropdown" class="hidden absolute right-0 top-full mt-4 w-52 rounded-2xl bg-white border border-slate-100 shadow-xl p-2">
+  <!-- الأفراد -->
+  <a href="#digital-presence" onclick="selectCategory('individual', event)" class="block rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition">
+    الأفراد
+  </a>
+  <!-- الجهات -->
+  <a href="#digital-presence" onclick="selectCategory('org', event)" class="block rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition">
+    الجهات
+  </a>
+</div>
+
+      </li>
+
+    </ul>
+
+  </nav>
+
+
+  <!-- =========================
+       HEADER ACTIONS
+  ========================== -->
+
+  <div class="hidden lg:flex items-center gap-6">
+
+    <!-- اللغة -->
+
+    <a
+      href="#"
+      class="text-sm font-medium text-slate-600 hover:text-blue-700 transition"
+    >
+      العربية
+      <span class="mx-1 text-slate-300">|</span>
+      English
+    </a>
+
+
+    <!-- تحقق الآن -->
+
+    <a
+      href="User/auth/register.html"
+      class="inline-flex items-center justify-center rounded-xl bg-blue-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-800 transition"
+    >
+تسجيل الدخول    </a>
+
+  </div>
+
+
+  <!-- =========================
+       MOBILE MENU BUTTON
+  ========================== -->
+
+  <button
+    id="menuButton"
+    type="button"
+    class="lg:hidden flex flex-col gap-1.5 p-2"
+    aria-label="فتح القائمة"
+    aria-expanded="false"
+  >
+
+    <span class="block w-6 h-0.5 bg-slate-800"></span>
+    <span class="block w-6 h-0.5 bg-slate-800"></span>
+    <span class="block w-6 h-0.5 bg-slate-800"></span>
+
+  </button>
+
+</div>
+
+
+<!-- =========================
+     MOBILE MENU
+========================== -->
+
+<div
+  id="mobileMenu"
+  class="hidden lg:hidden absolute top-[82px] right-0 left-0 bg-white border-b border-slate-100 shadow-lg"
+>
+
+  <div class="max-w-7xl mx-auto px-6 py-5">
+
+    <div class="flex flex-col gap-1">
+
+
+      <!-- الرئيسية -->
+
+      <a
+        href="#home"
+        class="rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700"
+      >
+        الرئيسية
+      </a>
+
+
+      <!-- عن حِرز -->
+
+      <a
+        href="#about"
+        class="rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700"
+      >
+        عن حِرز
+      </a>
+
+
+      <!-- تحقق الأن  -->
+
+      <a
+        href="#verify"
+        class="rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700"
+      >
+         تحقق الأن
+
+      </a>
+
+
+      <!-- =========================
+           MOBILE DROPDOWN
+      ========================== -->
+
+      <div>
+
+        <button
+          id="mobileDigitalPresenceButton"
+          type="button"
+          class="w-full flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700"
+          aria-expanded="false"
+        >
+
+          <span>وثّق حضورك الرقمي</span>
+
+          <svg
+            id="mobileDigitalPresenceArrow"
+            class="w-4 h-4 transition-transform duration-200"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m6 9 6 6 6-6"
+            />
+          </svg>
+
+        </button>
+
+
+        <!-- الخيارات -->
+
+     <div id="mobileDigitalPresenceDropdown" class="hidden pr-4 pt-1">
+
+  <!-- الأفراد -->
+
+  <a href="#digital-presence" onclick="selectCategory('individual', event)" class="block rounded-xl px-4 py-3 text-sm text-slate-600 hover:bg-blue-50 hover:text-blue-700">
+    الأفراد
+  </a>
+  <!-- الجهات -->
+  <a href="#digital-presence" onclick="selectCategory('org', event)" class="block rounded-xl px-4 py-3 text-sm text-slate-600 hover:bg-blue-50 hover:text-blue-700">
+    الجهات
+  </a>
+</div>
+
+      <!-- اللغة -->
+
+      <a
+        href="#"
+        class="rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700"
+      >
+        العربية
+        <span class="mx-1 text-slate-300">|</span>
+        English
+      </a>
+
+
+      <!-- تحقق الآن -->
+
+      <a
+        href="#verify"
+        class="mt-2 inline-flex items-center justify-center rounded-xl bg-blue-700 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-800 transition"
+      >
+        تحقّق الآن
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+  </header>
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+
+  <main>
+
+<!-- مؤقتًا للمعاينة -->
+
+<!-- Hero Section - حرز -->
+
+<section id="hero" dir="rtl" class="relative overflow-hidden bg-white">
+
+  <!-- خلفية زخرفية خفيفة -->
+
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute -top-32 -left-32 w-96 h-96 bg-blue-100/40 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/2 -right-40 w-96 h-96 bg-sky-100/30 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- =========================
+          HERO SECTION
+  ========================== -->
+
+  <section id="home" class="relative overflow-hidden bg-gradient-to-b from-blue-50/60 via-white to-white pt-12 pb-16 md:pt-20 md:pb-32">
+
+<!-- Background Subtle Grid Pattern -->
+<div class="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-40 pointer-events-none"></div>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+    
+    <!-- Content Side (Right) -->
+    <div class="lg:col-span-7 text-center lg:text-right space-y-6">
+
+      <!-- Main Heading (السلوقن باللون الأسود و "عندنا الأصلية" بالبولد) -->
+      <div class="space-y-4">
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-normal text-slate-900 leading-[1.25] tracking-tight">
+          لا تغرك الهوية... <br class="hidden sm:inline" />
+          <span class="font-extrabold text-slate-900">عندنا الأصلية</span>
+        </h1>
+
+        <!-- توضيح الخدمتين تحت العنوان الرئيسي مباشرة -->
+        <p class="text-sm sm:text-lg font-bold text-slate-700 pt-1">
+          منصتكم الأولى <span class="text-blue-700">للتحقق من موثوقية الحسابات</span> و<span class="text-blue-700">توثيق حضوركم الرقمي</span>
+        </p>
+      </div>
+
+      <!-- Description -->
+      <p class="text-xs sm:text-base text-slate-600 font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0">
+        حِرز منصة متكاملة تضمن لك التأكد الفوري من سلامة الحسابات والقنوات الرقمية قبل التعامل معها، وتمكّن الأفراد والجهات من حماية وتوثيق هويتهم الرسمية ضد الانتحال.
+      </p>
+
+      <!-- Call to Action Buttons -->
+      <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
+        
+        <!-- Primary Button (التحقق) -->
+        <a href="#verify" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-8 py-3.5 text-base font-bold text-white shadow-lg shadow-blue-700/20 hover:bg-blue-800 hover:shadow-xl hover:shadow-blue-700/30 active:scale-95 transition duration-200">
+          <span>ابحث وتحقق الآن</span>
+          <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+
+        <!-- Secondary Button (التوثيق) -->
+        <a href="#digital-presence" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-white border border-slate-200/90 px-8 py-3.5 text-base font-bold text-slate-700 shadow-sm hover:bg-slate-50 hover:text-blue-700 hover:border-slate-300 active:scale-95 transition duration-200">
+          <span>وثّق حضورك الرقمي</span>
+        </a>
+
+      </div>
+
+      <!-- الإحصائيات (شريط أفقي) -->
+      <div class="pt-3 pb-1">
+        <div class="grid grid-cols-3 gap-2 sm:gap-6 items-center justify-center bg-slate-50/90 sm:bg-transparent p-3 sm:p-0 rounded-2xl border border-slate-200/60 sm:border-0 shadow-sm sm:shadow-none">
+          
+          <!-- Stat 1 -->
+          <div class="text-center lg:text-right relative">
+            <h3 class="text-lg sm:text-3xl font-black text-slate-900 mb-0.5 dir-ltr sm:dir-rtl">+12,000</h3>
+            <p class="text-slate-500 text-[11px] sm:text-sm font-semibold">حساب موثّق</p>
+            <div class="sm:hidden absolute top-1/2 left-0 -translate-y-1/2 w-px h-7 bg-slate-200"></div>
+          </div>
+
+          <!-- Stat 2 -->
+          <div class="text-center lg:text-right relative">
+            <h3 class="text-lg sm:text-3xl font-black text-slate-900 mb-0.5 dir-ltr sm:dir-rtl">+45,000</h3>
+            <p class="text-slate-500 text-[11px] sm:text-sm font-semibold">عملية تحقّق</p>
+            <div class="sm:hidden absolute top-1/2 left-0 -translate-y-1/2 w-px h-7 bg-slate-200"></div>
+          </div>
+
+          <!-- Stat 3 -->
+          <div class="text-center lg:text-right">
+            <h3 class="text-lg sm:text-3xl font-black text-slate-900 mb-0.5">24/7</h3>
+            <p class="text-slate-500 text-[11px] sm:text-sm font-semibold">دعم فني</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Supporting Note -->
+      <div class="flex items-center justify-center lg:justify-start gap-2 text-xs sm:text-sm text-slate-500 font-medium pt-1">
+        <svg class="w-4 h-4 text-blue-700 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+        <span>خدمة مخصصة للأفراد والجهات الرسمية</span>
+      </div>
+
+    </div>
+
+    <!-- Visual Graphic Side (Left) -->
+    <div class="lg:col-span-5 relative flex justify-center mt-6 lg:mt-0">
+      
+      <!-- Glow background -->
+      <div class="absolute -inset-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl blur-2xl opacity-10 -z-10"></div>
+
+      <!-- Cyber / Verification Shield Visual Container -->
+      <div class="w-full max-w-md bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-xl shadow-slate-200/50 space-y-4 sm:space-y-5 relative">
+        
+        <!-- Search & Verify Feature Card -->
+        <div class="bg-slate-50 rounded-2xl p-3.5 sm:p-4 border border-slate-100">
+          <div class="text-xs font-semibold text-slate-500 mb-2.5">التحقق السريع من القنوات</div>
+          <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs shadow-sm">
+            <div class="flex items-center gap-2 text-slate-600 truncate">
+              <svg class="w-4 h-4 text-blue-700 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+              <span class="truncate dir-ltr text-right">@herz_saudi</span>
+            </div>
+            <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-bold px-2 py-0.5 rounded-md shrink-0">
+              رسمي ✓
+            </span>
+          </div>
+        </div>
+
+        <!-- Digital Identity Card Mockup -->
+        <div class="bg-gradient-to-br from-blue-900 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-md relative overflow-hidden">
+          <!-- Shield Backdrop -->
+          <svg class="absolute -left-6 -bottom-6 w-32 h-32 text-white/5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-5.45 9-12V5l-9-3z"/>
+          </svg>
+
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-blue-600/30 border border-blue-400/40 flex items-center justify-center text-blue-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold">هوية رقمية موثقة</h4>
+                <p class="text-[11px] text-slate-300">مسجلة في منصة حِرز</p>
+              </div>
+            </div>
+            <span class="bg-blue-600 text-white text-[10px] font-semibold px-2.5 py-1 rounded-full border border-blue-400/30">
+              محمي
+            </span>
+          </div>
+
+          <div class="pt-2 border-t border-white/10 flex items-center justify-between text-xs text-slate-300">
+            <span>حالة التوثيق:</span>
+            <span class="text-blue-300 font-semibold flex items-center gap-1">
+              <svg class="w-3.5 h-3.5 fill-current text-blue-400" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+              </svg>
+              نشط ومعتمد
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+  </section>
+</section>
+
+<!-- =========================
+     ABOUT SECTION
+========================== -->
+
+<section id="about" class="relative overflow-hidden bg-white py-12 lg:py-18">
+
+  <!-- خلفية زخرفية -->
+
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_70%_50%_at_50%_40%,black_10%,transparent_75%)]"></div>
+    <div class="absolute top-1/3 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-100/50 to-transparent rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-[500px] h-[400px] bg-gradient-to-tr from-blue-50 to-transparent rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="relative max-w-7xl mx-auto px-6">
+
+<!-- =========================
+     رأس القسم
+========================== -->
+
+<div class="flex flex-col items-center text-center">
+
+  <span class="inline-flex items-center gap-2 rounded-full bg-white border border-blue-100 shadow-sm px-4 py-1.5 text-sm font-medium text-blue-700 mb-7">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 2.25 4.5 5.25v6c0 5.25 3.75 8.25 7.5 10.5 3.75-2.25 7.5-5.25 7.5-10.5v-6L12 2.25Z" />
+    </svg>
+    من نحن
+  </span>
+
+  <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
+    الثقة الرقمية تبدأ من
+    <span class="relative inline-block">
+      <span class="relative z-10 text-blue-700">حِرز</span>
+      <span class="absolute inset-x-0 bottom-1.5 h-3.5 bg-blue-100/80 -z-0"></span>
+    </span>
+  </h2>
+
+<div class="mt-8 max-w-3xl space-y-5">
+
+  <p class="text-base sm:text-lg text-slate-600 leading-relaxed">
+    في ظل انتشار الحسابات المزيفة وتزايد محاولات انتحال الهوية، جاءت منصة
+    <span class="font-semibold text-slate-900">حِرز</span>
+    لتكون خط الدفاع الأول عن الهوية الرقمية في المملكة. تهدف المنصة إلى تعزيز الثقة في الفضاء الرقمي عبر التحقق من القنوات الرسمية وتوثيق الحسابات المعتمدة للأفراد والجهات، مما يمنحهم حضورًا رقميًا آمنًا وموثوقًا.
+  </p>
+
+  <p class="text-base sm:text-lg text-slate-600 leading-relaxed">
+    <span class="font-semibold text-slate-900">ونسعى لأن نكون المرجع الأول في المملكة</span>
+    لتعزيز الموثوقية والشفافية في الفضاء الرقمي، وبناء بيئة رقمية تعتمد على الثقة في كل تفاعل إلكتروني.
+  </p>
+
+</div>
+
+
+
+<!-- =========================
+     الخدمتان
+========================== -->
+
+<div class="mt-16 grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+
+  <!-- =========================
+       بطاقة: التحقق
+  ========================== -->
+
+  <div class="group relative rounded-3xl bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/60 transition-all duration-300 p-8">
+
+    <div class="flex items-center gap-5">
+
+      <div class="w-16 h-16 shrink-0 rounded-2xl bg-blue-50 group-hover:bg-blue-700 flex items-center justify-center transition-colors duration-300">
+        <svg class="w-8 h-8 text-blue-700 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.3-4.3M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" />
+        </svg>
+      </div>
+
+      <div>
+        <span class="inline-block text-xs font-bold text-blue-700 tracking-wide">خدمة التحقق</span>
+        <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+          تأكّد قبل أن تثق
+        </h3>
+      </div>
+
+    </div>
+
+    <p class="mt-6 text-slate-600 leading-relaxed">
+      ابحث وتأكد من الحسابات والقنوات الرسمية للأفراد والجهات بكل سهولة وثقة،
+      وتجنّب الوقوع ضحية لحسابات منتحلة.
+    </p>
+
+    <div class="mt-6 pt-6 border-t border-slate-100 flex flex-wrap gap-2">
+      <span class="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600">
+        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+        </svg>
+        بحث فوري
+      </span>
+      <span class="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600">
+        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+        </svg>
+        نتائج موثوقة
+      </span>
+      <span class="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600">
+        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+        </svg>
+        مجانًا للجميع
+      </span>
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       بطاقة: التوثيق
+  ========================== -->
+
+  <div class="group relative rounded-3xl bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/60 transition-all duration-300 p-8">
+
+    <div class="flex items-center gap-5">
+
+      <div class="w-16 h-16 shrink-0 rounded-2xl bg-blue-50 group-hover:bg-blue-700 flex items-center justify-center transition-colors duration-300">
+        <svg class="w-8 h-8 text-blue-700 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 2.25 4.5 5.25v6c0 5.25 3.75 8.25 7.5 10.5 3.75-2.25 7.5-5.25 7.5-10.5v-6L12 2.25Z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="m9.5 12 1.8 1.8L14.5 10" />
+        </svg>
+      </div>
+
+      <div>
+        <span class="inline-block text-xs font-bold text-blue-700 tracking-wide">خدمة التوثيق</span>
+        <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+          احمِ هويتك الرقمية
+        </h3>
+      </div>
+
+    </div>
+
+    <p class="mt-6 text-slate-600 leading-relaxed">
+      وثّق حساباتك وقنواتك الرسمية واحصل على صفحة معتمدة تحميك من الانتحال،
+      مع رابط خاص يمكنك مشاركته مع جمهورك بثقة.
+    </p>
+
+    <div class="mt-6 pt-6 border-t border-slate-100 flex flex-wrap gap-2">
+      <span class="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600">
+        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+        </svg>
+        صفحة موثقة
+      </span>
+      <span class="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600">
+        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+        </svg>
+        رابط خاص بك
+      </span>
+      <span class="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600">
+        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+        </svg>
+        أفراد وجهات
+      </span>
+    </div>
+
+  </div>
+
+</div>
+
+  </div>
+
+</section>
+
+   <!-- =========================
+          SECTION: تحقق الان
+    ========================== -->
+
+<section id="verify" class="py-24 bg-slate-50 border-t border-slate-100">
+
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Header Area -->
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/80 border border-blue-200/80 text-blue-800 text-xs sm:text-sm font-semibold mb-4">
+        <span class="flex h-2 w-2 rounded-full bg-blue-600 animate-ping"></span>
+        محرك البحث المعتمد
+      </div>
+
+      <h2 class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">
+        تحقق <span class="text-blue-700">الآن</span>
+      </h2>
+
+      <p class="text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
+        ابحث عن أي فرد أو جهة وتأكد من حساباتهم وقنواتهم الرسمية المعتمدة من حِرز بكل سهولة وثقة.
+      </p>
+
+    </div>
+
+    <!-- Main Search Area -->
+    <div class="max-w-3xl mx-auto mb-12">
+      
+      <form id="verificationSearchForm" class="relative group">
+        
+        <!-- Glowing Background Effect -->
+        <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur-md opacity-20 group-hover:opacity-30 transition duration-300"></div>
+
+        <!-- Search Input Container -->
+        <div class="relative flex flex-col sm:flex-row items-center bg-white rounded-2xl p-2 shadow-xl shadow-slate-200/60 border border-slate-200 gap-2">
+          
+          <!-- Search Icon & Input -->
+          <div class="flex items-center gap-3 w-full px-4 py-2">
+            <svg class="w-6 h-6 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <input 
+  id="verificationSearchInput"
+  type="text" 
+  placeholder="ابحث باسم الفرد أو الجهة..." 
+  class="w-full bg-transparent text-slate-900 text-base sm:text-lg placeholder-slate-400 focus:outline-none py-1"
+/>
+          </div>
+
+          <!-- Search Button -->
+          <button 
+  id="verificationSearchButton"
+  type="submit" 
+  class="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-800 text-white font-semibold text-base px-8 py-3.5 rounded-xl transition duration-200 shadow-md shadow-blue-700/20"
+>
+  <span>تحقق</span>
+  <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+  </svg>
+</button>
+
+        </div>
+
+      </form>
+<!-- Verification Results -->
+<div id="verificationResults" class="hidden mt-8">
+  
+  <div class="max-w-3xl mx-auto">
+
+    <!-- Results Header -->
+    <div class="flex items-center justify-between gap-4 mb-4">
+      <div>
+        <p class="text-sm font-bold text-slate-900">نتائج التحقق</p>
+        <p id="verificationResultsCount" class="text-xs text-slate-500 mt-1"></p>
+      </div>
+    </div>
+
+    <!-- Results Container -->
+    <div id="verificationResultsList" class="space-y-4"></div>
+
+    <!-- Notice -->
+    <div class="mt-5 p-4 rounded-2xl bg-blue-50 border border-blue-100">
+      <p class="text-xs sm:text-sm text-blue-800 leading-relaxed">
+        عدم ظهور الحساب في النتائج يعني أنه غير مدرج حاليًا ضمن القنوات الرسمية المعتمدة من حِرز، ولا يعني بالضرورة أنه مزيف.
+      </p>
+    </div>
+
+  </div>
+
+</div>
+    </div>
+
+    <!-- Scope / Categories Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-10">
+
+      <!-- Individuals Category -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-slate-900">الأفراد الموثقون</h3>
+          <p class="text-xs text-slate-500 mt-0.5">مؤثرون، مشاهير، صناع محتوى، وشخصيات عامة</p>
+        </div>
+      </div>
+
+      <!-- Organizations Category -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3a1.5 1.5 0 0 1 1.5-1.5h3a1.5 1.5 0 0 1 1.5 1.5v3" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-slate-900">الجهات المعتمدة</h3>
+          <p class="text-xs text-slate-500 mt-0.5">شركات، مؤسسات، بنوك، وجبهات رسمية</p>
+        </div>
+      </div>
+
+    </div>
+  
+    <!-- Footer Notice -->
+    <div class="text-center">
+      <p class="text-xs sm:text-sm text-slate-500 font-medium inline-flex items-center justify-center gap-1.5">
+        <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+        <span>تنويه: النتائج تعرض فقط الحسابات والقنوات الموثقة والمعتمدة رسميًا من منصة حِرز</span>
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- قسم وثّق حضورك الرقمي -->
+
+<section id="digital-presence" class="py-16 sm:py-24 bg-slate-50 relative overflow-hidden dir-rtl select-none">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+
+<!-- Header -->
+<div class="text-center max-w-2xl mx-auto mb-10 sm:mb-16 flex flex-col items-center">
+  
+  <!-- Badge -->
+  <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-blue-700 text-xs font-bold mb-4">
+    <span class="relative flex h-2 w-2">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+    </span>
+    خطوات التوثيق المعتمدة
+  </div>
+
+  <!-- Main Title -->
+  <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
+    وثّق حضورك  <span class="text-blue-700">الرقمي</span>
+  </h2>
+  
+  <!-- Subtitle -->
+  <p class="mt-4 text-xs sm:text-base text-slate-600 font-medium leading-relaxed max-w-xl mx-auto">
+    ثلاث خطوات بسيطة لتوثيق حضورك الرقمي وحماية قنواتك وحساباتك الرسمية من الانتحال
+  </p>
+
+  <!-- Toggle Switch الرئيسي (الأفراد / الجهات) -->
+  <div class="mt-8 inline-flex p-1 rounded-2xl bg-slate-200/80 border border-slate-300/50">
+    <button id="tabIndividual" onclick="switchPath('individual')" class="px-6 py-2.5 rounded-xl bg-white text-blue-700 shadow-sm font-bold text-xs sm:text-sm transition-all duration-200 cursor-pointer">
+      الأفراد
+    </button>
+    <button id="tabOrg" onclick="switchPath('org')" class="px-6 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 font-bold text-xs sm:text-sm transition-all duration-200 cursor-pointer">
+      الجهات
+    </button>
+  </div>
+
+</div>
+
+<!-- STEPS CARDS GRID -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8 items-stretch">
+
+  <!-- STEP 1 -->
+  <div class="group bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-900/5 cursor-pointer flex flex-col justify-between h-full">
+    <div>
+      <!-- Header Card: Icon Right, Number Left -->
+      <div class="flex items-center justify-between mb-8">
+        <div id="step1Icon" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300 shrink-0">
+          <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+          </svg>
+        </div>
+        <span class="text-3xl sm:text-4xl font-black text-slate-200/90 group-hover:text-blue-200 transition-colors">01</span>
+      </div>
+
+      <h3 id="step1Title" class="text-lg sm:text-xl font-bold text-slate-900 mb-3 text-right">
+        تعبئة البيانات وإضافة القنوات
+      </h3>
+
+      <p id="step1Desc" class="text-xs sm:text-sm text-slate-500 leading-relaxed font-medium text-right">
+        تعبئة البيانات الأساسية وإضافة القنوات والحسابات الرسمية التي تمثلك وترغب في ربطها بصفحة التوثيق الخاصة بك.
+      </p>
+    </div>
+
+    <!-- Footer Card: Aligned Right -->
+    <div id="step1Footer" class="mt-8 pt-4 border-t border-slate-100 flex items-center justify-start gap-2 text-[11px] sm:text-xs font-semibold text-slate-400">
+      <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span id="step1FooterText">تقديم الطلب وبدء عملية التوثيق</span>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="group bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-900/5 cursor-pointer flex flex-col justify-between h-full">
+    <div>
+      <!-- Header Card: Icon Right, Number Left -->
+      <div class="flex items-center justify-between mb-8">
+        <div id="step2Icon" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300 shrink-0">
+          <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+          </svg>
+        </div>
+        <span class="text-3xl sm:text-4xl font-black text-slate-200/90 group-hover:text-blue-200 transition-colors">02</span>
+      </div>
+
+      <h3 id="step2Title" class="text-lg sm:text-xl font-bold text-slate-900 mb-3 text-right">
+        المراجعة والتحقق الأولي
+      </h3>
+
+      <p id="step2Desc" class="text-xs sm:text-sm text-slate-500 leading-relaxed font-medium text-right">
+        يقوم فريق حِرز بالتحقق من صحة البيانات والحسابات المرفقة، ويتحقق من ارتباط الحسابات والقنوات الرقمية بك وفق معايير التحقق المعتمدة. وعند التأكد من الأهلية، يتم إصدار رابط السداد.
+      </p>
+    </div>
+
+    <!-- Footer Card: Aligned Right -->
+    <div id="step2Footer" class="mt-8 pt-3 bg-emerald-50/60 p-2.5 rounded-xl border border-emerald-100 flex items-center justify-start gap-2">
+      <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span id="step2FooterText" class="text-[11px] sm:text-xs font-bold text-emerald-800 leading-tight">
+        التحقق من الأهلية قبل السداد
+      </span>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="group bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-900/5 cursor-pointer flex flex-col justify-between h-full">
+    <div>
+      <!-- Header Card: Icon Right, Number Left -->
+      <div class="flex items-center justify-between mb-8">
+        <div id="step3Icon" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300 shrink-0">
+          <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+          </svg>
+        </div>
+        <span class="text-3xl sm:text-4xl font-black text-slate-200/90 group-hover:text-blue-200 transition-colors">03</span>
+      </div>
+
+      <h3 id="step3Title" class="text-lg sm:text-xl font-bold text-slate-900 mb-3 text-right">
+        تفعيل الصفحة الموثقة
+      </h3>
+
+      <p id="step3Desc" class="text-xs sm:text-sm text-slate-500 leading-relaxed font-medium text-right">
+        بعد السداد والاعتماد، تحصل على صفحتك الخاصة الموثقة التي تستعرض حساباتك المعتمدة مع رابط رسمي آمن للمشاركة.
+      </p>
+    </div>
+
+    <!-- Footer Card: Aligned Right -->
+    <div id="step3Footer" class="mt-8 pt-4 border-t border-slate-100 flex items-center justify-start gap-2 text-[11px] sm:text-xs font-semibold text-slate-400">
+      <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+      <span id="step3FooterText">صفحة موثقة ورابط رسمي للمشاركة</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Action CTA Button -->
+<div class="mt-12 sm:mt-16 text-center">
+  <button onclick="handleVerifyClick()" class="inline-flex items-center justify-center gap-3 rounded-2xl bg-blue-700 px-8 py-4 text-sm sm:text-base font-bold text-white hover:bg-blue-800 hover:shadow-xl hover:shadow-blue-700/20 active:scale-95 transition-all w-full sm:w-auto cursor-pointer">
+    <span>تقديم طلب التوثيق الآن</span>
+    <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+    </svg>
+  </button>
+</div>
+
+  </div>
+</section>
+<!-- ================= POP-UP MODAL (بدون تابز داخلية) ================= -->
+<div id="pricingModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 bg-slate-950/60 backdrop-blur-md dir-rtl select-none transition-all duration-300">
+  <!-- Overlay Close -->
+  <div class="absolute inset-0" onclick="closeModal('pricingModal')"></div>
+
+  <!-- Modal Container -->
+
+  <div class="bg-white rounded-[2.5rem] p-6 sm:p-10 max-w-lg w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-slate-100/80 text-center custom-scrollbar">
+
+<!-- Close Button -->
+<button onclick="closeModal('pricingModal')" class="absolute top-5 left-5 w-10 h-10 rounded-full bg-slate-100/80 text-slate-400 hover:bg-slate-200 hover:text-slate-700 flex items-center justify-center transition-all cursor-pointer z-20">
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+  </svg>
+</button>
+
+<!-- CONTENT 1: INDIVIDUALS (الأفراد) -->
+<div id="modalContentIndividual" class="block">
+  <!-- Header Icon -->
+  <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-5 shadow-inner border border-blue-100/60">
+    <svg class="w-9 h-9 sm:w-10 sm:h-10" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+    </svg>
+  </div>
+
+  <h3 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-2">توثيق الأفراد</h3>
+  <p class="text-xs sm:text-sm text-slate-500 leading-relaxed font-medium mb-4 max-w-md mx-auto">
+    وثّق حساباتك الرسمية على منصات التواصل الاجتماعي واحصل على صفحة معتمدة تحميك من انتحال الهوية.
+  </p>
+
+  <div class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 text-[11px] sm:text-xs font-semibold mb-6">
+    <span>للمؤثرين، صناع المحتوى، والشخصيات العامة</span>
+  </div>
+
+  <!-- Price Box Card -->
+  <div class="bg-gradient-to-b from-blue-50/60 to-slate-50/80 rounded-2xl p-5 sm:p-6 mb-6 border border-blue-100/80 shadow-sm relative overflow-hidden">
+    <span class="text-xs font-bold text-slate-400 block mb-1">رسوم التوثيق</span>
+    <div class="flex items-baseline justify-center gap-1.5 my-1">
+      <span class="text-4xl sm:text-5xl font-black text-blue-700 tracking-tight">149</span>
+      <span class="text-xs sm:text-sm font-bold text-slate-600">ريال / سنة</span>
+    </div>
+    <span class="text-[11px] font-semibold text-slate-400">اشتراك سنوي شامل الاعتماد</span>
+  </div>
+
+  <!-- Features List -->
+  <div class="space-y-3.5 mb-8 text-right bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+    
+    <div class="flex items-start gap-3">
+      <div class="w-6 h-6 rounded-full bg-blue-100/80 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+      </div>
+      <span class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+        <strong class="text-slate-900 font-bold">صفحة معتمدة لجهتكم:</strong> صفحة رسمية تحمل اسمك وصورتك وعلامة التوثيق المعتمدة.
+      </span>
+    </div>
+
+    <div class="flex items-start gap-3">
+      <div class="w-6 h-6 rounded-full bg-blue-100/80 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>
+      </div>
+      <span class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+        <strong class="text-slate-900 font-bold">عرض كافة القنوات:</strong> رابط واحد تجمع فيه جميع حساباتك الرسمية لمشاركته بسهولة.
+      </span>
+    </div>
+
+    <div class="flex items-start gap-3">
+      <div class="w-6 h-6 rounded-full bg-blue-100/80 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+      </div>
+      <span class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+        <strong class="text-slate-900 font-bold">حماية ضد الانتحال:</strong> حد حاسم لمصداقية حسابك وحمايته من التقليد.
+      </span>
+    </div>
+
+    <div class="flex items-start gap-3">
+      <div class="w-6 h-6 rounded-full bg-blue-100/80 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M21.75 12h-2.25m-.166 5.834l-1.591-1.591M12 21.75V19.5m-5.834-.166l1.591 1.591M2.25 12h2.25m.166-5.834l1.591 1.591" /></svg>
+      </div>
+      <span class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+        <strong class="text-slate-900 font-bold">سهولة تحقق الجمهور:</strong> تمكين المتابعين والجمهور من التأكد من حساباتك بضغطة واحدة.
+      </span>
+    </div>
+
+  </div>
+
+  <a
+      href="../User/auth/register.html"
+      class="w-full inline-flex items-center justify-center gap-3 rounded-2xl bg-blue-600 py-4 px-6 text-sm sm:text-base font-bold text-white hover:bg-blue-700 active:scale-95 transition-all shadow-lg shadow-blue-600/25 cursor-pointer">
+    <span>تأكيد وبدء توثيق الأفراد</span>
+    <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+</a>
+</div>
+<!-- CONTENT 2: ORGANIZATIONS (الجهات) -->
+<div id="modalContentOrg" class="hidden">
+  <!-- Header Icon -->
+  <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-5 shadow-inner border border-blue-100/60">
+    <svg class="w-9 h-9 sm:w-10 sm:h-10" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6h1.5m-1.5 3h1.5m-1.5 3h1.5M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+    </svg>
+  </div>
+
+  <h3 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-2">توثيق الجهات</h3>
+  <p class="text-xs sm:text-sm text-slate-500 leading-relaxed font-medium mb-4 max-w-md mx-auto">
+    وثّقوا قنوات التواصل الرسمية لجهتكم واحملوا هويتكم الرقمية من الانتحال والتزوير.
+  </p>
+
+  <div class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 text-[11px] sm:text-xs font-semibold mb-6">
+    <span>للشركات، المؤسسات، والجهات الرسمية</span>
+  </div>
+
+  <!-- Price Box Card -->
+  <div class="bg-gradient-to-b from-blue-50/60 to-slate-50/80 rounded-2xl p-5 sm:p-6 mb-6 border border-blue-100/80 shadow-sm relative overflow-hidden">
+    <span class="text-xs font-bold text-slate-400 block mb-1">رسوم التوثيق</span>
+    <div class="flex items-baseline justify-center gap-1.5 my-1">
+      <span class="text-4xl sm:text-5xl font-black text-blue-700 tracking-tight">999</span>
+      <span class="text-xs sm:text-sm font-bold text-slate-600">ريال / سنة</span>
+    </div>
+    <span class="text-[11px] font-semibold text-slate-400">اشتراك سنوي شامل التدقيق والاعتماد</span>
+  </div>
+
+  <!-- Features List -->
+  <div class="space-y-3.5 mb-8 text-right bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+    
+    <div class="flex items-start gap-3">
+      <div class="w-6 h-6 rounded-full bg-blue-100/80 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5v3" /></svg>
+      </div>
+      <span class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+        <strong class="text-slate-900 font-bold">صفحة معتمدة لجهتكم:</strong> صفحة موثقة رسمية باسم وعلامة جهتكم التجارية مع الشعار المعتمد.
+      </span>
+    </div>
+
+    <div class="flex items-start gap-3">
+      <div class="w-6 h-6 rounded-full bg-blue-100/80 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 8.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25A2.25 2.25 0 0113.5 8.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg>
+      </div>
+      <span class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+        <strong class="text-slate-900 font-bold">عرض كافة القنوات:</strong> تجميع أرقام التواصل، البريد، الموقع، وحسابات التواصل بمرجع واحد.
+      </span>
+    </div>
+
+    <div class="flex items-start gap-3">
+      <div class="w-6 h-6 rounded-full bg-blue-100/80 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285zM12 15.75h.007v.008H12v-.008z" /></svg>
+      </div>
+      <span class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+        <strong class="text-slate-900 font-bold">حماية ضد الانتحال:</strong> حد حاسم لعمليات الانتحال والاحتيال باسم المؤسسة أو الشركة.
+      </span>
+    </div>
+
+    <div class="flex items-start gap-3">
+      <div class="w-6 h-6 rounded-full bg-blue-100/80 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+      </div>
+      <span class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+        <strong class="text-slate-900 font-bold">سهولة تحقق الجمهور:</strong> تمكين العملاء والشركاء من التأكد الفوري من سلامة قنواتكم.
+      </span>
+    </div>
+
+  </div>
+
+  <a
+      href="../User/auth/register.html"
+      class="w-full inline-flex items-center justify-center gap-3 rounded-2xl bg-blue-600 py-4 px-6 text-sm sm:text-base font-bold text-white hover:bg-blue-700 active:scale-95 transition-all shadow-lg shadow-blue-600/25 cursor-pointer">
+    <span>تأكيد وبدء توثيق الجهة</span>
+    <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+</a>
+
+
+<p class="text-[11px] font-medium text-slate-400 mt-4">
+  يتم مراجعة البيانات وتدقيق الأهلية قبل اعتماد السداد رسمياً.
+</p>
+
+  </div>
+  </div>
+</div>
+
+
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+  }
+</style>
+
+
+
+<script>
+  let currentMainPath = 'individual';
+
+  // التبديل الرئيسي بين الأفراد والجهات في الصفحة
+  function switchPath(type) {
+    currentMainPath = type;
+    const tabInd = document.getElementById('tabIndividual');
+    const tabOrg = document.getElementById('tabOrg');
+
+    const title1 = document.getElementById('step1Title');
+    const desc1 = document.getElementById('step1Desc');
+    const footerText1 = document.getElementById('step1FooterText');
+    const icon1 = document.getElementById('step1Icon');
+
+    const title2 = document.getElementById('step2Title');
+    const desc2 = document.getElementById('step2Desc');
+    const footerText2 = document.getElementById('step2FooterText');
+
+    const title3 = document.getElementById('step3Title');
+    const desc3 = document.getElementById('step3Desc');
+    const footerText3 = document.getElementById('step3FooterText');
+    const icon3 = document.getElementById('step3Icon');
+
+    const filePenIcon = `<svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>`;
+    const buildingIcon = `<svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5v3" /></svg>`;
+    const badgeCheckIcon = `<svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>`;
+    const buildingCheckIcon = `<svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6h1.5m-1.5 3h1.5m-1.5 3h1.5M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" /></svg>`;
+
+    if (type === 'individual') {
+      tabInd.className = "px-6 py-2.5 rounded-xl bg-white text-blue-700 shadow-sm font-bold text-xs sm:text-sm transition-all duration-200 cursor-pointer";
+      tabOrg.className = "px-6 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 font-bold text-xs sm:text-sm transition-all duration-200 cursor-pointer";
+      
+      title1.innerText = "تعبئة البيانات وإضافة القنوات";
+      desc1.innerText = "تعبئة البيانات الأساسية وإضافة القنوات والحسابات الرسمية التي تمثلك وترغب في ربطها بصفحة التوثيق الخاصة بك.";
+      footerText1.innerText = "تقديم الطلب وبدء عملية التوثيق";
+      icon1.innerHTML = filePenIcon;
+
+      title2.innerText = "المراجعة والتحقق الأولي";
+      desc2.innerText = "يقوم فريق حِرز بالتحقق من صحة البيانات والحسابات المرفقة، ويتحقق من ارتباط الحسابات والقنوات الرقمية بك وفق معايير التحقق المعتمدة. وعند التأكد من الأهلية، يتم إصدار رابط السداد.";
+      footerText2.innerText = "التحقق من الأهلية قبل السداد";
+
+      title3.innerText = "تفعيل الصفحة الموثقة";
+      desc3.innerText = "بعد السداد والاعتماد، تحصل على صفحتك الخاصة الموثقة التي تستعرض حساباتك المعتمدة مع رابط رسمي آمن للمشاركة.";
+      footerText3.innerText = "صفحة موثقة ورابط رسمي للمشاركة";
+      icon3.innerHTML = badgeCheckIcon;
+
+    } else {
+      tabOrg.className = "px-6 py-2.5 rounded-xl bg-white text-blue-700 shadow-sm font-bold text-xs sm:text-sm transition-all duration-200 cursor-pointer";
+      tabInd.className = "px-6 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 font-bold text-xs sm:text-sm transition-all duration-200 cursor-pointer";
+      
+      title1.innerText = "رفع بيانات الجهة والقنوات الرسمية";
+      desc1.innerText = "رفع بيانات السجل التجاري أو الترخيص المعتمد، وإرفاق القنوات والمواقع الرسمية التابعة للجهة.";
+      footerText1.innerText = "تقديم بيانات الجهة وبدء عملية التوثيق";
+      icon1.innerHTML = buildingIcon;
+
+      title2.innerText = "المراجعة والتدقيق والاعتماد";
+      desc2.innerText = "يقوم فريق حِرز بمراجعة البيانات، وتدقيق المستندات الرسمية، والتأكد من المخولين، ومراجعة القنوات المقدمة والتحقق من ارتباطها بالجهة وفق معايير التحقق المعتمدة. وعند الاعتماد، يتم إصدار الفاتورة الرسمية للجهة.";
+      footerText2.innerText = "تدقيق البيانات والمستندات قبل الاعتماد";
+
+      title3.innerText = "تفعيل صفحة الجهة الموثقة";
+      desc3.innerText = "بعد اكتمال التحقق والسداد، تحصل الجهة على صفحة موثوقة تجمع قنواتها الرسمية في مكان واحد، لتسهيل الوصول إليها والتمييز بينها وبين القنوات غير الرسمية.";
+      footerText3.innerText = "صفحة رسمية تجمع قنوات الجهة في مكان واحد";
+      icon3.innerHTML = buildingCheckIcon;
+    }
+  }
+
+  // فتح الـ Pop-up وعرض محتوى (الأفراد أو الجهات) مباشرة دون تابز
+  function handleVerifyClick() {
+    const contentInd = document.getElementById('modalContentIndividual');
+    const contentOrg = document.getElementById('modalContentOrg');
+
+    if (currentMainPath === 'individual') {
+      contentInd.classList.remove('hidden');
+      contentOrg.classList.add('hidden');
+    } else {
+      contentOrg.classList.remove('hidden');
+      contentInd.classList.add('hidden');
+    }
+
+    openModal('pricingModal');
+  }
+
+  function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+  }
+</script>
+
+
+
+
+
+  </main>
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
+
+  <script>
+
+    /* =================================
+       DESKTOP DROPDOWN
+    ================================= */
+
+    const digitalPresenceButton =
+      document.getElementById("digitalPresenceButton");
+
+    const digitalPresenceDropdown =
+      document.getElementById("digitalPresenceDropdown");
+
+    const digitalPresenceArrow =
+      document.getElementById("digitalPresenceArrow");
+
+
+    digitalPresenceButton.addEventListener("click", function () {
+
+      const isOpen =
+        !digitalPresenceDropdown.classList.contains("hidden");
+
+
+      if (isOpen) {
+
+        digitalPresenceDropdown.classList.add("hidden");
+
+        digitalPresenceArrow.classList.remove("rotate-180");
+
+        digitalPresenceButton.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+      } else {
+
+        digitalPresenceDropdown.classList.remove("hidden");
+
+        digitalPresenceArrow.classList.add("rotate-180");
+
+        digitalPresenceButton.setAttribute(
+          "aria-expanded",
+          "true"
+        );
+
+      }
+
+    });
+
+
+    /* =================================
+       MOBILE MENU
+    ================================= */
+
+    const menuButton =
+      document.getElementById("menuButton");
+
+    const mobileMenu =
+      document.getElementById("mobileMenu");
+
+
+    menuButton.addEventListener("click", function () {
+
+      const isOpen =
+        !mobileMenu.classList.contains("hidden");
+
+
+      mobileMenu.classList.toggle("hidden");
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        String(!isOpen)
+      );
+
+    });
+
+
+    /* =================================
+       MOBILE DROPDOWN
+    ================================= */
+
+    const mobileDigitalPresenceButton =
+      document.getElementById(
+        "mobileDigitalPresenceButton"
+      );
+
+    const mobileDigitalPresenceDropdown =
+      document.getElementById(
+        "mobileDigitalPresenceDropdown"
+      );
+
+    const mobileDigitalPresenceArrow =
+      document.getElementById(
+        "mobileDigitalPresenceArrow"
+      );
+
+
+    mobileDigitalPresenceButton.addEventListener(
+      "click",
+      function () {
+
+        const isOpen =
+          !mobileDigitalPresenceDropdown.classList.contains(
+            "hidden"
+          );
+
+
+        if (isOpen) {
+
+          mobileDigitalPresenceDropdown.classList.add(
+            "hidden"
+          );
+
+          mobileDigitalPresenceArrow.classList.remove(
+            "rotate-180"
+          );
+
+          mobileDigitalPresenceButton.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+        } else {
+
+          mobileDigitalPresenceDropdown.classList.remove(
+            "hidden"
+          );
+
+          mobileDigitalPresenceArrow.classList.add(
+            "rotate-180"
+          );
+
+          mobileDigitalPresenceButton.setAttribute(
+            "aria-expanded",
+            "true"
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =================================
+       إغلاق القوائم عند الضغط خارجها
+    ================================= */
+
+    document.addEventListener("click", function (event) {
+
+      const clickedDesktopDropdown =
+        digitalPresenceButton.contains(event.target) ||
+        digitalPresenceDropdown.contains(event.target);
+
+
+      if (!clickedDesktopDropdown) {
+
+        digitalPresenceDropdown.classList.add("hidden");
+
+        digitalPresenceArrow.classList.remove(
+          "rotate-180"
+        );
+
+        digitalPresenceButton.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+      }
+
+    });
+
+
+    /* =================================
+       إغلاق القائمة عند الضغط على Escape
+    ================================= */
+
+    document.addEventListener("keydown", function (event) {
+
+      if (event.key === "Escape") {
+
+        digitalPresenceDropdown.classList.add("hidden");
+
+        digitalPresenceArrow.classList.remove(
+          "rotate-180"
+        );
+
+        digitalPresenceButton.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+      }
+
+    });
+
+  </script>
+
+
+
+
+
+<script>
+  function openIndividualPricing() {
+    const modal = document.getElementById("individualPricingModal");
+
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    modal.setAttribute("aria-hidden", "false");
+
+    document.body.classList.add("overflow-hidden");
+  }
+
+  function closeIndividualPricing() {
+    const modal = document.getElementById("individualPricingModal");
+
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    modal.setAttribute("aria-hidden", "true");
+
+    document.body.classList.remove("overflow-hidden");
+  }
+
+  // Close with Escape
+  document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+      closeIndividualPricing();
+    }
+  });
+  // دالة شاملة لاختيار التبويب (أفراد أو جهات)، إغلاق القوائم، والتمرير السلس للقسم
+function selectCategory(type, event) {
+  if (event) event.preventDefault();
+
+  // 1. تفعيل التبويب المختار وتغيير كروت القسم
+  switchPath(type);
+
+  // 2. إغلاق القوائم المنسدلة (Desktop & Mobile)
+  const desktopDropdown = document.getElementById('digitalPresenceDropdown');
+  if (desktopDropdown && !desktopDropdown.classList.contains('hidden')) {
+    desktopDropdown.classList.add('hidden');
+  }
+
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+    mobileMenu.classList.add('hidden');
+  }
+
+  const mobileDropdown = document.getElementById('mobileDigitalPresenceDropdown');
+  if (mobileDropdown && !mobileDropdown.classList.contains('hidden')) {
+    mobileDropdown.classList.add('hidden');
+  }
+
+  // 3. التمرير السلس إلى قسم "وثّق حضورك الرقمي"
+  const section = document.getElementById('digital-presence');
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+</script>
+<script src="js/heerz-verification-data.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const form = document.getElementById("verificationSearchForm");
+  const input = document.getElementById("verificationSearchInput");
+  const button = document.getElementById("verificationSearchButton");
+
+  const resultsContainer = document.getElementById("verificationResults");
+  const resultsList = document.getElementById("verificationResultsList");
+  const resultsCount = document.getElementById("verificationResultsCount");
+
+
+  // -------------------------
+  // Normalize Arabic Search
+  // -------------------------
+
+  function normalizeArabic(value) {
+    return String(value || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[أإآ]/g, "ا")
+      .replace(/ى/g, "ي")
+      .replace(/ة/g, "ه")
+      .replace(/[ًٌٍَُِّْـ]/g, "");
+  }
+
+
+  // -------------------------
+  // Escape HTML
+  // -------------------------
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+
+  // -------------------------
+  // Search
+  // -------------------------
+
+  function searchRecords(query) {
+
+    const searchValue = normalizeArabic(query);
+
+    return heerzVerificationData.filter(function (record) {
+
+      if (
+        record.visibility !== "public" ||
+        record.status !== "verified"
+      ) {
+        return false;
+      }
+
+      const fields = [
+        record.name,
+        record.displayName,
+        record.id,
+        record.bio,
+        record.email,
+        record.phone,
+        record.website
+      ];
+
+      if (record.channels) {
+
+        record.channels.forEach(function (channel) {
+          fields.push(channel.label);
+          fields.push(channel.handle);
+          fields.push(channel.platform);
+        });
+
+      }
+
+      return fields.some(function (field) {
+
+        return normalizeArabic(field)
+          .includes(searchValue);
+
+      });
+
+    });
+
+  }
+
+
+// -------------------------
+// Display Results (Enhanced UI)
+// -------------------------
+
+function displayResults(results) {
+  resultsContainer.classList.remove("hidden");
+
+  // حالة عدم وجود نتائج
+  if (results.length === 0) {
+    resultsCount.textContent = "";
+
+    resultsList.innerHTML = `
+      <div class="bg-white rounded-3xl border border-slate-100 p-8 sm:p-12 text-center shadow-lg shadow-slate-100/50 max-w-xl mx-auto my-4">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-slate-50 border border-slate-100 text-slate-400 flex items-center justify-center mb-5 shadow-inner">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+          </svg>
+        </div>
+        <h3 class="text-base sm:text-lg font-black text-slate-900 mb-2">
+          لم نعثر على سجل موثق مطابق
+        </h3>
+        <p class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed max-w-md mx-auto">
+          تأكد من كتابة اسم الفرد أو الجهة أو الحساب بشكل صحيح، أو ابحث باستخدام رقم التوثيق المعتمد.
+        </p>
+      </div>
+    `;
+    return;
+  }
+
+  // عداد النتائج
+  resultsCount.textContent = `تم العثور على ${results.length} نتيجة موثقة`;
+
+  // رسم بطاقات النتائج
+  resultsList.innerHTML = results.map(function (record) {
+    const isEntity = record.type === "جهة";
+    const initial = escapeHtml(
+      (record.displayName || record.name || "ح").charAt(0)
+    );
+
+    // =========================
+    // Official Channels (Render)
+    // =========================
+    const channels = (record.channels || []).map(function (channel) {
+      let icon = `
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9"/>
+          <path stroke-linecap="round" d="M3 12h18"/>
+        </svg>
+      `;
+
+      if (channel.platform === "X" || channel.platform === "Twitter") {
+        icon = `
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817-5.964 6.817H1.683l7.73-8.835L1.254 2.25H9.08l4.713 6.231 4.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/>
+          </svg>
+        `;
+      } else if (channel.platform === "LinkedIn") {
+        icon = `
+          <svg class="w-3.5 h-3.5 fill-current text-blue-600" viewBox="0 0 24 24">
+            <path d="M20.45 20.45h-3.56v-5.58c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.44-2.13 2.94v5.68H9.35V8.99h3.42v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.28ZM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14ZM3.56 20.45h3.57V8.99H3.56v11.46Z"/>
+          </svg>
+        `;
+      } else if (channel.platform === "Instagram") {
+        icon = `
+          <svg class="w-4 h-4 text-pink-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/>
+          </svg>
+        `;
+      } else if (channel.platform === "Website") {
+        icon = `
+          <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"/>
+            <path stroke-linecap="round" d="M3 12h18M12 3c2.2 2.4 3.3 5.4 3.3 9s-1.1 6.6-3.3 9c-2.2-2.4-3.3-5.4-3.3-9S9.8 5.4 12 3Z"/>
+          </svg>
+        `;
+      } else if (channel.platform === "Snapchat") {
+        icon = `
+          <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.5c-3.1 0-5 2.2-5 5.1v2.1c0 .8-.4 1.5-1.2 1.8l-1.1.4c-.5.2-.5.9 0 1.1l2.1.8c.3.1.5.4.6.7.3 1.2 1.2 2 2.4 2.2.5.1.8.4.9.8.2.6.7 1 1.3 1h.1c.5 0 1-.4 1.2-.8.2.4.7.8 1.2.8h.1c.6 0 1.1-.4 1.3-1 .1-.4.4-.7.9-.8 1.2-.2 2.1-1 2.4-2.2.1-.3.3-.6.6-.7l2.1-.8c.5-.2.5-.9 0-1.1l-1.1-.4c-.8-.3-1.2-1-1.2-1.8V8.6c0-2.9-1.9-5.1-5-5.1Z"/>
+          </svg>
+        `;
+      }
+
+      return `
+        <a
+          href="${escapeHtml(channel.url || "#")}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group/channel flex items-center justify-between p-3.5 rounded-2xl border border-slate-100 bg-slate-50/60 hover:bg-white hover:border-blue-200 hover:shadow-md hover:shadow-blue-500/5 transition-all duration-200"
+        >
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-9 h-9 rounded-xl bg-white border border-slate-100 text-slate-700 flex items-center justify-center shrink-0 shadow-sm group-hover/channel:border-blue-100 group-hover/channel:bg-blue-50/50 transition">
+              ${icon}
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs font-black text-slate-800 group-hover/channel:text-blue-600 transition truncate">
+                ${escapeHtml(channel.label)}
+              </p>
+              <p class="text-[11px] font-mono text-slate-400 truncate mt-0.5" dir="ltr">
+                ${escapeHtml(channel.handle)}
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1.5 shrink-0 mr-2">
+            <svg class="w-3.5 h-3.5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            <svg class="w-3.5 h-3.5 text-slate-300 group-hover/channel:text-blue-600 group-hover/channel:translate-x-0.5 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m15 19-7-7 7-7"/>
+            </svg>
+          </div>
+        </a>
+      `;
+    }).join("");
+
+    // =========================
+    // Entity Information (Render)
+    // =========================
+    const entityInfo = isEntity ? `
+      <div class="mt-6 pt-5 border-t border-slate-100">
+        <div class="flex items-center gap-2 mb-3">
+          <div class="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m4 0h1M9 11h1m4 0h1M9 15h1m4 0h1"/>
+            </svg>
+          </div>
+          <h4 class="text-xs font-black text-slate-800">بيانات التواصل الرسمية للجهة</h4>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div class="rounded-xl bg-slate-50/80 border border-slate-100 p-3">
+            <span class="text-[10px] font-bold text-slate-400 block mb-1">الموقع الرسمي</span>
+            <p class="text-xs font-bold text-slate-800 truncate font-mono" dir="ltr">${escapeHtml(record.website || "-")}</p>
+          </div>
+
+          <div class="rounded-xl bg-slate-50/80 border border-slate-100 p-3">
+            <span class="text-[10px] font-bold text-slate-400 block mb-1">البريد الرسمي</span>
+            <p class="text-xs font-bold text-slate-800 truncate font-mono" dir="ltr">${escapeHtml(record.email || "-")}</p>
+          </div>
+
+          <div class="rounded-xl bg-slate-50/80 border border-slate-100 p-3">
+            <span class="text-[10px] font-bold text-slate-400 block mb-1">الهاتف الرسمي</span>
+            <p class="text-xs font-bold text-slate-800 font-mono" dir="ltr">${escapeHtml(record.phone || "-")}</p>
+          </div>
+        </div>
+      </div>
+    ` : "";
+
+    // =========================
+    // Card Wrapper
+    // =========================
+    return `
+      <article class="bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden mb-6">
+        <div class="p-6 sm:p-7">
+          
+          <!-- Top Header Section -->
+          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            
+            <!-- User Identity -->
+            <div class="flex items-start gap-4 min-w-0">
+              <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-blue-50 border border-blue-100 text-blue-600 text-xl sm:text-2xl font-black flex items-center justify-center shrink-0 shadow-inner">
+                ${initial}
+              </div>
+
+              <div class="min-w-0 pt-0.5">
+                <div class="flex flex-wrap items-center gap-2">
+                  <h3 class="text-lg sm:text-xl font-black text-slate-900 leading-tight">
+                    ${escapeHtml(record.displayName || record.name)}
+                  </h3>
+                  
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100/80 text-[11px] font-bold">
+                    <svg class="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    موثق من حِرز
+                  </span>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2 mt-1.5">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[11px] font-bold">
+                    ${escapeHtml(record.type)}
+                  </span>
+                  <span class="text-slate-300">•</span>
+                  <span class="text-[11px] font-semibold text-slate-400">
+                    رقم التوثيق: <span class="font-mono text-slate-600 font-bold" dir="ltr">${escapeHtml(record.id)}</span>
+                  </span>
+                </div>
+
+                ${record.bio ? `
+                  <p class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed mt-2.5 max-w-2xl">
+                    ${escapeHtml(record.bio)}
+                  </p>
+                ` : ''}
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Official Channels Section -->
+          <div class="mt-6 pt-5 border-t border-slate-100">
+            <div class="flex items-center justify-between gap-3 mb-3.5">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                  </svg>
+                </div>
+                <h4 class="text-xs font-black text-slate-800">القنوات الرسمية المعتمدة</h4>
+              </div>
+
+              <span class="text-[11px] font-bold text-slate-400 bg-slate-50 px-2.5 py-1 rounded-full border border-slate-100">
+                ${(record.channels || []).length} قنوات
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              ${channels}
+            </div>
+          </div>
+
+          <!-- Entity Extra Info -->
+          ${entityInfo}
+
+          <!-- Card Footer -->
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-6 pt-4 border-t border-slate-100 text-[11px] text-slate-400 font-medium">
+            <div class="flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9"/>
+                <path stroke-linecap="round" d="M12 7v5l3 2"/>
+              </svg>
+              <span>آخر تحديث: ${escapeHtml(record.updatedAt || "-")}</span>
+            </div>
+
+            <div class="flex items-center gap-1.5 text-slate-500">
+              <svg class="w-3.5 h-3.5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M2.166 11.37cC1.268 9.17 2.302 6.55 4.5 5.2a5.53 5.53 0 013.334-.7c1.3.1 2.5.7 3.33 1.6A5.4 5.4 0 0117.5 10c0 1.2-.4 2.3-1.1 3.2l-3.2 3.8a1 1 0 01-1.4 0L8.6 13.8a5.5 5.5 0 01-6.434-2.43z" clip-rule="evenodd"/>
+              </svg>
+              <span>بيانات موثقة ومعتمدة رسمياً من منصة حِرز</span>
+            </div>
+          </div>
+
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+
+  // -------------------------
+  // Submit Search
+  // -------------------------
+
+  form.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    const query = input.value.trim();
+
+    if (!query) {
+
+      resultsContainer.classList.remove("hidden");
+
+      resultsCount.textContent = "";
+
+      resultsList.innerHTML = `
+        <div class="bg-white border border-amber-200 rounded-2xl p-6 text-center shadow-sm">
+
+          <p class="text-sm font-semibold text-slate-800">
+            اكتب اسم الفرد أو الجهة أولًا
+          </p>
+
+        </div>
+      `;
+
+      return;
+    }
+
+
+    // Loading
+    const buttonText = button.querySelector("span");
+
+    button.disabled = true;
+    buttonText.textContent = "جارٍ التحقق...";
+
+
+    setTimeout(function () {
+
+      const results = searchRecords(query);
+
+      displayResults(results);
+
+      button.disabled = false;
+      buttonText.textContent = "تحقق";
+
+      resultsContainer.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
+
+    }, 500);
+
+  });
+
+});
+</script>
+
+<footer class="bg-slate-900 text-slate-300 border-t border-slate-800 pt-16 pb-8">
+
+  <div class="max-w-7xl mx-auto px-6">
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-slate-800">
+      
+      <div class="lg:col-span-4 space-y-4">
+        <div class="flex items-center gap-2.5">
+<img src="../images/herz-logo.png" alt="شعار حرز" class="h-10 w-auto" />
+
+</div>
+
+        <p class="text-slate-400 text-sm leading-relaxed max-w-sm">
+          المنصة السعودية الأولى لتوثيق وحماية الحضور الرقمي للأفراد والجهات ومكافحة انتحال الهوية.
+        </p>
+
+        <div class="flex items-center gap-3 pt-2">
+          <a href="#" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-blue-600 hover:text-white text-slate-400 flex items-center justify-center transition duration-200" aria-label="X (Twitter)">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-blue-600 hover:text-white text-slate-400 flex items-center justify-center transition duration-200" aria-label="LinkedIn">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-3 space-y-4">
+        <h3 class="text-sm font-bold text-white tracking-wider uppercase">روابط سريعة</h3>
+        <ul class="space-y-2.5 text-sm">
+          <li>
+            <a href="#home" class="hover:text-blue-400 transition duration-200">الرئيسية</a>
+          </li>
+          <li>
+            <a href="#about" class="hover:text-blue-400 transition duration-200">عن حِرز</a>
+          </li>
+          <li>
+            <a href="#verify" class="hover:text-blue-400 transition duration-200">تحقق الأن </a>
+          </li>
+          <li>
+            <a href="#digital-presence" class="hover:text-blue-400 transition duration-200">وثّق حضورك الرقمي</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="lg:col-span-3 space-y-4">
+        <h3 class="text-sm font-bold text-white tracking-wider uppercase">الخدمات</h3>
+        <ul class="space-y-2.5 text-sm">
+           <li>
+            <a href="#verify" class="hover:text-blue-400 transition duration-200">تحقق الآن</a>
+          </li>
+          <li>
+            <a href="#digital-presence" class="hover:text-blue-400 transition duration-200">توثيق الأفراد</a>
+          </li>
+          <li>
+            <a href="#digital-presence" class="hover:text-blue-400 transition duration-200">توثيق الجهات</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="lg:col-span-2 space-y-4">
+        <h3 class="text-sm font-bold text-white tracking-wider uppercase">تواصل معنا</h3>
+        <div class="space-y-3 text-sm">
+          <a href="mailto:Heerz.sa@hotmail.com" class="flex items-center gap-2.5 text-slate-400 hover:text-blue-400 transition duration-200 dir-ltr justify-end lg:justify-start">
+            <span>Heerz.sa@hotmail.com</span>
+            <svg class="w-4 h-4 text-blue-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+            </svg>
+          </a>
+          <div class="flex items-center gap-2 text-slate-400 text-xs pt-1">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+            المملكة العربية السعودية
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p>© 2026 حِرز. جميع الحقوق محفوظة.</p>
+      <div class="flex gap-6">
+        <a href="#" class="hover:text-slate-400 transition duration-200">سياسة الخصوصية</a>
+        <a href="#" class="hover:text-slate-400 transition duration-200">شروط الاستخدام</a>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+</body>
+
+</html

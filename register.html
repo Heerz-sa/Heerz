@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="bg-slate-50">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>إنشاء حساب | منصة حِرز</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Cairo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif'],
+          },
+          boxShadow: {
+            glow: '0 0 20px -5px rgba(37, 99, 235, 0.15)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+
+    .auth-bg {
+      background:
+        radial-gradient(1200px 500px at 100% -10%, rgba(37, 99, 235, 0.07), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, rgba(37, 99, 235, 0.06), transparent 60%);
+    }
+
+    .field-error {
+      display: none;
+    }
+
+    .field-error.show {
+      display: flex;
+    }
+
+    .spinner {
+      border: 2px solid rgba(255,255,255,0.35);
+      border-top-color: #fff;
+      border-radius: 9999px;
+      animation: spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* TOAST */
+    #toastContainer {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 80;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: calc(100% - 2rem);
+      max-width: 380px;
+    }
+
+    .toast {
+      animation: toastIn .25s ease-out;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* PASSWORD STRENGTH */
+  .strength-bar {
+  flex: 1;
+  height: 5px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+.strength-bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  transition: width .3s ease, background-color .3s ease;
+}
+
+    /* ACCOUNT TYPE CARDS */
+    .type-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .type-card {
+      transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
+    }
+
+    .type-option input:checked + .type-card {
+      border-color: #2563eb;
+      background-color: #eff6ff;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+    }
+
+    .type-option input:checked + .type-card .type-check {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .type-option input:checked + .type-card .type-icon-wrap {
+      background-color: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+    }
+
+    .type-check {
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity .15s ease, transform .15s ease;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen antialiased text-slate-800 bg-slate-50 flex flex-col">
+
+  <!-- HEADER -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-[4.5rem] flex items-center justify-between gap-4">
+
+      <!-- BRAND / LOGO -->
+      <a href="../../index.html" class="flex items-center gap-2 shrink-0 group">
+        <img
+          src="../../images/herz-logo.png"
+          alt="شعار حرز"
+          onerror="this.style.display='none'; document.getElementById('logoFallbackHeader').classList.remove('hidden');"
+          class="h-8 sm:h-9 w-auto object-contain transition group-hover:opacity-90">
+        <span id="logoFallbackHeader" class="hidden text-lg sm:text-xl font-black text-blue-600">
+          حِرز
+        </span>
+      </a>
+
+      <!-- REFINED BACK BUTTON -->
+      <div class="flex items-center gap-2 shrink-0">
+        <a
+          href="../../index.html"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100/80 border border-slate-200/60 text-xs font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition shadow-sm">
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          <span>العودة للموقع</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="auth-bg flex-1 px-4 py-10 sm:py-14">
+
+    <div class="w-full max-w-xl mx-auto relative">
+
+      <!-- STEPPER -->
+      <div class="mb-6 sm:mb-8">
+        <ol class="flex items-center justify-between gap-2">
+
+          <!-- STEP 1 - ACTIVE -->
+          <li class="flex-1 flex items-center gap-2.5">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-black shadow-md shadow-blue-600/25 shrink-0">
+              1
+            </div>
+            <div class="hidden sm:block">
+              <p class="text-[11px] font-black text-slate-900 leading-tight">إنشاء الحساب</p>
+            </div>
+          </li>
+
+          <div class="flex-1 h-0.5 bg-slate-200 rounded-full"></div>
+
+          <!-- STEP 2 - INACTIVE -->
+          <li class="flex-1 flex items-center gap-2.5">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 text-slate-400 border border-slate-200 flex items-center justify-center text-xs font-black shrink-0">
+              2
+            </div>
+            <div class="hidden sm:block">
+              <p class="text-[11px] font-bold text-slate-400 leading-tight">التحقق من وسيلة التواصل</p>
+            </div>
+          </li>
+
+          <div class="flex-1 h-0.5 bg-slate-200 rounded-full"></div>
+
+          <!-- STEP 3 - INACTIVE -->
+          <li class="flex-1 flex items-center gap-2.5">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 text-slate-400 border border-slate-200 flex items-center justify-center text-xs font-black shrink-0">
+              3
+            </div>
+            <div class="hidden sm:block">
+              <p class="text-[11px] font-bold text-slate-400 leading-tight">إكمال بيانات التوثيق</p>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+
+      <!-- REGISTER CARD -->
+      <div class="bg-white border border-slate-200/80 rounded-3xl shadow-sm p-6 sm:p-8">
+
+        <div class="flex flex-col items-center text-center mb-6">
+          <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center mb-4">
+            <i data-lucide="user-plus" class="w-6 h-6"></i>
+          </div>
+
+          <h1 class="text-xl sm:text-2xl font-black text-slate-900">
+            إنشاء حساب جديد
+          </h1>
+
+          <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-2 leading-relaxed">
+            أنشئ حسابك للبدء في طلب توثيق حضورك الرقمي وقنواتك الرسمية في حِرز.
+          </p>
+        </div>
+
+        <!-- GENERAL ERROR ALERT -->
+        <div
+          id="generalError"
+          class="hidden items-start gap-2.5 mb-5 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700">
+          <i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 shrink-0"></i>
+          <p id="generalErrorText" class="text-xs font-bold leading-relaxed">
+            حدث خطأ ما، يرجى المحاولة مرة أخرى.
+          </p>
+        </div>
+
+        <!-- SUCCESS ALERT -->
+        <div
+          id="successAlert"
+          class="hidden items-start gap-2.5 mb-5 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700">
+          <i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5 shrink-0"></i>
+          <p class="text-xs font-bold leading-relaxed">
+            تم إنشاء الحساب بنجاح، جارٍ تحويلك للتحقق من وسيلة التواصل...
+          </p>
+        </div>
+
+        <!-- REGISTER FORM -->
+        <form id="registerForm" novalidate class="space-y-4">
+
+          <!-- ACCOUNT TYPE -->
+          <div>
+            <label class="text-[11px] font-black text-slate-600 mb-1.5 block">
+              نوع الحساب
+            </label>
+
+            <div class="grid grid-cols-2 gap-3">
+
+              <label class="type-option relative block cursor-pointer">
+                <input type="radio" name="accountType" value="individual" checked onchange="clearFieldError('accountType')">
+                <div class="type-card relative flex flex-col items-center text-center gap-2 p-4 rounded-2xl border border-slate-200 bg-slate-50">
+                  <i data-lucide="check-circle-2" class="type-check absolute top-2.5 left-2.5 w-4 h-4 text-blue-600"></i>
+                  <div class="type-icon-wrap w-10 h-10 rounded-xl bg-white text-slate-500 border border-slate-200 flex items-center justify-center transition">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                  </div>
+                  <span class="text-xs font-black text-slate-800">فرد</span>
+                </div>
+              </label>
+
+              <label class="type-option relative block cursor-pointer">
+                <input type="radio" name="accountType" value="entity" onchange="clearFieldError('accountType')">
+                <div class="type-card relative flex flex-col items-center text-center gap-2 p-4 rounded-2xl border border-slate-200 bg-slate-50">
+                  <i data-lucide="check-circle-2" class="type-check absolute top-2.5 left-2.5 w-4 h-4 text-blue-600"></i>
+                  <div class="type-icon-wrap w-10 h-10 rounded-xl bg-white text-slate-500 border border-slate-200 flex items-center justify-center transition">
+                    <i data-lucide="building-2" class="w-5 h-5"></i>
+                  </div>
+                  <span class="text-xs font-black text-slate-800">جهة</span>
+                </div>
+              </label>
+
+            </div>
+          </div>
+
+          <!-- FULL NAME -->
+          <div>
+            <label for="fullName" class="text-[11px] font-black text-slate-600 mb-1.5 block">
+              الاسم الكامل
+            </label>
+
+            <div class="relative">
+              <i data-lucide="user" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+              <input
+                id="fullName"
+                name="fullName"
+                type="text"
+                autocomplete="name"
+                placeholder="أدخل اسمك الكامل"
+                oninput="clearFieldError('fullName')"
+                class="w-full pr-11 pl-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/5 transition">
+            </div>
+
+            <p id="fullNameError" class="field-error items-center gap-1.5 text-[11px] font-bold text-red-600 mt-1.5">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0"></i>
+              <span id="fullNameErrorText">يرجى إدخال الاسم الكامل.</span>
+            </p>
+          </div>
+
+          <!-- EMAIL -->
+          <div>
+            <label for="email" class="text-[11px] font-black text-slate-600 mb-1.5 block">
+              البريد الإلكتروني
+            </label>
+
+            <div class="relative">
+              <i data-lucide="mail" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="أدخل بريدك الإلكتروني"
+                oninput="clearFieldError('email')"
+                dir="ltr"
+                class="w-full pr-11 pl-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/5 transition text-left">
+            </div>
+
+            <p id="emailError" class="field-error items-center gap-1.5 text-[11px] font-bold text-red-600 mt-1.5">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0"></i>
+              <span id="emailErrorText">يرجى إدخال البريد الإلكتروني.</span>
+            </p>
+          </div>
+
+          <!-- PHONE -->
+          <div>
+            <label for="phone" class="text-[11px] font-black text-slate-600 mb-1.5 block">
+              رقم الجوال
+            </label>
+
+            <div class="relative flex" dir="ltr">
+              <span class="flex items-center justify-center px-3.5 rounded-s-xl bg-slate-100 border border-slate-200 text-xs font-black text-slate-500 shrink-0">
+                +966
+              </span>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                inputmode="numeric"
+                maxlength="9"
+                autocomplete="tel-national"
+                placeholder="5xxxxxxxx"
+                oninput="handlePhoneInput()"
+                class="w-full px-4 py-3 rounded-e-xl bg-slate-50 border border-r-0 border-slate-200 text-xs font-bold outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/5 transition text-left">
+            </div>
+
+            <p id="phoneError" class="field-error items-center gap-1.5 text-[11px] font-bold text-red-600 mt-1.5">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0"></i>
+              <span id="phoneErrorText">يرجى إدخال رقم جوال سعودي صحيح.</span>
+            </p>
+          </div>
+
+          <!-- PASSWORD -->
+          <div>
+            <label for="password" class="text-[11px] font-black text-slate-600 mb-1.5 block">
+              كلمة المرور
+            </label>
+
+            <div class="relative">
+              <i data-lucide="key-round" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="new-password"
+                placeholder="8 أحرف على الأقل، حرف ورقم"
+                oninput="handlePasswordInput()"
+                dir="ltr"
+                class="w-full pr-11 pl-11 py-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/5 transition text-left">
+
+              <button
+                type="button"
+                onclick="togglePasswordVisibility('password', 'passwordEyeIcon')"
+                aria-label="إظهار أو إخفاء كلمة المرور"
+                class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition p-1">
+                <i id="passwordEyeIcon" data-lucide="eye" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+            <!-- STRENGTH METER -->
+            <div id="strengthMeter" class="hidden items-center gap-2 mt-2">
+              <div class="strength-bar"><span id="strengthBar1"></span></div>
+              <div class="strength-bar"><span id="strengthBar2"></span></div>
+              <div class="strength-bar"><span id="strengthBar3"></span></div>
+              <span id="strengthLabel" class="text-[10px] font-black text-slate-400 shrink-0 w-14 text-left"></span>
+            </div>
+
+            <p id="passwordError" class="field-error items-center gap-1.5 text-[11px] font-bold text-red-600 mt-1.5">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0"></i>
+              <span id="passwordErrorText">يرجى إدخال كلمة المرور.</span>
+            </p>
+          </div>
+
+          <!-- CONFIRM PASSWORD -->
+          <div>
+            <label for="confirmPassword" class="text-[11px] font-black text-slate-600 mb-1.5 block">
+              تأكيد كلمة المرور
+            </label>
+
+            <div class="relative">
+              <i data-lucide="key-round" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                autocomplete="new-password"
+                placeholder="أعد إدخال كلمة المرور"
+                oninput="clearFieldError('confirmPassword')"
+                dir="ltr"
+                class="w-full pr-11 pl-11 py-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/5 transition text-left">
+
+              <button
+                type="button"
+                onclick="togglePasswordVisibility('confirmPassword', 'confirmPasswordEyeIcon')"
+                aria-label="إظهار أو إخفاء كلمة المرور"
+                class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition p-1">
+                <i id="confirmPasswordEyeIcon" data-lucide="eye" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+            <p id="confirmPasswordError" class="field-error items-center gap-1.5 text-[11px] font-bold text-red-600 mt-1.5">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0"></i>
+              <span id="confirmPasswordErrorText">كلمتا المرور غير متطابقتين.</span>
+            </p>
+          </div>
+
+          <!-- TERMS -->
+          <div class="pt-1">
+            <label class="flex items-start gap-2.5 cursor-pointer select-none">
+              <input
+                id="agreeTerms"
+                type="checkbox"
+                onchange="clearFieldError('agreeTerms')"
+                class="w-4 h-4 mt-0.5 rounded accent-blue-600 shrink-0">
+              <span class="text-[11px] font-bold text-slate-600 leading-relaxed">
+                أوافق على
+                <a href="../terms.html" class="text-blue-600 hover:text-blue-700 font-black">الشروط والأحكام</a>
+                و
+                <a href="../privacy.html" class="text-blue-600 hover:text-blue-700 font-black">سياسة الخصوصية</a>
+                الخاصة بمنصة حِرز.
+              </span>
+            </label>
+
+            <p id="agreeTermsError" class="field-error items-center gap-1.5 text-[11px] font-bold text-red-600 mt-1.5">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0"></i>
+              <span>يجب الموافقة على الشروط والأحكام وسياسة الخصوصية للمتابعة.</span>
+            </p>
+          </div>
+
+          <!-- SUBMIT -->
+          <button
+            id="registerBtn"
+            type="submit"
+            class="w-full mt-2 px-4 py-3.5 rounded-xl bg-blue-600 text-white text-sm font-black hover:bg-blue-700 transition shadow-md shadow-blue-600/20 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+            <span id="registerBtnSpinner" class="hidden w-4 h-4 spinner"></span>
+            <i id="registerBtnIcon" data-lucide="user-plus" class="w-4 h-4"></i>
+            <span id="registerBtnText">إنشاء الحساب</span>
+          </button>
+
+        </form>
+
+        <!-- LOGIN LINK -->
+        <div class="flex items-center gap-2 justify-center mt-6 pt-6 border-t border-slate-100">
+          <span class="text-xs font-bold text-slate-500">لديك حساب بالفعل؟</span>
+          <a href="login.html" class="text-xs font-black text-blue-600 hover:text-blue-700 transition">
+            تسجيل الدخول
+          </a>
+        </div>
+
+      </div>
+
+      <!-- HELPER NOTE -->
+      <p class="text-center text-[11px] font-bold text-slate-400 mt-5 leading-relaxed">
+        بياناتك محمية ولا تُستخدم إلا لأغراض التوثيق والتحقق في منصة حِرز.
+      </p>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+
+        <!-- BRAND INFO -->
+        <div class="flex flex-col items-center md:items-start gap-2">
+          <div class="flex items-center gap-2.5">
+            <img
+              src="../../images/herz-logo.png"
+              alt="شعار حرز"
+              onerror="this.style.display='none'; document.getElementById('logoFallbackFooter').classList.remove('hidden');"
+              class="h-7 w-auto object-contain">
+            <span id="logoFallbackFooter" class="hidden text-sm font-black text-blue-600">
+              حِرز
+            </span>
+          </div>
+          <p class="text-[11px] font-semibold text-slate-400 text-center md:text-right">
+            المنصة الرائدة لتوثيق وحماية المحتوى الرقمي.
+          </p>
+        </div>
+
+        <!-- QUICK LINKS -->
+        <nav class="flex items-center justify-center gap-6">
+          <a href="../privacy.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الخصوصية</a>
+          <a href="../terms.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الشروط والأحكام</a>
+          <a href="../faq.html" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition">الأسئلة الشائعة</a>
+        </nav>
+
+        <!-- COPYRIGHT -->
+        <div class="text-center md:text-left">
+          <p class="text-[11px] font-bold text-slate-400">
+            © 2026 منصة حِرز. جميع الحقوق محفوظة.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOASTS -->
+  <div id="toastContainer"></div>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    /* ============================================================
+       1) STATE / MOCK API
+       ============================================================ */
+    let isSubmitting = false;
+
+    // Registered emails/phones used to simulate "already exists" errors.
+    const TAKEN_EMAILS = ['demo@heerz.sa', 'taken@heerz.sa'];
+    const TAKEN_PHONES = ['500000000', '511111111'];
+
+    // Mock registration request. Replace with a real API call, e.g.:
+    // const res = await fetch('/api/auth/register', { method: 'POST', body: JSON.stringify(payload) });
+    function mockRegisterRequest(payload) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const simulateConnectionError = false;
+
+          if (simulateConnectionError) {
+            reject({ code: 'network_error' });
+            return;
+          }
+
+          if (TAKEN_EMAILS.includes(payload.email.toLowerCase())) {
+            resolve({ success: false, code: 'email_taken' });
+            return;
+          }
+
+          if (TAKEN_PHONES.includes(payload.phone)) {
+            resolve({ success: false, code: 'phone_taken' });
+            return;
+          }
+
+          resolve({ success: true });
+        }, 1300);
+      });
+    }
+
+    /* ============================================================
+       2) VALIDATION HELPERS
+       ============================================================ */
+    function isValidEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+    }
+
+    function isValidSaudiPhone(value) {
+      return /^5\d{8}$/.test(value.trim());
+    }
+
+    function getPasswordStrength(value) {
+      // 0 = empty, 1 = weak, 2 = medium, 3 = strong
+      if (!value) return 0;
+
+      const hasLetter = /[A-Za-z]/.test(value);
+      const hasNumber = /\d/.test(value);
+      const hasSymbol = /[^A-Za-z0-9]/.test(value);
+      const longEnough = value.length >= 8;
+      const veryLong = value.length >= 12;
+
+      if (!longEnough || !hasLetter || !hasNumber) return 1;
+      if (longEnough && hasLetter && hasNumber && !hasSymbol && !veryLong) return 2;
+      return 3;
+    }
+
+    function meetsPasswordRules(value) {
+      return value.length >= 8 && /[A-Za-z]/.test(value) && /\d/.test(value);
+    }
+
+    function getSelectedAccountType() {
+      const checked = document.querySelector('input[name="accountType"]:checked');
+      return checked ? checked.value : null;
+    }
+
+    function showFieldError(field, message) {
+      const errorEl = document.getElementById(field + 'Error');
+      const errorText = document.getElementById(field + 'ErrorText');
+      const input = document.getElementById(field);
+
+      if (message && errorText) errorText.textContent = message;
+
+      errorEl.classList.add('show');
+
+      if (input && input.tagName === 'INPUT' && input.type !== 'checkbox' && input.type !== 'radio') {
+        input.classList.add('border-red-300', 'focus:border-red-400', 'focus:ring-red-500/10');
+        input.classList.remove('border-slate-200', 'focus:border-blue-400', 'focus:ring-blue-500/5');
+      }
+    }
+
+    function clearFieldError(field) {
+      const errorEl = document.getElementById(field + 'Error');
+      const input = document.getElementById(field);
+
+      errorEl.classList.remove('show');
+
+      if (input && input.tagName === 'INPUT' && input.type !== 'checkbox' && input.type !== 'radio') {
+        input.classList.remove('border-red-300', 'focus:border-red-400', 'focus:ring-red-500/10');
+        input.classList.add('border-slate-200', 'focus:border-blue-400', 'focus:ring-blue-500/5');
+      }
+
+      hideGeneralError();
+    }
+
+    function validateForm() {
+      let isValid = true;
+
+      const accountType = getSelectedAccountType();
+      const fullName = document.getElementById('fullName').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const agreeTerms = document.getElementById('agreeTerms').checked;
+
+      if (!accountType) {
+        isValid = false;
+      }
+
+      if (!fullName.trim()) {
+        showFieldError('fullName', 'يرجى إدخال الاسم الكامل.');
+        isValid = false;
+      } else {
+        clearFieldError('fullName');
+      }
+
+      if (!email.trim()) {
+        showFieldError('email', 'يرجى إدخال البريد الإلكتروني.');
+        isValid = false;
+      } else if (!isValidEmail(email)) {
+        showFieldError('email', 'يرجى إدخال بريد إلكتروني صحيح.');
+        isValid = false;
+      } else {
+        clearFieldError('email');
+      }
+
+      if (!phone.trim()) {
+        showFieldError('phone', 'يرجى إدخال رقم الجوال.');
+        isValid = false;
+      } else if (!isValidSaudiPhone(phone)) {
+        showFieldError('phone', 'يجب أن يبدأ الرقم بـ 5 ويتكون من 9 أرقام.');
+        isValid = false;
+      } else {
+        clearFieldError('phone');
+      }
+
+      if (!password) {
+        showFieldError('password', 'يرجى إدخال كلمة المرور.');
+        isValid = false;
+      } else if (!meetsPasswordRules(password)) {
+        showFieldError('password', 'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل وتحتوي على حرف ورقم.');
+        isValid = false;
+      } else {
+        clearFieldError('password');
+      }
+
+      if (!confirmPassword) {
+        showFieldError('confirmPassword', 'يرجى تأكيد كلمة المرور.');
+        isValid = false;
+      } else if (confirmPassword !== password) {
+        showFieldError('confirmPassword', 'كلمتا المرور غير متطابقتين.');
+        isValid = false;
+      } else {
+        clearFieldError('confirmPassword');
+      }
+
+      if (!agreeTerms) {
+        showFieldError('agreeTerms', null);
+        isValid = false;
+      } else {
+        clearFieldError('agreeTerms');
+      }
+
+      return isValid;
+    }
+
+    /* ============================================================
+       3) UI INTERACTIONS
+       ============================================================ */
+    function handlePhoneInput() {
+      const input = document.getElementById('phone');
+      input.value = input.value.replace(/\D/g, '').slice(0, 9);
+      clearFieldError('phone');
+    }
+
+    function handlePasswordInput() {
+      clearFieldError('password');
+      updateStrengthMeter();
+      const confirmVal = document.getElementById('confirmPassword').value;
+      if (confirmVal) clearFieldError('confirmPassword');
+    }
+
+    function updateStrengthMeter() {
+  const value = document.getElementById('password').value;
+  const meter = document.getElementById('strengthMeter');
+  const bars = [
+    document.getElementById('strengthBar1'),
+    document.getElementById('strengthBar2'),
+    document.getElementById('strengthBar3')
+  ];
+  const label = document.getElementById('strengthLabel');
+
+  if (!value) {
+    meter.classList.add('hidden');
+    meter.classList.remove('flex');
+    return;
+  }
+
+  meter.classList.remove('hidden');
+  meter.classList.add('flex');
+
+  const strength = getPasswordStrength(value);
+  const config = {
+    0: { color: '#e2e8f0', text: '' },
+    1: { color: '#ef4444', text: 'ضعيفة' },
+    2: { color: '#f59e0b', text: 'متوسطة' },
+    3: { color: '#10b981', text: 'قوية' }
+  };
+
+  bars.forEach((bar, i) => {
+    if (i < strength) {
+      bar.style.width = '100%';
+      bar.style.backgroundColor = config[strength].color;
+    } else {
+      bar.style.width = '0%';
+    }
+  });
+
+  label.textContent = config[strength].text;
+  label.style.color = config[strength].color;
+}
+
+    function togglePasswordVisibility(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+
+      const isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+      icon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+      lucide.createIcons();
+    }
+
+    function showGeneralError(message) {
+      const el = document.getElementById('generalError');
+      document.getElementById('generalErrorText').textContent = message;
+      el.classList.remove('hidden');
+      el.classList.add('flex');
+
+      const success = document.getElementById('successAlert');
+      success.classList.add('hidden');
+      success.classList.remove('flex');
+    }
+
+    function hideGeneralError() {
+      const el = document.getElementById('generalError');
+      el.classList.add('hidden');
+      el.classList.remove('flex');
+    }
+
+    function showSuccessAlert() {
+      const el = document.getElementById('successAlert');
+      el.classList.remove('hidden');
+      el.classList.add('flex');
+      hideGeneralError();
+    }
+
+    function setLoadingState(loading) {
+      const btn = document.getElementById('registerBtn');
+      const spinner = document.getElementById('registerBtnSpinner');
+      const icon = document.getElementById('registerBtnIcon');
+      const text = document.getElementById('registerBtnText');
+
+      btn.disabled = loading;
+      spinner.classList.toggle('hidden', !loading);
+      icon.classList.toggle('hidden', loading);
+      text.textContent = loading ? 'جارٍ إنشاء الحساب...' : 'إنشاء الحساب';
+    }
+
+    /* ============================================================
+       4) SUBMIT FLOW
+       ============================================================ */
+    async function handleRegisterSubmit(event) {
+      event.preventDefault();
+      if (isSubmitting) return;
+
+      hideGeneralError();
+      if (!validateForm()) return;
+
+      const payload = {
+        fullName: document.getElementById('fullName').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        password: document.getElementById('password').value,
+        accountType: getSelectedAccountType()
+      };
+
+      isSubmitting = true;
+      setLoadingState(true);
+
+      try {
+        const result = await mockRegisterRequest(payload);
+        isSubmitting = false;
+        setLoadingState(false);
+
+        if (result.success) {
+          showSuccessAlert();
+          showToast('تم إنشاء الحساب بنجاح.', 'success');
+
+          // Persist only the non-sensitive account type for the next step.
+          try {
+            sessionStorage.setItem('heerzAccountType', payload.accountType);
+          } catch (e) {
+            // sessionStorage may be unavailable (private mode, etc.) — proceed anyway.
+          }
+
+          setTimeout(() => {
+            window.location.href = 'verify-contact.html';
+          }, 900);
+          return;
+        }
+
+        if (result.code === 'email_taken') {
+          showFieldError('email', 'هذا البريد الإلكتروني مستخدم بالفعل.');
+          showGeneralError('البريد الإلكتروني مستخدم بالفعل، جرّب بريدًا آخر أو سجّل الدخول.');
+          showToast('البريد الإلكتروني مستخدم بالفعل.', 'error');
+        } else if (result.code === 'phone_taken') {
+          showFieldError('phone', 'رقم الجوال مستخدم بالفعل.');
+          showGeneralError('رقم الجوال مستخدم بالفعل، يرجى استخدام رقم آخر.');
+          showToast('رقم الجوال مستخدم بالفعل.', 'error');
+        } else {
+          showGeneralError('تعذّر إكمال العملية، يرجى التحقق من البيانات المدخلة والمحاولة مرة أخرى.');
+          showToast('بيانات غير صحيحة، يرجى المحاولة مرة أخرى.', 'error');
+        }
+
+      } catch (err) {
+        isSubmitting = false;
+        setLoadingState(false);
+        showGeneralError('تعذّر الاتصال بالخادم، يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.');
+        showToast('حدث خطأ في الاتصال.', 'error');
+      }
+    }
+
+    /* ============================================================
+       5) TOASTS
+       ============================================================ */
+    function showToast(message, type) {
+      const container = document.getElementById('toastContainer');
+      const colors = {
+        success: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+        error: 'border-red-200 bg-red-50 text-red-700',
+        info: 'border-blue-200 bg-blue-50 text-blue-700'
+      };
+      const icons = { success: 'check-circle-2', error: 'x-circle', info: 'info' };
+
+      const toast = document.createElement('div');
+      toast.className = `toast flex items-center gap-2.5 px-4 py-3 rounded-2xl border shadow-lg text-xs font-bold ${colors[type] || colors.info}`;
+      toast.innerHTML = `<i data-lucide="${icons[type] || icons.info}" class="w-4 h-4 shrink-0"></i><span>${message}</span>`;
+
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.style.transition = 'opacity .3s ease, transform .3s ease';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    /* ============================================================
+       6) INIT
+       ============================================================ */
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+
+      const form = document.getElementById('registerForm');
+      if (form) form.addEventListener('submit', handleRegisterSubmit);
+    });
+  </script>
+
+</body>
+</html>
